@@ -7439,8 +7439,655 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
  var emptyMessage='<strong>Your VCC queue will appear here.</strong><br>Upload the PMS Main remarks PDF, then process one room at a time.';
  if(empty&&empty.innerHTML!==emptyMessage)empty.innerHTML=emptyMessage;
  }
- function openAllRows(){if(typeof vccSetMode==='function')vccSetMode('remarks');tidy();}
+ function openAllRows(){
+  var b=one('#panel-vcc .vcc-mode[data-mode="remarks"]');
+  if(b&&b.getAttribute('aria-pressed')!=='true')b.click();
+  tidy();
+}
  openAllRows();
  var tab=one('#tab-vcc');if(tab)tab.addEventListener('click',function(){setTimeout(openAllRows,0);});
+})();
+</script>
+
+<!-- ==========================================================================
+     2026 upgrade pack — three additive modules.
+     Everything below runs on the DOM that the main script already renders, so
+     no internal state is touched and nothing here can corrupt a shift.
+     Still fully offline: no network call, no external asset, no CDN.
+     ========================================================================== -->
+
+<style id="fd-upgrade-2026">
+  /* ---------- shared ---------- */
+  .fd-chip-btn{
+    appearance:none;border:1px solid var(--line);background:#fff;color:var(--navy);
+    font:800 12px/1 var(--sans);letter-spacing:.02em;border-radius:999px;
+    padding:9px 14px;min-height:38px;cursor:pointer;transition:background .15s,border-color .15s,transform .1s;
+  }
+  .fd-chip-btn:hover{background:#F4F7FB;border-color:var(--navy-200);}
+  .fd-chip-btn:active{transform:translateY(1px);}
+  .fd-chip-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  /* ---------- A. VCC charge queue ---------- */
+  .vq-launch{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin:0 0 12px;padding:11px 13px;border-radius:var(--radius-md);
+    background:linear-gradient(180deg,#FFF9ED,#FFF4DD);border:1px solid var(--amber-line);
+  }
+  .vq-launch p{margin:0;flex:1 1 220px;font:600 12px/1.45 var(--sans);color:var(--ink-muted);}
+  .vq-launch strong{display:block;font:900 13px/1.3 var(--sans);color:var(--navy);letter-spacing:.01em;}
+  .vq-go{
+    appearance:none;border:0;border-radius:999px;cursor:pointer;
+    background:var(--navy);color:#fff;font:900 12.5px/1 var(--sans);letter-spacing:.05em;
+    text-transform:uppercase;padding:13px 20px;min-height:44px;
+  }
+  .vq-go:hover{background:var(--navy-700);}
+  .vq-go:disabled{background:var(--navy-200);cursor:not-allowed;}
+  .vq-go:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  .vq-layer{
+    position:fixed;inset:0;z-index:4000;display:none;
+    background:rgba(4,35,79,.72);backdrop-filter:blur(3px);
+    padding:18px;overflow:auto;
+  }
+  .vq-layer.on{display:flex;align-items:flex-start;justify-content:center;}
+  .vq-card{
+    width:min(560px,100%);background:var(--card);border-radius:var(--radius-lg);
+    overflow:hidden;box-shadow:0 26px 60px rgba(4,35,79,.4);margin:auto;
+  }
+  .vq-top{padding:14px 18px 12px;border-bottom:1px solid var(--line-soft);}
+  .vq-top-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .vq-eyebrow{font:900 10px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+  .vq-close{
+    appearance:none;border:1px solid var(--line);background:#fff;border-radius:999px;
+    width:34px;height:34px;cursor:pointer;color:var(--ink-muted);font-size:18px;line-height:1;
+  }
+  .vq-close:hover{background:var(--gray-bg);}
+  .vq-bar{height:7px;border-radius:999px;background:var(--gray-bg);overflow:hidden;margin-top:11px;}
+  .vq-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-deep));transition:width .25s;}
+  .vq-count{margin-top:7px;font:700 11.5px/1.4 var(--sans);color:var(--ink-muted);}
+  .vq-count em{font-style:normal;color:var(--navy);font-weight:900;}
+
+  .vq-body{padding:18px;}
+  .vq-room{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;}
+  .vq-room b{font:900 42px/1 var(--mono);color:var(--navy);letter-spacing:-.02em;}
+  .vq-room span{font:800 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);}
+  .vq-guest{margin:10px 0 0;font:800 17px/1.3 var(--sans);color:var(--ink);}
+  .vq-ta{margin:4px 0 0;font:600 12.5px/1.45 var(--sans);color:var(--ink-muted);}
+  .vq-facts{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0;}
+  .vq-fact{
+    padding:7px 11px;border-radius:var(--radius-sm);background:var(--gray-bg);
+    font:700 11.5px/1.3 var(--sans);color:var(--ink);
+  }
+  .vq-fact b{display:block;font:900 9.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px;}
+  .vq-remark{
+    margin:13px 0 0;padding:11px 12px;border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    background:#FFF9ED;font:600 12px/1.5 var(--sans);color:var(--ink);
+    max-height:120px;overflow:auto;white-space:pre-wrap;
+  }
+  .vq-state{margin:13px 0 0;font:800 12px/1.3 var(--sans);}
+  .vq-state.is-charged{color:var(--green);}
+  .vq-state.is-failed{color:var(--red);}
+  .vq-state.is-other{color:var(--ink-muted);}
+  .vq-state.is-open{color:var(--gold-deep);}
+
+  .vq-acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 18px 12px;}
+  .vq-act{
+    appearance:none;border:2px solid transparent;border-radius:var(--radius-md);cursor:pointer;
+    padding:15px 12px;min-height:58px;font:900 14px/1.2 var(--sans);letter-spacing:.02em;
+  }
+  .vq-act small{display:block;font:700 9.5px/1 var(--sans);letter-spacing:.1em;opacity:.72;margin-top:5px;text-transform:uppercase;}
+  .vq-act.ok{background:var(--green-bg);border-color:var(--green-line);color:var(--green);}
+  .vq-act.no{background:var(--red-bg);border-color:var(--red-line);color:var(--red);}
+  .vq-act.nv{background:var(--gray-bg);border-color:var(--line);color:var(--ink-muted);grid-column:1 / -1;min-height:46px;}
+  .vq-act:hover{filter:brightness(.97);}
+  .vq-act:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .vq-nav{display:flex;gap:8px;align-items:center;padding:0 18px 16px;flex-wrap:wrap;}
+  .vq-nav .fd-chip-btn{flex:0 0 auto;}
+  .vq-hint{flex:1 1 100%;margin:2px 0 0;font:600 11px/1.5 var(--sans);color:var(--ink-faint);}
+  .vq-hint kbd{
+    display:inline-block;padding:1px 5px;border:1px solid var(--line);border-bottom-width:2px;
+    border-radius:4px;background:#fff;font:800 10px/1.5 var(--mono);color:var(--navy);
+  }
+  .vq-done{padding:26px 18px 30px;text-align:center;}
+  .vq-done h3{margin:0 0 6px;font:900 19px/1.25 var(--sans);color:var(--navy);}
+  .vq-done p{margin:0 0 16px;font:600 13px/1.5 var(--sans);color:var(--ink-muted);}
+  @media (max-width:480px){
+    .vq-room b{font-size:36px;}
+    .vq-acts{grid-template-columns:1fr;}
+  }
+
+  /* ---------- B. Night audit step rail ---------- */
+  .na-rail{
+    position:sticky;top:6px;z-index:20;margin:0 0 16px;
+    padding:13px 14px;border-radius:var(--radius-md);
+    background:var(--card);border:1px solid var(--line);
+    box-shadow:0 6px 18px rgba(4,35,79,.07);
+  }
+  .na-rail-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:11px;}
+  .na-ring{position:relative;width:46px;height:46px;flex:0 0 auto;}
+  .na-ring svg{width:46px;height:46px;transform:rotate(-90deg);}
+  .na-ring circle{fill:none;stroke-width:5;stroke-linecap:round;}
+  .na-ring .bg{stroke:var(--line-soft);}
+  .na-ring .fg{stroke:var(--gold-deep);transition:stroke-dasharray .3s;}
+  .na-ring b{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font:900 12px/1 var(--sans);color:var(--navy);
+  }
+  .na-rail-txt{flex:1 1 190px;}
+  .na-rail-txt strong{display:block;font:900 13px/1.25 var(--sans);color:var(--navy);}
+  .na-rail-txt span{display:block;margin-top:3px;font:600 11.5px/1.4 var(--sans);color:var(--ink-muted);}
+  .na-rail-nav{display:flex;gap:7px;flex-wrap:wrap;}
+  .na-steps{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin;}
+  .na-step{
+    appearance:none;cursor:pointer;flex:0 0 auto;text-align:left;
+    border:1px solid var(--line);background:#fff;border-radius:var(--radius-sm);
+    padding:8px 11px;min-width:118px;transition:border-color .15s,background .15s;
+  }
+  .na-step:hover{background:#F4F7FB;}
+  .na-step:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .na-step em{
+    display:inline-block;font-style:normal;font:900 9.5px/1 var(--mono);
+    color:#fff;background:var(--navy-200);border-radius:999px;padding:4px 6px;margin-bottom:6px;
+  }
+  .na-step b{display:block;font:800 11.5px/1.3 var(--sans);color:var(--ink);}
+  .na-step span{display:block;margin-top:3px;font:700 10px/1.3 var(--sans);color:var(--ink-faint);}
+  .na-step.filled{border-color:var(--green-line);background:var(--green-bg);}
+  .na-step.filled em{background:var(--green);}
+  .na-step.filled span{color:var(--green);}
+  .na-step.current{border-color:var(--gold-deep);box-shadow:inset 0 0 0 1px var(--gold-deep);}
+  .na-step.current em{background:var(--gold-deep);}
+  @media print{.na-rail{display:none!important;}}
+
+  /* ---------- C. shift toolkit ---------- */
+  .fd-toolkit{
+    max-width:1180px;margin:22px auto 0;padding:13px 15px;
+    border-radius:var(--radius-md);background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+  }
+  .fd-toolkit h4{margin:0;font:900 11px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);flex:0 0 100%;}
+  .fd-meter{flex:1 1 220px;min-width:180px;}
+  .fd-meter-bar{height:7px;border-radius:999px;background:var(--gray-bg);overflow:hidden;}
+  .fd-meter-fill{height:100%;width:0;background:var(--navy-400);transition:width .3s,background .3s;}
+  .fd-meter-fill.warn{background:var(--gold-deep);}
+  .fd-meter-fill.bad{background:var(--red);}
+  .fd-meter-txt{margin-top:5px;font:700 11px/1.4 var(--sans);color:var(--ink-muted);}
+  .fd-toolkit-note{flex:1 1 100%;margin:0;font:600 11px/1.5 var(--sans);color:var(--ink-faint);}
+  @media print{.fd-toolkit{display:none!important;}}
+</style>
+
+<script id="fd-upgrade-2026-script">
+(function(){
+  "use strict";
+
+  function $(sel, root){ return (root || document).querySelector(sel); }
+  function $$(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function el(tag, cls, html){
+    var n = document.createElement(tag);
+    if(cls) n.className = cls;
+    if(html != null) n.innerHTML = html;
+    return n;
+  }
+  function txt(node){ return node ? String(node.textContent || "").replace(/\s+/g," ").trim() : ""; }
+
+  /* =======================================================================
+     A.  VCC CHARGE QUEUE
+     One room at a time instead of scanning a long list. Every decision is
+     made by clicking the row's own button, so the existing handler does the
+     saving, the timestamp and the re-render exactly as before.
+     ======================================================================= */
+  var VQ = (function(){
+    var layer = null, queue = [], pos = 0, restoreFilter = null, open = false;
+
+    function readRows(){
+      return $$("#vccItems .vrow").filter(function(row){
+        return row.querySelector(".vbtn[data-s='charged']");
+      }).map(function(row){
+        var btn = row.querySelector(".vbtn[data-s='charged']");
+        var remark = row.querySelector(".vrow-remark p");
+        return {
+          i: btn.getAttribute("data-i"),
+          room: txt(row.querySelector(".vrow-room strong")) || "—",
+          guest: txt(row.querySelector(".vrow-name")) || "Guest not provided",
+          ta: txt(row.querySelector(".vrow-ta")),
+          dep: txt(row.querySelector(".vrow-date span:last-child")),
+          tags: $$(".vrow-tags .vtag", row).map(txt),
+          remark: remark ? txt(remark) : "",
+          status: row.classList.contains("done-charged") ? "charged"
+                : row.classList.contains("done-failed")  ? "failed"
+                : row.classList.contains("done-other")   ? "other" : ""
+        };
+      });
+    }
+
+    function widenFilter(){
+      var all = $("#vccFilter [data-f='vcc']");
+      if(all && all.getAttribute("aria-pressed") !== "true"){
+        restoreFilter = $("#vccFilter .vfl[aria-pressed='true']");
+        all.click();
+      }
+      var reset = $("#vccRemarkReset");
+      if(reset && reset.offsetParent !== null) reset.click();
+    }
+
+    function build(){
+      widenFilter();
+      var rows = readRows();
+      // unfinished first — that is the work that is actually left
+      queue = rows.filter(function(r){ return !r.status; })
+              .concat(rows.filter(function(r){ return r.status; }));
+      pos = 0;
+      return queue.length;
+    }
+
+    function refresh(){
+      var fresh = {};
+      readRows().forEach(function(r){ fresh[r.i] = r; });
+      queue = queue.map(function(r){ return fresh[r.i] || r; });
+    }
+
+    function stateLabel(s){
+      return s === "charged" ? ["Charged", "is-charged"]
+           : s === "failed"  ? ["Failed — needs follow-up", "is-failed"]
+           : s === "other"   ? ["No VCC — settled another way", "is-other"]
+           : ["Waiting for an outcome", "is-open"];
+    }
+
+    function render(){
+      if(!layer) return;
+      var doneCount = queue.filter(function(r){ return r.status; }).length;
+      var pct = queue.length ? Math.round(doneCount / queue.length * 100) : 0;
+      var item = queue[pos];
+
+      if(!item){
+        layer.querySelector(".vq-card").innerHTML =
+          "<div class='vq-done'><h3>Queue finished</h3>" +
+          "<p>" + doneCount + " of " + queue.length + " rooms carry an outcome.</p>" +
+          "<button class='vq-go' data-vq='exit' type='button'>Back to the list</button></div>";
+        return;
+      }
+
+      var st = stateLabel(item.status);
+      var facts = "";
+      if(item.dep) facts += "<span class='vq-fact'><b>Departure</b>" + item.dep + "</span>";
+      item.tags.forEach(function(t){ facts += "<span class='vq-fact'>" + t + "</span>"; });
+
+      layer.querySelector(".vq-card").innerHTML =
+        "<div class='vq-top'>" +
+          "<div class='vq-top-row'>" +
+            "<div class='vq-eyebrow'>VCC charge queue</div>" +
+            "<button class='vq-close' data-vq='exit' type='button' aria-label='Close the queue'>&times;</button>" +
+          "</div>" +
+          "<div class='vq-bar'><div class='vq-fill' style='width:" + pct + "%'></div></div>" +
+          "<div class='vq-count'>Room <em>" + (pos + 1) + "</em> of " + queue.length +
+            " &middot; <em>" + doneCount + "</em> with an outcome</div>" +
+        "</div>" +
+        "<div class='vq-body'>" +
+          "<div class='vq-room'><b>" + item.room + "</b><span>Room</span></div>" +
+          "<p class='vq-guest'>" + item.guest + "</p>" +
+          (item.ta ? "<p class='vq-ta'>" + item.ta + "</p>" : "") +
+          (facts ? "<div class='vq-facts'>" + facts + "</div>" : "") +
+          (item.remark ? "<div class='vq-remark'>" + item.remark + "</div>" : "") +
+          "<p class='vq-state " + st[1] + "'>" + st[0] + "</p>" +
+        "</div>" +
+        "<div class='vq-acts'>" +
+          "<button class='vq-act ok' data-vq='set' data-s='charged' type='button'>&#10003; Charged<small>key C</small></button>" +
+          "<button class='vq-act no' data-vq='set' data-s='failed' type='button'>&#10005; Failed<small>key F</small></button>" +
+          "<button class='vq-act nv' data-vq='set' data-s='other' type='button'>No VCC &middot; settled another way<small>key N</small></button>" +
+        "</div>" +
+        "<div class='vq-nav'>" +
+          "<button class='fd-chip-btn' data-vq='prev' type='button'>&larr; Previous</button>" +
+          "<button class='fd-chip-btn' data-vq='next' type='button'>Skip &rarr;</button>" +
+          "<button class='fd-chip-btn' data-vq='exit' type='button'>Close queue</button>" +
+          "<p class='vq-hint'><kbd>C</kbd> charged &middot; <kbd>F</kbd> failed &middot; <kbd>N</kbd> no VCC &middot; " +
+            "<kbd>&larr;</kbd><kbd>&rarr;</kbd> move &middot; <kbd>Esc</kbd> close. " +
+            "A reason box for a failed charge stays on the row in the list behind.</p>" +
+        "</div>";
+    }
+
+    function apply(status){
+      var item = queue[pos];
+      if(!item) return;
+      var btn = $("#vccItems .vbtn[data-i='" + item.i + "'][data-s='" + status + "']");
+      if(!btn) return;
+      btn.click();                         // the app's own handler saves and re-renders
+      setTimeout(function(){
+        refresh();
+        var next = queue.findIndex(function(r, k){ return k > pos && !r.status; });
+        if(next !== -1) pos = next;
+        else if(queue.every(function(r){ return r.status; })) pos = queue.length;
+        else if(pos < queue.length - 1) pos = pos + 1;
+        render();
+      }, 30);
+    }
+
+    function move(step){
+      pos = Math.min(queue.length, Math.max(0, pos + step));
+      refresh();
+      render();
+    }
+
+    function exit(){
+      open = false;
+      if(layer) layer.classList.remove("on");
+      if(restoreFilter){ restoreFilter.click(); restoreFilter = null; }
+      document.body.style.overflow = "";
+    }
+
+    function start(){
+      if(!build()){
+        window.alert("No VCC row is loaded yet. Upload the Main remarks PDF, or add a room by hand, then start the queue.");
+        return;
+      }
+      var first = queue.findIndex(function(r){ return !r.status; });
+      pos = first === -1 ? 0 : first;
+      open = true;
+      layer.classList.add("on");
+      document.body.style.overflow = "hidden";
+      render();
+      var focusTarget = layer.querySelector(".vq-act, .vq-go");
+      if(focusTarget) focusTarget.focus();
+    }
+
+    function mount(){
+      var listCard = $("#panel-vcc .vcc-searchbar");
+      if(!listCard || $(".vq-launch")) return;
+
+      var launch = el("div", "vq-launch no-print",
+        "<p><strong>Charge queue</strong>Work through the VCC rooms one at a time, with the keyboard, instead of scanning the whole list.</p>" +
+        "<button class='vq-go' id='vqStart' type='button'>Start queue</button>");
+      listCard.parentNode.insertBefore(launch, listCard);
+
+      layer = el("div", "vq-layer", "<div class='vq-card'></div>");
+      layer.setAttribute("role", "dialog");
+      layer.setAttribute("aria-modal", "true");
+      layer.setAttribute("aria-label", "VCC charge queue");
+      document.body.appendChild(layer);
+
+      $("#vqStart").addEventListener("click", start);
+
+      layer.addEventListener("click", function(e){
+        if(e.target === layer){ exit(); return; }
+        var b = e.target.closest("[data-vq]");
+        if(!b) return;
+        var act = b.getAttribute("data-vq");
+        if(act === "exit") exit();
+        else if(act === "next") move(1);
+        else if(act === "prev") move(-1);
+        else if(act === "set") apply(b.getAttribute("data-s"));
+      });
+
+      document.addEventListener("keydown", function(e){
+        if(!open) return;
+        if(e.metaKey || e.ctrlKey || e.altKey) return;
+        var k = e.key.toLowerCase();
+        if(k === "escape"){ e.preventDefault(); exit(); }
+        else if(k === "c"){ e.preventDefault(); apply("charged"); }
+        else if(k === "f"){ e.preventDefault(); apply("failed"); }
+        else if(k === "n"){ e.preventDefault(); apply("other"); }
+        else if(k === "arrowright"){ e.preventDefault(); move(1); }
+        else if(k === "arrowleft"){ e.preventDefault(); move(-1); }
+      });
+    }
+
+    return { mount: mount };
+  })();
+
+  /* =======================================================================
+     B.  NIGHT AUDIT STEP RAIL
+     The ten sections stay exactly as they are; the rail just makes them
+     navigable — progress, jump to the next unfinished one, prev/next.
+     ======================================================================= */
+  var NA = (function(){
+    var rail = null, accs = [], current = 0;
+
+    function summaryOf(acc){
+      return txt(acc.querySelector(".acc-sum"));
+    }
+    function isFilled(acc){
+      var s = summaryOf(acc).toLowerCase();
+      if(!s || s === "none" || s === "—" || s === "-") return false;
+      if(/^0\s*\/\s*\d+$/.test(s)) return false;
+      if(s === "not set" || s === "empty") return false;
+      return true;
+    }
+    function openOnly(idx){
+      accs.forEach(function(acc, k){
+        var head = acc.querySelector(".acc-head");
+        if(!head) return;
+        var isOpen = acc.classList.contains("open");
+        if(k === idx && !isOpen) head.click();
+        if(k !== idx && isOpen) head.click();
+      });
+      current = idx;
+      paint();
+      var target = accs[idx];
+      if(target) target.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+
+    function paint(){
+      if(!rail) return;
+      var filled = accs.filter(isFilled).length;
+      var total = accs.length;
+      var pct = total ? filled / total : 0;
+      var circ = 2 * Math.PI * 19;
+
+      var fg = rail.querySelector(".na-ring .fg");
+      if(fg){
+        fg.setAttribute("stroke-dasharray", (circ * pct).toFixed(1) + " " + circ.toFixed(1));
+      }
+      var ringTxt = rail.querySelector(".na-ring b");
+      if(ringTxt) ringTxt.textContent = filled + "/" + total;
+
+      var nextOpen = accs.findIndex(function(a){ return !isFilled(a); });
+      var sub = rail.querySelector(".na-rail-txt span");
+      if(sub){
+        sub.textContent = nextOpen === -1
+          ? "Every section has something recorded."
+          : "Next one still empty: " + txt(accs[nextOpen].querySelector(".acc-title")) + ".";
+      }
+
+      $$(".na-step", rail).forEach(function(step, k){
+        var acc = accs[k];
+        step.classList.toggle("filled", isFilled(acc));
+        step.classList.toggle("current", acc.classList.contains("open"));
+        var badge = step.querySelector("span");
+        if(badge) badge.textContent = summaryOf(acc) || (isFilled(acc) ? "filled" : "empty");
+      });
+    }
+
+    function mount(){
+      var panel = $("#panel-nightaudit");
+      if(!panel || $(".na-rail")) return;
+      accs = $$(".acc", panel);
+      if(accs.length < 3) return;
+
+      rail = el("div", "na-rail no-print",
+        "<div class='na-rail-top'>" +
+          "<div class='na-ring'>" +
+            "<svg viewBox='0 0 46 46' aria-hidden='true'>" +
+              "<circle class='bg' cx='23' cy='23' r='19'></circle>" +
+              "<circle class='fg' cx='23' cy='23' r='19' stroke-dasharray='0 120'></circle>" +
+            "</svg><b>0/0</b>" +
+          "</div>" +
+          "<div class='na-rail-txt'><strong>Report sections</strong><span></span></div>" +
+          "<div class='na-rail-nav'>" +
+            "<button class='fd-chip-btn' data-na='prev' type='button'>&larr; Back</button>" +
+            "<button class='fd-chip-btn' data-na='gap' type='button'>Next empty</button>" +
+            "<button class='fd-chip-btn' data-na='next' type='button'>Forward &rarr;</button>" +
+          "</div>" +
+        "</div>" +
+        "<div class='na-steps' role='tablist' aria-label='Night audit sections'></div>");
+
+      var steps = rail.querySelector(".na-steps");
+      accs.forEach(function(acc, k){
+        var step = el("button", "na-step",
+          "<em>" + (k + 1) + "</em>" +
+          "<b>" + txt(acc.querySelector(".acc-title")) + "</b>" +
+          "<span></span>");
+        step.type = "button";
+        step.addEventListener("click", function(){ openOnly(k); });
+        steps.appendChild(step);
+      });
+
+      accs[0].parentNode.insertBefore(rail, accs[0]);
+
+      rail.addEventListener("click", function(e){
+        var b = e.target.closest("[data-na]");
+        if(!b) return;
+        var act = b.getAttribute("data-na");
+        if(act === "next") openOnly(Math.min(accs.length - 1, current + 1));
+        else if(act === "prev") openOnly(Math.max(0, current - 1));
+        else if(act === "gap"){
+          var gap = -1;
+          for(var s = 1; s <= accs.length; s++){
+            var k = (current + s) % accs.length;
+            if(!isFilled(accs[k])){ gap = k; break; }
+          }
+          openOnly(gap === -1 ? current : gap);
+        }
+      });
+
+      // the summaries are rewritten by the main script as fields change
+      var obs = new MutationObserver(function(){ paint(); });
+      accs.forEach(function(acc){
+        var sum = acc.querySelector(".acc-sum");
+        if(sum) obs.observe(sum, { childList:true, characterData:true, subtree:true });
+        obs.observe(acc, { attributes:true, attributeFilter:["class"] });
+      });
+      panel.addEventListener("input", function(){ setTimeout(paint, 60); });
+      panel.addEventListener("change", function(){ setTimeout(paint, 60); });
+
+      paint();
+    }
+
+    return { mount: mount };
+  })();
+
+  /* =======================================================================
+     C.  SHIFT TOOLKIT
+     How full the device storage is, and a backup file so a shift can move
+     to another computer without starting from zero. The file is written and
+     read locally — it never leaves the device.
+     ======================================================================= */
+  var TOOL = (function(){
+    var PREFIX = "parkInn";
+    var BUDGET = 5 * 1024 * 1024;   // the usual per-origin localStorage ceiling
+
+    function keys(){
+      var out = [];
+      try{
+        for(var i = 0; i < localStorage.length; i++){
+          var k = localStorage.key(i);
+          if(k && k.indexOf(PREFIX) === 0) out.push(k);
+        }
+      }catch(e){}
+      return out;
+    }
+    function used(){
+      var n = 0;
+      keys().forEach(function(k){
+        try{ n += (k.length + (localStorage.getItem(k) || "").length) * 2; }catch(e){}
+      });
+      return n;
+    }
+    function pad(n){ return n < 10 ? "0" + n : "" + n; }
+
+    function paint(){
+      var bar = $(".fd-meter-fill"), label = $(".fd-meter-txt");
+      if(!bar || !label) return;
+      var b = used();
+      var pct = Math.min(100, Math.round(b / BUDGET * 100));
+      bar.style.width = Math.max(2, pct) + "%";
+      bar.className = "fd-meter-fill" + (pct >= 85 ? " bad" : pct >= 60 ? " warn" : "");
+      label.textContent = (b / 1024).toFixed(0) + " KB of roughly " + (BUDGET / 1024 / 1024) +
+        " MB used on this device (" + pct + "%)" +
+        (pct >= 85 ? " — remove a few photos before adding more." : "");
+    }
+
+    function backup(){
+      var data = {};
+      keys().forEach(function(k){ try{ data[k] = localStorage.getItem(k); }catch(e){} });
+      if(!Object.keys(data).length){ window.alert("There is nothing saved on this device yet."); return; }
+      var d = new Date();
+      var name = "frontdesk-shift-" + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()) +
+                 "-" + pad(d.getHours()) + pad(d.getMinutes()) + ".json";
+      var blob = new Blob([JSON.stringify({ tool:"Front Desk Control", saved:d.toISOString(), data:data }, null, 2)],
+                          { type:"application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+    }
+
+    function restore(file){
+      var fr = new FileReader();
+      fr.onload = function(){
+        var parsed;
+        try{ parsed = JSON.parse(String(fr.result)); }
+        catch(e){ window.alert("That file could not be read as a Front Desk Control backup."); return; }
+        var data = parsed && parsed.data;
+        if(!data || typeof data !== "object"){
+          window.alert("That file does not contain a shift backup.");
+          return;
+        }
+        var count = Object.keys(data).filter(function(k){ return k.indexOf(PREFIX) === 0; }).length;
+        if(!count){ window.alert("That backup holds no Front Desk Control data."); return; }
+        if(!window.confirm("Replace everything currently saved on this device with the backup (" +
+          count + " entries, saved " + (parsed.saved ? new Date(parsed.saved).toLocaleString() : "unknown") +
+          ")?\n\nThe current shift on this device will be overwritten.")) return;
+        try{
+          keys().forEach(function(k){ localStorage.removeItem(k); });
+          Object.keys(data).forEach(function(k){
+            if(k.indexOf(PREFIX) === 0) localStorage.setItem(k, data[k]);
+          });
+        }catch(e){
+          window.alert("The backup did not fit in this device's storage. Nothing further was written.");
+          return;
+        }
+        window.location.reload();
+      };
+      fr.readAsText(file);
+    }
+
+    function mount(){
+      if($(".fd-toolkit")) return;
+      var box = el("div", "fd-toolkit no-print",
+        "<h4>This device</h4>" +
+        "<div class='fd-meter'><div class='fd-meter-bar'><div class='fd-meter-fill'></div></div>" +
+          "<div class='fd-meter-txt'></div></div>" +
+        "<button class='fd-chip-btn' data-tool='backup' type='button'>&#8681; Back up this shift</button>" +
+        "<button class='fd-chip-btn' data-tool='restore' type='button'>&#8679; Restore a backup</button>" +
+        "<input type='file' accept='application/json,.json' id='fdRestoreFile' hidden>" +
+        "<p class='fd-toolkit-note'>The backup is a plain file saved to this computer. Nothing is uploaded anywhere — " +
+        "it carries guest data, so keep it on hotel equipment and delete it once the shift is handed over.</p>");
+      document.body.appendChild(box);
+
+      box.addEventListener("click", function(e){
+        var b = e.target.closest("[data-tool]");
+        if(!b) return;
+        if(b.getAttribute("data-tool") === "backup") backup();
+        else $("#fdRestoreFile").click();
+      });
+      $("#fdRestoreFile").addEventListener("change", function(){
+        if(this.files && this.files[0]) restore(this.files[0]);
+        this.value = "";
+      });
+
+      paint();
+      setInterval(paint, 5000);
+    }
+
+    return { mount: mount };
+  })();
+
+  /* ---- start everything once the page has settled ---- */
+  function boot(){
+    try{ VQ.mount(); }catch(e){}
+    try{ NA.mount(); }catch(e){}
+    try{ TOOL.mount(); }catch(e){}
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else setTimeout(boot, 0);
 })();
 </script>
