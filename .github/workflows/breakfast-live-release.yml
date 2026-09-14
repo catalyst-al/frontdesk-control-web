@@ -1,4 +1,4 @@
-name: Breakfast Live release preparation
+name: Breakfast Live build and browser tests
 on:
   push:
     branches: [breakfast-live-integration]
@@ -7,21 +7,39 @@ on:
       - 'integration/**'
 permissions:
   contents: read
+concurrency:
+  group: breakfast-live-release
+  cancel-in-progress: true
 jobs:
-  prepare:
+  verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
-      - name: Fetch the existing pinned QR dependencies
+      - name: Fetch and verify pinned QR dependencies
         run: |
           mkdir -p .build/vendor
           curl --fail --silent --show-error --location --retry 2 https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.js -o .build/vendor/qrcode.js
           curl --fail --silent --show-error --location --retry 2 https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js -o .build/vendor/jsQR.js
-          node --check .build/vendor/qrcode.js
-          node --check .build/vendor/jsQR.js
-          sha256sum .build/vendor/*.js > .build/vendor/SHA256SUMS.txt
+          echo '79ec86f82856005b1c887905cfccfcfbec3821ca61c7fd5a952faa5f778f791c  .build/vendor/qrcode.js' | sha256sum -c -
+          echo 'bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859  .build/vendor/jsQR.js' | sha256sum -c -
+      - name: Assemble and verify exact release hashes
+        run: python3 integration/assemble.py
+      - name: Install isolated browser test dependencies
+        run: |
+          python3 -m venv .build/venv
+          .build/venv/bin/pip install playwright==1.56.0
+          .build/venv/bin/playwright install --with-deps chromium
+      - name: Test QR pairing, synchronization and existing tabs
+        run: .build/venv/bin/python integration/test_live.py
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: breakfast-live-vendor
-          path: .build/vendor/
-          retention-days: 3
+          name: breakfast-live-tested-release
+          path: |
+            release/
+            release-manifest.json
+            test-results.json
+            *preview.png
+            failure-*.png
+          retention-days: 7
