@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Breakfast Session Relay</title>
+<style>body{margin:0;background:#edf1f7;color:#12233c;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;display:grid;place-items:center;min-height:100vh}.card{width:min(520px,calc(100% - 32px));background:#fff;border:1px solid #dbe3ee;border-radius:18px;padding:24px;box-shadow:0 8px 30px rgba(13,39,72,.08)}h1{margin:0 0 8px;color:#04234f;font-size:20px}p{margin:0;color:#56687f;font-size:14px;line-height:1.55}.ok{color:#1b7a4b}.bad{color:#b3202e}.small{margin-top:12px;font-size:12px;color:#8496ab}</style>
+</head>
+<body>
+<div class="card"><h1 id="title">Reading Front Desk Control…</h1><p id="msg">Checking the saved breakfast session in this browser.</p><p class="small">Only room number and breakfast status are passed to the Breakfast Live Bridge. Guest names and booking details are not included.</p></div>
+<script>
+(function(){
+"use strict";
+var KEY="parkInnBreakfastSession_v1";
+function norm(v){var d=String(v==null?"":v).replace(/\D/g,"");if(!d)return"";return d.length>=4?d.slice(-4):("0000"+d).slice(-4);}
+function payload(){
+ try{
+  var raw=localStorage.getItem(KEY);
+  if(!raw)return{type:"parkinn-breakfast-relay",ok:false,error:"No Front Desk Control breakfast session is stored on this website."};
+  var data=JSON.parse(raw),seen={},rooms=[];
+  (data.rooms||[]).forEach(function(r){var room=norm(r&&r.room);if(!room||seen[room])return;seen[room]=1;rooms.push({room:room,status:String(r&&r.status||"LIST").slice(0,40)});});
+  rooms.sort(function(a,b){return a.room.localeCompare(b.room);});
+  if(!rooms.length)return{type:"parkinn-breakfast-relay",ok:false,error:"The Front Desk session exists, but it contains no breakfast rooms."};
+  return{type:"parkinn-breakfast-relay",ok:true,rooms:rooms,meta:{sourceName:"Front Desk Control",fileName:String(data.fileName||"saved breakfast report"),reportDateStr:String(data.reportDateStr||""),readAt:new Date().toISOString()}};
+ }catch(e){return{type:"parkinn-breakfast-relay",ok:false,error:e.message||"The saved session could not be read."};}
+}
+function send(){
+ var p=payload(),t=document.getElementById("title"),m=document.getElementById("msg");
+ if(p.ok){t.textContent="Breakfast list ready: "+p.rooms.length+" rooms";t.className="ok";m.textContent="Sending the sanitized room list back to Breakfast Live Bridge…";}else{t.textContent="Breakfast list not available";t.className="bad";m.textContent=p.error;}
+ try{if(window.opener&&!window.opener.closed)window.opener.postMessage(p,"*");}catch(e){}
+ try{if(window.parent&&window.parent!==window)window.parent.postMessage(p,"*");}catch(e){}
+ if(p.ok&&window.opener)setTimeout(function(){try{window.close();}catch(e){}},650);
+}
+window.addEventListener("message",function(e){if(e.data&&e.data.type==="parkinn-breakfast-relay-request")send();});
+send();
+})();
+</script>
+</body>
+</html>
