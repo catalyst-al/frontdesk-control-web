@@ -22,3 +22,27 @@ backups/
 Thumbs.db
 .vscode/
 .idea/
+
+# Raw source media for the guidebooks: never commit (only processed screenshots go to git)
+*.mp4
+*.mov
+*.m4v
+*.avi
+*.mkv
+*.webm
+*.3gp
+*.mp3
+*.m4a
+*.wav
+*.flac
+*.ogg
+*.opus
+*.aac
+*.doc
+*.docx
+*.odt
+*.rtf
+*.ppt
+*.pptx
+*.heic
+raw/
