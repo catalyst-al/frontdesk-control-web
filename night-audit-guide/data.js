@@ -149,6 +149,7 @@ window.NAG = {
         "Save as PDF and attach to <b>Late CXL</b>."
       ],
       check: "The list shows status <b>06 CANCELLED</b>.",
+      note: "Another training source shows the layout as <code>/LCXL</code>. Use the one your hotel confirms.",
       imgs: [
         { src: "rep-latecxl-sel.png", cap: "Arrival date = business date · Target status = 6 → Execute." },
         { src: "rep-latecxl-res.png", cap: "Result list → layout icon → <b>/L-CXL</b>." },
@@ -354,18 +355,19 @@ window.NAG = {
         { src: "dnb-after.png", cap: "After: departure moved to the event's end date → <b>Save</b>." }
       ] },
 
-    { id: "na-cashpoints", phase: "audit", title: "Close all cash points",
+    { id: "na-cashpoints", phase: "audit", title: "Cash points (Till status maintenance)",
       where: "Night Audit toolbar → <b>Cash points Reports</b>",
       how: [
-        "Click <b>Cash points Reports</b>.",
-        "In <b>Till status maintenance</b> press <b>select all</b> (icon bottom left).",
-        "Press <b>Close</b>. Every till shows <b>Closed</b>.",
-        "Keep the cash point report — the manager checks it the next day."
+        "Click <b>Cash points Reports</b>. <b>Till status maintenance</b> lists every till (ACCT…, FD…, M&amp;E…) with its status.",
+        "Check which tills are still <b>Open</b>.",
+        "Close a till only as your trainer / FOM has shown you for this hotel. The screen has select-all (bottom left), <b>Open</b> and <b>Close</b>."
       ],
-      check: "All tills (ACCT…, FD…, M&amp;E…) show <b>Closed</b>.",
+      check: "You know the status of every till before you continue.",
+      stop: "The training source did not finish this lesson (“Cash point — you must show me tomorrow”). Do not select all and close every till from the screenshot alone. If a till is open and you have no instruction: note it in the handover and ask the FOM / manager on duty.",
+      note: "Needs confirmation (Master SOP E08 / Q06).",
       imgs: [
         { src: "na-cashpoints.png", cap: "Toolbar → <b>Cash points Reports</b>." },
-        { src: "na-tills.png", cap: "Select all (bottom left) → <b>Close</b>." }
+        { src: "na-tills.png", cap: "Till status maintenance — select-all, <b>Open</b> and <b>Close</b>. Use only as instructed." }
       ] },
 
     { id: "na-continue", phase: "audit", title: "Continue N.A. and confirm",
@@ -422,7 +424,7 @@ window.NAG = {
       how: [
         "hotelkit: every item of <b>End of Day Checklist – FRAPQ</b> is OK with its PDF (or Nicht OK with a comment).",
         "Breakfast list printed, numbers written on it, in the kitchen.",
-        "Cash point report kept for the manager.",
+        "Open tills or cash-point questions written in the handover.",
         "Front Desk Control → <b>Night Audit</b>: record the result of each control, open items and follow-ups, then <b>Generate &amp; print report</b>.",
         "Front Desk Control → <b>Handover</b>: no-shows with fee, moved departures, high balances, anything unusual."
       ],
