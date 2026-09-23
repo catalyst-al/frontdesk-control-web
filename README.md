@@ -15,6 +15,14 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 - Keep the PC browser and tablet page open, prevent the PC from sleeping, and test the hotel network before operational use. A refresh/restart requires pairing again.
 - Staff settings and local data are per browser/origin. Updating the tablet file preserves its storage keys but changing browser/origin may start a separate workspace. Export existing logs before moving to a different origin. The staff PIN is a local UI lock, not a server authentication boundary.
 
+## Night Audit Guidebook
+`night-audit-guide/` is a step-by-step Night Audit guide for DEFRAAIR (hotelkit End of Day checklist, SAP reports, the Night Audit run, no-shows, departures not billed) with redacted screenshots.
+
+- Open it from **Night Audit → Guidebook — step by step**, from the **How?** button on a workflow control, or directly at `night-audit-guide/index.html`.
+- Every date in the guide follows the business date: the business date for most reports, the current date (business date + 1) for Trial Balance, Breakfast, VIP and Wake-up.
+- Ticked steps are stored per business date in this browser only. The guide makes no network calls.
+- Content lives in `night-audit-guide/data.js`; screenshots in `night-audit-guide/img/`. Screenshots must have guest names, reservation numbers, contact data and amounts removed before they are added.
+
 ## Daily use
 1. Load the breakfast report in the normal Breakfast tab.
 2. Open Breakfast Live and check the room count/report date.

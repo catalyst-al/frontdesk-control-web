@@ -1299,6 +1299,19 @@
   .na-command-actions{display:flex; flex-wrap:wrap; gap:8px; padding-top:14px;}
   .na-command-actions .btn-ghost{font-size:12px;}
   #panel-nightaudit .app-shell:not(.na-advanced-mode) > .card:not(.na-workflow-card){display:none;}
+  /* Night Audit Guidebook (night-audit-guide/) shown inside this tab */
+  .na-guide-bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 14px; padding:10px 12px; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-lg);}
+  .na-guide-switch{display:inline-flex; background:var(--gray-bg); border:1px solid var(--line); border-radius:11px; padding:3px; gap:3px;}
+  .na-gs-btn{border:0; background:transparent; border-radius:8px; padding:8px 14px; font:inherit; font-size:13px; font-weight:800; color:var(--ink-muted); cursor:pointer;}
+  .na-gs-btn[aria-pressed="true"]{background:var(--navy); color:#fff;}
+  .na-guide-hint{flex:1; min-width:180px; font-size:12px; color:var(--ink-muted);}
+  .na-guide-bar a.btn-ghost{text-decoration:none;}
+  .na-guide-host{border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; background:var(--paper);}
+  .na-guide-host iframe{display:block; width:100%; height:100%; min-height:560px; border:0;}
+  #panel-nightaudit.na-guide-mode > .app-shell{display:none;}
+  .na-step-guide{border:1px solid var(--line); background:var(--card); color:var(--navy); border-radius:7px; padding:1px 7px; margin-left:auto; font:inherit; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;}
+  .na-step-guide:hover{border-color:var(--navy-200); background:var(--gray-bg);}
+  @media print{#panel-nightaudit.na-guide-mode > .app-shell{display:block !important;}}
   .na-advanced-state{font-size:11px; color:var(--ink-faint); align-self:center;}
   @media (max-width:760px){.na-command-head{display:block}.na-save-pill{display:inline-block; margin-top:9px}.na-quick-grid,.na-workflow{grid-template-columns:1fr}.na-metrics{grid-template-columns:1fr 1fr}.na-step-help,.na-step-actions,.na-step-note{margin-left:0;width:100%;}.na-step-top{margin-bottom:4px;}}
 
@@ -2641,6 +2654,16 @@
   <div class="print-only" id="vccPrintOut"></div>
 
   <div class="tabpanel" id="panel-nightaudit" role="tabpanel" aria-labelledby="tab-nightaudit">
+
+    <div class="na-guide-bar no-print" id="naGuideBar">
+      <div class="na-guide-switch" role="group" aria-label="Night Audit view">
+        <button type="button" class="na-gs-btn" data-na-view="work" aria-pressed="true">Workflow &amp; report</button>
+        <button type="button" class="na-gs-btn" data-na-view="guide" aria-pressed="false">&#128216; Guidebook &mdash; step by step</button>
+      </div>
+      <span class="na-guide-hint">Every report, date, SAP code and screen of the night, with screenshots. Dates follow the business date above.</span>
+      <a class="btn-ghost" id="naGuideOpen" href="night-audit-guide/index.html" target="_blank" rel="noopener">Open in new window &#8599;</a>
+    </div>
+    <div class="na-guide-host no-print" id="naGuideHost" hidden><iframe id="naGuideFrame" title="Night Audit Guidebook"></iframe></div>
 
     <div class="print-only print-header">
       <img id="naPrintLogo" src="" alt="">
@@ -4321,12 +4344,12 @@
   // The real Night Audit sequence. The tool does not run SAP/EMMA reports;
   // it makes the result, owner and any required morning follow-up explicit.
   var NA_WORKFLOW = [
-    { id:"stornos", title:"Stornos", help:"Run /CCSHT/R_FC_SI_07 with charge date = business date." },
-    { id:"noshow", title:"No-shows", help:"Hotel DEFRAAIR · arrival = business date · status 5 · In check-in." },
-    { id:"cxl", title:"Cancellations", help:"Use the no-show report with status 6 for cancellations from the day before." },
-    { id:"credit", title:"Credit check", help:"FO → Information systems → Pre-authorisations. Review outstanding credit and no pre-auth." },
+    { id:"stornos", title:"Stornos", help:"Run /CCSHT/R_FC_SI_07 with charge date = business date.", guide:"cancelled" },
+    { id:"noshow", title:"No-shows", help:"Hotel DEFRAAIR · arrival = business date · status 5 · In check-in.", guide:"noshow-report" },
+    { id:"cxl", title:"Cancellations", help:"Use the no-show report with status 6 for cancellations from the day before.", guide:"latecxl" },
+    { id:"credit", title:"Credit check", help:"FO → Information systems → Pre-authorisations. Review outstanding credit and no pre-auth.", guide:"highbalance" },
     { id:"invoice", title:"Invoice movements", help:"No Night Audit access. Leave waiting until Bruno has followed up." },
-    { id:"till", title:"Till movements", help:"TMS → Billing → Information systems → Till operations. Balance date = business date." },
+    { id:"till", title:"Till movements", help:"TMS → Billing → Information systems → Till operations. Balance date = business date.", guide:"na-cashpoints" },
     { id:"security", title:"Security rounds", help:"Record the completed rounds or an exception for the morning team." },
     { id:"okFom", title:"OK FOM", help:"Mark complete only after Khadim confirms." },
     { id:"okGm", title:"OK GM", help:"Mark complete only after Bruno confirms." }
@@ -4463,7 +4486,8 @@
       var group = i === 0 ? "<div class='na-workflow-group'><span>System controls</span></div>" :
                   (i === 6 ? "<div class='na-workflow-group'><span>Security &amp; approvals</span></div>" : "");
       return group + "<div class='na-step " + state + "'>" +
-        "<div class='na-step-top'><span class='na-step-no'>" + (i+1) + "</span><div class='na-step-title'>" + escapeHtml(w.title) + " <span style='font-size:10px;color:var(--ink-faint);font-weight:700'>" + naWorkflowStatusLabel(state) + "</span></div></div>" +
+        "<div class='na-step-top'><span class='na-step-no'>" + (i+1) + "</span><div class='na-step-title'>" + escapeHtml(w.title) + " <span style='font-size:10px;color:var(--ink-faint);font-weight:700'>" + naWorkflowStatusLabel(state) + "</span></div>" +
+          (w.guide ? "<button type='button' class='na-step-guide' data-na-guide='" + w.guide + "' title='Open this step in the Night Audit Guidebook'>How?</button>" : "") + "</div>" +
         "<div class='na-step-help'>" + escapeHtml(w.help).replace(/\/(CCSHT[^ ]+)/g, "<code>/$1</code>") + "</div>" +
         "<div class='na-step-actions'>" +
           "<button type='button' data-na-workflow='" + w.id + "' data-na-state='done'>Done</button>" +
@@ -4505,6 +4529,64 @@
       if(pair[1] === "naDate") updateNaDatesFromBusinessDate();
       updateNaSummaries(); saveNa(); syncNaQuickFromFields();
     });
+  });
+  // ---- Night Audit Guidebook (night-audit-guide/) inside this tab ----
+  var naGuideLoaded = "";
+  function naGuideUrl(step){
+    var d = naVal("naDate");
+    return "night-audit-guide/index.html" + (/^\d{4}-\d{2}-\d{2}$/.test(d) ? "?date=" + d : "") + (step ? "#" + step : "");
+  }
+  // The command header is sticky (and compacts on scroll), so the guide is fitted below it.
+  function naStickyBottom(){
+    var bar = document.querySelector(".brandbar");
+    return bar ? Math.max(0, bar.getBoundingClientRect().bottom) : 0;
+  }
+  function sizeNaGuide(){
+    var host = document.getElementById("naGuideHost");
+    if(host.hidden) return;
+    var bar = document.getElementById("naGuideBar");
+    var used = naStickyBottom() + 10 + bar.offsetHeight + 14 + 12;
+    host.style.height = Math.max(560, window.innerHeight - used) + "px";
+  }
+  function alignNaGuide(){
+    var bar = document.getElementById("naGuideBar");
+    window.scrollTo(0, bar.getBoundingClientRect().top + window.pageYOffset - naStickyBottom() - 10);
+    sizeNaGuide();
+  }
+  function showNaGuide(on, step){
+    var panel = document.getElementById("panel-nightaudit");
+    var host = document.getElementById("naGuideHost");
+    var frame = document.getElementById("naGuideFrame");
+    panel.classList.toggle("na-guide-mode", on);
+    host.hidden = !on;
+    Array.prototype.forEach.call(document.querySelectorAll("#naGuideBar [data-na-view]"), function(b){
+      b.setAttribute("aria-pressed", String((b.getAttribute("data-na-view") === "guide") === on));
+    });
+    document.getElementById("naGuideOpen").href = naGuideUrl(step);
+    if(on){
+      var url = naGuideUrl(step);
+      var base = url.split("#")[0];
+      // Reload only when the business date changed; otherwise just jump to the step.
+      if(naGuideLoaded !== base){ frame.src = url; naGuideLoaded = base; }
+      else if(step){ try { frame.contentWindow.location.hash = step; } catch(err){ frame.src = url; } }
+      alignNaGuide();
+      setTimeout(alignNaGuide, 350);
+    }
+  }
+  document.getElementById("naGuideBar").addEventListener("click", function(e){
+    var b = e.target.closest("[data-na-view]");
+    if(b) showNaGuide(b.getAttribute("data-na-view") === "guide");
+  });
+  window.addEventListener("resize", sizeNaGuide);
+  ["naQuickDate","naDate"].forEach(function(id){
+    document.getElementById(id).addEventListener("change", function(){
+      if(document.getElementById("panel-nightaudit").classList.contains("na-guide-mode")) showNaGuide(true);
+      else document.getElementById("naGuideOpen").href = naGuideUrl();
+    });
+  });
+  document.getElementById("naWorkflow").addEventListener("click", function(e){
+    var how = e.target.closest("button[data-na-guide]");
+    if(how){ showNaGuide(true, how.getAttribute("data-na-guide")); return; }
   });
   document.getElementById("naWorkflow").addEventListener("click", function(e){
     var button = e.target.closest("button[data-na-workflow]");
