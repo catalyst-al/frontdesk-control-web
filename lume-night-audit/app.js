@@ -61,7 +61,7 @@ function renderRun(){
   const done=guidedRun.filter((_,i)=>isDone(i)).length,pct=Math.round(done/guidedRun.length*100);
   $('runCount').textContent=`${done} / ${guidedRun.length} completed`;$('runBar').style.width=pct+'%';$('runPct').textContent=pct+'%';
 }
-function openRunHelp(i){const s=guidedRun[i];if(s.answerId){const c=allCards.find(x=>x.id===s.answerId);if(c)return openDrawerCard(c)}if(s.sectionId)openSop(s.sectionId)}
+function openRunHelp(i){const s=guidedRun[i];if(s.answerId){const c=allCards.find(x=>x.id===s.answerId);if(c)return openDrawerCard(c)}if(s.sectionId)openSectionDrawer(s.sectionId)}
 
 /* ---------- Search ---------- */
 function cardHay(c){return norm([c.title,c.code,(c.aliases||[]).join(' '),c.keywords,c.summary,c.path,(c.steps||[]).join(' '),(c.checks||[]).join(' '),(c.stop||[]).join(' ')].join(' '))}
@@ -124,17 +124,26 @@ function clearSearch(){$('q').value='';searchNow();focusSearch()}
 /* ---------- Static tabs ---------- */
 function renderCodes(){$('codeGrid').innerHTML=codes.map(([c,d])=>`<button class="codecard" onclick="setQuery('${jsArg(c)}')"><code>${esc(c)}</code><span>${esc(d)}</span></button>`).join('')}
 function renderProblems(){$('problemGrid').innerHTML=problems.map(([t,q])=>`<button class="problem" onclick="setQuery('${jsArg(q)}')"><strong>${esc(t)}</strong><span>Open safe next action</span></button>`).join('')}
+// Intro, path, table and numbered steps of one SOP section (Full SOP tab and HOW drawer).
+function sopContent(s){
+  let h='';
+  if(s.intro)h+=`<div class="note">${esc(s.intro)}</div>`;
+  if(s.path)h+=`<div><b>Path</b><div class="path">${esc(s.path)}</div></div>`;
+  if(s.table)h+='<div class="table-scroll"><table class="tbl"><thead><tr><th>Code</th><th>Description</th></tr></thead><tbody>'+s.table.map(x=>`<tr><td><b>${esc(x[0])}</b></td><td>${esc(x[1])}</td></tr>`).join('')+'</tbody></table></div>';
+  return h+'<div class="step-list">'+s.steps.map((st,i)=>`<div class="sopstep"><div class="sopnum">${i+1}</div><div><b>${esc(st[0])}</b><span>${esc(st[1])}</span></div></div>`).join('')+'</div>';
+}
 function renderSop(){
   $('sopLibrary').innerHTML=sections.filter(s=>s.id!=='quick').map(s=>{
-    let body='<div class="sop-body">';
-    if(s.intro)body+=`<div class="note">${esc(s.intro)}</div>`;
-    if(s.path)body+=`<div><b>Path</b><div class="path">${esc(s.path)}</div></div>`;
-    if(s.table)body+='<div class="table-scroll"><table class="tbl"><thead><tr><th>Code</th><th>Description</th></tr></thead><tbody>'+s.table.map(x=>`<tr><td><b>${esc(x[0])}</b></td><td>${esc(x[1])}</td></tr>`).join('')+'</tbody></table></div>';
-    body+='<div class="step-list">'+s.steps.map((st,i)=>`<div class="sopstep"><div class="sopnum">${i+1}</div><div><b>${esc(st[0])}</b><span>${esc(st[1])}</span></div></div>`).join('')+'</div>';
+    let body='<div class="sop-body">'+sopContent(s);
     const visuals=getVisualGuidesForRef(s.id);
     if(visuals.length)body+=`<div class="sop-extra"><b>Visual support:</b> ${visuals.map(g=>`<button class="btn" onclick="openVisualGuide('${g.id}')">${esc(g.title)}</button>`).join(' ')}</div>`;
     return `<details class="sop-section" id="sop-${s.id}"><summary><span>${esc(s.title)}<br><small class="muted" style="font-weight:500">${esc(s.subtitle)}</small></span><span class="badge ${badgeClass[s.badge]}">${esc(s.badgeText)}</span></summary>${body}</div></details>`;
   }).join('');
+}
+// HOW for a checklist step that has no answer card: show its SOP section in the drawer.
+function openSectionDrawer(id){
+  const s=sections.find(x=>x.id===id);if(!s)return;
+  openDrawerHtml(`<div class="answer"><div class="answer-top"><div><h3>${esc(s.title)}</h3><span class="phasepill">${esc(phaseMap[s.id]||'REFERENCE')}</span></div><span class="badge ${badgeClass[s.badge]||'b-live'}">${esc(s.badgeText)}</span></div><p class="summary">${esc(s.subtitle)}</p>${sopContent(s)}${renderInlineVisuals(s.id)}<div style="margin-top:12px"><button class="btn" onclick="openSop('${s.id}')">Show full SOP</button></div></div>`);
 }
 
 /* ---------- Start ---------- */
