@@ -13226,6 +13226,11 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       return data;
     }finally{if(timer)clearTimeout(timer);}
   }
+  async function getIceServers(){
+    try{ var d = await signalRequest("/ice");
+         if(d && Array.isArray(d.iceServers) && d.iceServers.length) return d.iceServers; }catch(e){}
+    return [{ urls: "stun:stun.cloudflare.com:3478" }, { urls: "stun:stun.l.google.com:19302" }];
+  }
   async function waitForSignalOffer(info){
     var lastErr=null;
     for(var i=0;i<24;i++){
@@ -13442,7 +13447,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       if($("rtcPairId"))$("rtcPairId").textContent="Pair ID: "+shortPair(rtcSignalPairId||rtcToken);
       $("rtcAnswerOutput").value="";$("rtcCopyAnswerBtn").disabled=true;$("rtcAnswerQr").innerHTML="";$("rtcAnswerQrBox").classList.remove("show");
       rtcState("connecting", "Pairing…", signalInfo?"Creating the WebRTC Answer and returning it automatically to the PC…":"Creating a manual browser-to-browser response."); if(btn) btn.disabled = true;
-      rtcPc = new RTCPeerConnection({ iceServers:[] });
+      var iceList = await getIceServers(); rtcPc = new RTCPeerConnection({ iceServers:iceList });
       rtcPc.ondatachannel = function(e){ wireDataChannel(e.channel); };
       rtcPc.onconnectionstatechange = function(){var st = rtcPc && rtcPc.connectionState;if(st === "connected") rtcState("connected", "Connected", "Encrypted direct browser link is live. Cloudflare was used only for the handshake.");else if(st === "failed") rtcState("bad", "Connection failed", "The hotel network may block device-to-device traffic. The tablet remains usable offline.");else if(st === "disconnected") rtcState("connecting", "Reconnecting…", "The live link was interrupted; the tablet continues offline while the browser retries.");};
       await rtcPc.setRemoteDescription(offer.desc); var answer = await rtcPc.createAnswer(); await rtcPc.setLocalDescription(answer); await waitIceComplete(rtcPc, 6500);

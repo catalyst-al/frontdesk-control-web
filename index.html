@@ -19978,6 +19978,11 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       return data;
     }finally{ if(timer) clearTimeout(timer); }
   }
+  async function getIceServers(){
+    try{ var d = await signalRequest("/ice");
+         if(d && Array.isArray(d.iceServers) && d.iceServers.length) return d.iceServers; }catch(e){}
+    return [{ urls: "stun:stun.cloudflare.com:3478" }, { urls: "stun:stun.l.google.com:19302" }];
+  }
   function stopSignalPoll(){ if(signalPollTimer){clearInterval(signalPollTimer);signalPollTimer=null;} signalPollBusy=false; }
   function deleteSignalPair(id, token){
     if(!id||!token)return;
@@ -20104,8 +20109,8 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       }
       closeRtc(false); btn.disabled=true; answerApplying=false;answerApplied=false;lastAppliedAnswer=""; $("answerIn").value=""; $("connectBtn").disabled=true; $("scanAnswerBtn").disabled=true; $("offerQr").innerHTML=""; $("offerQrBox").classList.remove("show");
       pairToken=randomToken(); pairId=randomToken(); setConn("connecting","Creating QR","<strong>Creating pairing:</strong> gathering direct LAN WebRTC candidates, then publishing only the temporary handshake to Cloudflare.");
-      pc=new RTCPeerConnection({iceServers:[]}); var ch=pc.createDataChannel("parkinn-breakfast-v1",{ordered:true}); wireChannel(ch);
-      pc.onconnectionstatechange=function(){var st=pc&&pc.connectionState;if(st==="connected")setConn("connected","Connected","<strong>Connected:</strong> encrypted direct browser link is live.");else if(st==="failed")setConn("bad","Connection failed","<strong>Connection failed:</strong> the hotel network may block device-to-device traffic. Signaling succeeded, but no TURN relay is configured.");else if(st==="disconnected")setConn("connecting","Reconnecting","<strong>Reconnecting:</strong> browser link interrupted; tablet continues offline.");};
+      var iceEpoch=rtcEpoch,iceList=await getIceServers(); if(iceEpoch!==rtcEpoch)return; pc=new RTCPeerConnection({iceServers:iceList}); var ch=pc.createDataChannel("parkinn-breakfast-v1",{ordered:true}); wireChannel(ch);
+      pc.onconnectionstatechange=function(){var st=pc&&pc.connectionState;if(st==="connected")setConn("connected","Connected","<strong>Connected:</strong> encrypted direct browser link is live.");else if(st==="failed")setConn("bad","Connection failed","<strong>Connection failed:</strong> the hotel network may block device-to-device traffic. Signaling succeeded, but the direct link failed. Check that the /ice TURN endpoint is working.");else if(st==="disconnected")setConn("connecting","Reconnecting","<strong>Reconnecting:</strong> browser link interrupted; tablet continues offline.");};
       pc.onsignalingstatechange=function(){if(!pc)return;if(pc.signalingState!=="have-local-offer")$("connectBtn").disabled=true;};
       var activePc=pc,activeEpoch=rtcEpoch;var offer=await activePc.createOffer();if(activeEpoch!==rtcEpoch)return;await activePc.setLocalDescription(offer);await waitIceComplete(activePc,6500);if(activeEpoch!==rtcEpoch)return;
       if(!pc||!pc.localDescription)throw new Error("The offer was cancelled.");
