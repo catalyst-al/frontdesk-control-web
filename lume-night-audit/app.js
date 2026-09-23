@@ -6,11 +6,32 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 const jsArg=v=>String(v).replace(/'/g,"\\'");
 const $=id=>document.getElementById(id);
 
-/* ---------- Storage (run progress survives reloads; failures are harmless) ---------- */
-const runKey=i=>'lume-v3-run-'+i;
-function isDone(i){try{return localStorage.getItem(runKey(i))==='1'}catch(e){return false}}
-function setRun(i,checked){try{checked?localStorage.setItem(runKey(i),'1'):localStorage.removeItem(runKey(i))}catch(e){}renderRun()}
-function resetRun(){if(!confirm('Reset all ticks for this shift?'))return;guidedRun.forEach((_,i)=>{try{localStorage.removeItem(runKey(i))}catch(e){}});renderRun()}
+/* ---------- Run progress: one record per night, stored only in this browser ---------- */
+// A night runs from noon to noon, so 22:30–07:00 is one shift and a new night always starts empty.
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function nightStart(now=new Date()){const d=new Date(now);if(d.getHours()<12)d.setDate(d.getDate()-1);d.setHours(12,0,0,0);return d}
+const nightKey=()=>'lume-run-'+ymd(nightStart());
+function nightLabel(){const a=nightStart(),b=new Date(a);b.setDate(b.getDate()+1);return `Night ${pad(a.getDate())}.${pad(a.getMonth()+1)} → ${pad(b.getDate())}.${pad(b.getMonth()+1)}.${b.getFullYear()}`}
+function loadRun(){try{return JSON.parse(localStorage.getItem(nightKey())||'{}')}catch(e){return {}}}
+function saveRun(r){try{localStorage.setItem(nightKey(),JSON.stringify(r))}catch(e){}}
+const doneTime=i=>{const t=loadRun()[i];if(!t)return '';const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())};
+// Remove the old shared ticks (they never reset) and nights older than a week.
+function pruneRuns(){try{const keep=new Date(nightStart());keep.setDate(keep.getDate()-7);
+  Object.keys(localStorage).forEach(k=>{if(/^lume-v3-run-\d+$/.test(k)||(/^lume-run-\d{4}-\d\d-\d\d$/.test(k)&&k.slice(9)<ymd(keep)))localStorage.removeItem(k)})}catch(e){}}
+// Ticking "Nachtlauf starten" asks first if key pre-EOD controls are still open.
+const PRE_EOD=['settlements','d140cc','minibar','cover','d140storno','cashcount'];
+function setRun(i,checked,box){
+  const r=loadRun();
+  if(checked&&guidedRun[i].answerId==='eodstart'){
+    const open=guidedRun.map((s,j)=>({s,j})).filter(x=>PRE_EOD.includes(x.s.answerId)&&!(x.j in r)).map(x=>'• '+x.s.title);
+    if(open.length&&!confirm('Not ticked yet before EOD:\n\n'+open.join('\n')+'\n\nStart Nachtlauf anyway?')){if(box)box.checked=false;return}
+  }
+  if(checked)r[i]=Date.now();else delete r[i];
+  saveRun(r);renderRun();
+}
+function resetRun(){if(!confirm('Reset all ticks for this night?'))return;try{localStorage.removeItem(nightKey())}catch(e){}renderRun()}
+function goNext(){const el=document.querySelector('.runstep.next');if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}
 
 /* ---------- Visual guides ---------- */
 const guideById=id=>visualGuides.find(g=>g.id===id);
@@ -45,21 +66,24 @@ function closeDrawer(){$('drawer').classList.remove('show');document.body.style.
 const SOURCE={check:['Checkliste NEU','b-check'],live:['Live Training','b-live'],both:['Checklist + Live','b-both']};
 function renderRun(){
   const host=$('runList');host.innerHTML='';
+  const r=loadRun(),next=guidedRun.findIndex((_,i)=>!(i in r));
   ['START OF NIGHT','BEFORE EOD','AFTER EOD'].forEach(phase=>{
     const group=guidedRun.map((s,i)=>({...s,i})).filter(s=>s.phase===phase);
     const block=document.createElement('div');block.className='phase';
-    block.innerHTML=`<div class="phase-title"><h3>${esc(phase)}</h3><div class="phase-count">${group.filter(s=>isDone(s.i)).length} / ${group.length} completed</div></div>`;
+    block.innerHTML=`<div class="phase-title"><h3>${esc(phase)}</h3><div class="phase-count">${group.filter(s=>s.i in r).length} / ${group.length} completed</div></div>`;
     group.forEach(s=>{
-      const done=isDone(s.i),[srcLabel,srcClass]=SOURCE[s.source]||SOURCE.both,ref=s.answerId||s.sectionId||'';
-      const row=document.createElement('div');row.className='runstep'+(done?' done':'');
+      const done=s.i in r,[srcLabel,srcClass]=SOURCE[s.source]||SOURCE.both,ref=s.answerId||s.sectionId||'';
+      const row=document.createElement('div');row.className='runstep'+(done?' done':'')+(s.i===next?' next':'');
       const visualBtn=getVisualGuidesForRef(ref).length?`<button class="howbtn" onclick="openVisualForRef('${ref}')">SEE</button>`:'';
-      row.innerHTML=`<input type="checkbox" ${done?'checked':''} onchange="setRun(${s.i},this.checked)"><div><h4>${esc(s.title)}${s.time?`<span class="timeflag">${esc(s.time)}</span>`:''}</h4><p>${esc(s.detail)}</p><span class="badge ${srcClass}" style="margin-top:7px">${srcLabel}</span></div><div class="run-actions"><button class="howbtn" onclick="openRunHelp(${s.i})">HOW</button>${visualBtn}</div>`;
+      const flag=done?`<span class="donetime">✓ ${doneTime(s.i)}</span>`:(s.i===next?'<span class="nextflag">NEXT</span>':'');
+      row.innerHTML=`<input type="checkbox" ${done?'checked':''} onchange="setRun(${s.i},this.checked,this)"><div><h4>${esc(s.title)}${s.time?`<span class="timeflag">${esc(s.time)}</span>`:''}${flag}</h4><p>${esc(s.detail)}</p><span class="badge ${srcClass}" style="margin-top:7px">${srcLabel}</span></div><div class="run-actions"><button class="howbtn" onclick="openRunHelp(${s.i})">HOW</button>${visualBtn}</div>`;
       block.appendChild(row);
     });
     host.appendChild(block);
   });
-  const done=guidedRun.filter((_,i)=>isDone(i)).length,pct=Math.round(done/guidedRun.length*100);
+  const done=Object.keys(r).length,pct=Math.round(done/guidedRun.length*100);
   $('runCount').textContent=`${done} / ${guidedRun.length} completed`;$('runBar').style.width=pct+'%';$('runPct').textContent=pct+'%';
+  $('runNight').textContent=nightLabel();$('runNext').hidden=next<0;
 }
 function openRunHelp(i){const s=guidedRun[i];if(s.answerId){const c=allCards.find(x=>x.id===s.answerId);if(c)return openDrawerCard(c)}if(s.sectionId)openSectionDrawer(s.sectionId)}
 
@@ -151,4 +175,6 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.vi
 $('q').addEventListener('input',searchNow);
 $('q').addEventListener('keydown',e=>{if(e.key==='Enter')searchNow();if(e.key==='Escape')clearSearch()});
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('imgZoom').classList.contains('show'))closeImageZoom();else if($('drawer').classList.contains('show'))closeDrawer()});
-renderRun();renderCodes();renderProblems();renderVisuals();renderSop();
+pruneRuns();renderRun();renderCodes();renderProblems();renderVisuals();renderSop();
+// A page left open overnight rolls over to the new night at noon.
+let shownNight=nightKey();setInterval(()=>{if(nightKey()!==shownNight){shownNight=nightKey();renderRun()}},60000);
