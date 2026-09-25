@@ -46,37 +46,44 @@ function renderSummary(){
   $('printSummary').innerHTML=h;
 }
 function printSummary(){renderSummary();document.body.classList.add('print-summary-mode');window.print()}
-window.addEventListener('afterprint',()=>document.body.classList.remove('print-summary-mode'));
 function goNext(){const el=document.querySelector('.runstep.next');if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}
 
 /* ---------- Visual guides ---------- */
 const guideById=id=>visualGuides.find(g=>g.id===id);
 function linkedImages(ref){const out=[];(visualLinks[ref]||[]).forEach(([id,ix])=>{const g=guideById(id);if(g)ix.forEach(i=>{if(g.images[i])out.push({g,im:g.images[i]})})});return out}
 function getVisualGuidesForRef(ref){const seen=new Set(),out=[];(visualLinks[ref]||[]).forEach(([id])=>{const g=guideById(id);if(g&&!seen.has(id)){seen.add(id);out.push(g)}});return out}
-function figure(im,i){return `<figure class="figure"><img src="${im.src}" alt="${esc(im.caption)}" loading="lazy" onclick="openImageZoom(this.src,this.alt)"><figcaption><b>${i+1}.</b> ${esc(im.caption)}</figcaption></figure>`}
-function openDrawerHtml(html){$('drawerContent').innerHTML=html;$('drawer').classList.add('show');document.body.style.overflow='hidden'}
+function figure(im,i){return `<figure class="figure"><img src="${im.src}" alt="${esc(im.caption)}" loading="lazy" tabindex="0" role="button" onclick="openImageZoom(this.src,this.alt)"><figcaption><b>${i+1}.</b> ${esc(im.caption)}</figcaption></figure>`}
+/* ---------- Dialogs: focus moves in, Tab stays inside, focus returns on close ---------- */
+const returnFocus={};
+// Reopening an open dialog (new content in the drawer) keeps the original return target.
+function openDialog(id){if(!$(id).classList.contains('show'))returnFocus[id]=document.activeElement;$(id).classList.add('show');document.body.style.overflow='hidden';$(id).querySelector('button').focus()}
+function closeDialog(id){$(id).classList.remove('show');if(!document.querySelector('.drawer.show,.imgzoom.show'))document.body.style.overflow='';const el=returnFocus[id];returnFocus[id]=null;if(el&&el.isConnected)el.focus()}
+function trapTab(e){const box=$('imgZoom').classList.contains('show')?$('imgZoom'):$('drawer').classList.contains('show')?$('drawer'):null;if(!box)return;
+  const f=[...box.querySelectorAll('button,a[href],input,[tabindex="0"],summary')].filter(x=>x.offsetParent!==null);if(!f.length)return;
+  const first=f[0],last=f[f.length-1];if(!box.contains(document.activeElement)){first.focus();e.preventDefault()}else if(e.shiftKey&&document.activeElement===first){last.focus();e.preventDefault()}else if(!e.shiftKey&&document.activeElement===last){first.focus();e.preventDefault()}}
+function openDrawerHtml(html){$('drawerContent').innerHTML=html;$('drawerContent').scrollTop=0;openDialog('drawer')}
 function openVisualForRef(ref,title){const items=linkedImages(ref);if(!items.length)return;openDrawerHtml(`<h2>${esc(title||items[0].g.title)}</h2><p class="muted" style="margin-top:6px">Only the screenshot(s) linked to this SOP / workflow are shown here.</p><div class="visualgallery" style="padding:14px 0">${items.map((x,i)=>figure(x.im,i)).join('')}</div>`)}
 function openVisualGuide(id){const g=guideById(id);if(!g)return;const ref=Object.keys(visualLinks).find(k=>visualLinks[k].some(x=>x[0]===id));if(ref)return openVisualForRef(ref,g.title);openDrawerHtml(`<h2>${esc(g.title)}</h2><p class="muted" style="margin-top:6px">${esc(g.summary||'')}</p><div class="visualgallery" style="padding:14px 0">${(g.images||[]).map(figure).join('')}</div>`)}
-function renderInlineVisuals(ref){const items=linkedImages(ref);if(!items.length)return '';return `<div class="visualinline"><b>Visual help · linked to this workflow</b><div class="inlinebtns"><button class="btn" onclick="openVisualForRef('${jsArg(ref)}')">SEE linked screenshots</button></div><div class="inline-mini">${items.slice(0,2).map(x=>`<img src="${x.im.src}" alt="${esc(x.im.caption)}" onclick="openImageZoom(this.src,this.alt)" title="Click to zoom">`).join('')}</div></div>`}
+function renderInlineVisuals(ref){const items=linkedImages(ref);if(!items.length)return '';return `<div class="visualinline"><b>Visual help · linked to this workflow</b><div class="inlinebtns"><button class="btn" onclick="openVisualForRef('${jsArg(ref)}')">SEE linked screenshots</button></div><div class="inline-mini">${items.slice(0,2).map(x=>`<img src="${x.im.src}" alt="${esc(x.im.caption)}" tabindex="0" role="button" onclick="openImageZoom(this.src,this.alt)" title="Click to zoom">`).join('')}</div></div>`}
 function renderVisuals(){
   $('visualGrid').innerHTML=visualGuides.map(g=>`<article class="visualcard" id="visual-${g.id}"><div class="visualhead"><h3>${esc(g.title)}</h3><p>${esc(g.summary)}</p><div class="visualtagrow"><span class="badge b-live">${esc(g.phase)}</span>${(g.refIds||[]).slice(0,5).map(r=>`<span class="badge b-check">${esc(r.toUpperCase())}</span>`).join('')}</div></div><div class="visualgallery">${g.images.map(figure).join('')}</div></article>`).join('');
 }
-function openImageZoom(src,caption){$('imgZoomImg').src=src;$('imgZoomCap').textContent=caption||'';$('imgZoom').classList.add('show');document.body.style.overflow='hidden'}
-function closeImageZoom(){$('imgZoom').classList.remove('show');$('imgZoomImg').src='';document.body.style.overflow=''}
+function openImageZoom(src,caption){$('imgZoomImg').src=src;$('imgZoomImg').alt=caption||'';$('imgZoomCap').textContent=caption||'';openDialog('imgZoom')}
+function closeImageZoom(){closeDialog('imgZoom');$('imgZoomImg').removeAttribute('src')}
 
 /* ---------- Navigation ---------- */
 function showView(name){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   $('view-'+name).classList.add('active');
-  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===name));
+  document.querySelectorAll('.tab').forEach(x=>{const on=x.dataset.view===name;x.classList.toggle('active',on);x.setAttribute('aria-selected',on)});
   window.scrollTo({top:document.querySelector('.topnav').offsetTop,behavior:'smooth'});
 }
 function focusSearch(){setTimeout(()=>$('q').focus(),80)}
 function openSop(id){closeDrawer();showView('sop');setTimeout(()=>openSection(id),60)}
-function openSection(id){const d=$('sop-'+id);if(!d)return;d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}
+function openSection(id){const d=$('sop-'+id);if(!d)return;d.open=true;d.querySelector('summary').focus({preventScroll:true});d.scrollIntoView({behavior:'smooth',block:'start'})}
 function toggleAll(v){document.querySelectorAll('.sop-section').forEach(x=>x.open=v)}
 function openDrawerCard(card){openDrawerHtml(renderAnswer(card))}
-function closeDrawer(){$('drawer').classList.remove('show');document.body.style.overflow=''}
+function closeDrawer(){if($('drawer').classList.contains('show'))closeDialog('drawer')}
 
 /* ---------- Run Night ---------- */
 const SOURCE={check:['Checkliste NEU','b-check'],live:['Live Training','b-live'],both:['Checklist + Live','b-both']};
@@ -92,7 +99,7 @@ function renderRun(){
       const row=document.createElement('div');row.className='runstep'+(done?' done':'')+(s.i===next?' next':'');
       const visualBtn=getVisualGuidesForRef(ref).length?`<button class="howbtn" onclick="openVisualForRef('${ref}')">SEE</button>`:'';
       const flag=done?`<span class="donetime">✓ ${doneTime(s.i)}</span>`:(s.i===next?'<span class="nextflag">NEXT</span>':'');
-      row.innerHTML=`<input type="checkbox" ${done?'checked':''} onchange="setRun(${s.i},this.checked,this)"><div><h4>${esc(s.title)}${s.time?`<span class="timeflag">${esc(s.time)}</span>`:''}${flag}</h4><p>${esc(s.detail)}</p><span class="badge ${srcClass}" style="margin-top:7px">${srcLabel}</span></div><div class="run-actions"><button class="howbtn" onclick="openRunHelp(${s.i})">HOW</button>${visualBtn}</div>`;
+      row.innerHTML=`<input type="checkbox" aria-label="${esc(s.title)}" ${done?'checked':''} onchange="setRun(${s.i},this.checked,this)"><div><h4>${esc(s.title)}${s.time?`<span class="timeflag">${esc(s.time)}</span>`:''}${flag}</h4><p>${esc(s.detail)}</p><span class="badge ${srcClass}" style="margin-top:7px">${srcLabel}</span></div><div class="run-actions"><button class="howbtn" onclick="openRunHelp(${s.i})">HOW</button>${visualBtn}</div>`;
       block.appendChild(row);
     });
     host.appendChild(block);
@@ -190,7 +197,12 @@ function openSectionDrawer(id){
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 $('q').addEventListener('input',searchNow);
 $('q').addEventListener('keydown',e=>{if(e.key==='Enter')searchNow();if(e.key==='Escape')clearSearch()});
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('imgZoom').classList.contains('show'))closeImageZoom();else if($('drawer').classList.contains('show'))closeDrawer()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Tab')return trapTab(e);
+  const t=e.target;if((e.key==='Enter'||e.key===' ')&&t.matches&&t.matches('img[role=button]')){e.preventDefault();t.click();return}
+  if((e.key==='ArrowRight'||e.key==='ArrowLeft')&&t.classList&&t.classList.contains('tab')){const tabs=[...document.querySelectorAll('.tab')],n=tabs[(tabs.indexOf(t)+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();n.click();return}
+  if(e.key!=='Escape')return;if($('imgZoom').classList.contains('show'))closeImageZoom();else if($('drawer').classList.contains('show'))closeDrawer()});
+window.addEventListener('afterprint',()=>document.body.classList.remove('print-summary-mode'));
 pruneRuns();renderRun();renderCodes();renderProblems();renderVisuals();renderSop();
 // A page left open overnight rolls over to the new night at noon.
 let shownNight=nightKey();setInterval(()=>{if(nightKey()!==shownNight){shownNight=nightKey();renderRun()}},60000);
