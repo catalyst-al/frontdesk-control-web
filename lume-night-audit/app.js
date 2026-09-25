@@ -31,6 +31,22 @@ function setRun(i,checked,box){
   saveRun(r);renderRun();
 }
 function resetRun(){if(!confirm('Reset all ticks for this night?'))return;try{localStorage.removeItem(nightKey())}catch(e){}renderRun()}
+/* ---------- Night summary (print) ---------- */
+// One printable page for handover: every step with its tick time, open steps listed again, signature line.
+function renderSummary(){
+  const r=loadRun(),done=guidedRun.filter((_,i)=>i in r).length,open=guidedRun.map((s,i)=>({...s,i})).filter(s=>!(s.i in r));
+  const now=new Date(),stamp=`${pad(now.getDate())}.${pad(now.getMonth()+1)}.${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  let h=`<h1>LUME Night Audit — Night summary</h1><p class="ps-meta"><b>${esc(nightLabel())}</b> · ${done} / ${guidedRun.length} steps completed · printed ${stamp}</p>`;
+  ['START OF NIGHT','BEFORE EOD','AFTER EOD'].forEach(phase=>{
+    const group=guidedRun.map((s,i)=>({...s,i})).filter(s=>s.phase===phase);
+    h+=`<h2>${esc(phase)}</h2><table class="tbl"><thead><tr><th>#</th><th>Step</th><th>Done</th></tr></thead><tbody>`+group.map(s=>`<tr><td>${s.i+1}</td><td>${esc(s.title)}</td><td>${s.i in r?'✓ '+doneTime(s.i):'<b>OPEN</b>'}</td></tr>`).join('')+'</tbody></table>';
+  });
+  h+=open.length?`<h2>Still open (${open.length})</h2><ul>${open.map(s=>`<li>${s.i+1}. ${esc(s.title)}</li>`).join('')}</ul>`:'<h2>All steps completed</h2>';
+  h+='<div class="ps-sign"><span>Night auditor: ______________________</span><span>Signature: ______________________</span></div><p class="ps-meta">Ticks are recorded in this browser only. Notes, differences and escalations go into the handover.</p>';
+  $('printSummary').innerHTML=h;
+}
+function printSummary(){renderSummary();document.body.classList.add('print-summary-mode');window.print()}
+window.addEventListener('afterprint',()=>document.body.classList.remove('print-summary-mode'));
 function goNext(){const el=document.querySelector('.runstep.next');if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}
 
 /* ---------- Visual guides ---------- */
@@ -81,7 +97,7 @@ function renderRun(){
     });
     host.appendChild(block);
   });
-  const done=Object.keys(r).length,pct=Math.round(done/guidedRun.length*100);
+  const done=guidedRun.filter((_,i)=>i in r).length,pct=Math.round(done/guidedRun.length*100);
   $('runCount').textContent=`${done} / ${guidedRun.length} completed`;$('runBar').style.width=pct+'%';$('runPct').textContent=pct+'%';
   $('runNight').textContent=nightLabel();$('runNext').hidden=next<0;
 }

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="sq">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LUME Night Audit — Control Center V5 Ultra Visual</title>
+<title>LUME Night Audit — Control Center</title>
 <style>
 :root{
   --navy:#192c39;--navy2:#233e4f;--ink:#1e2b34;--muted:#687984;--gold:#ad9153;--gold2:#f5efe1;
@@ -23,16 +23,17 @@ button,input{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{max-width:
 .codegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.codecard{border:1px solid var(--line);background:#fff;border-radius:12px;padding:14px;text-align:left;box-shadow:0 5px 16px rgba(25,44,57,.05)}.codecard code{font-size:15px;font-weight:900;color:var(--navy)}.codecard span{display:block;margin-top:5px;color:var(--muted);font-size:12px}.problemgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.problem{border:1px solid #ead0d0;background:#fff;border-radius:12px;padding:15px;text-align:left}.problem strong{display:block}.problem span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
 .sop-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.sop-section{background:#fff;border:1px solid var(--line);border-radius:13px;margin-bottom:10px;overflow:hidden}.sop-section summary{list-style:none;cursor:pointer;padding:15px 17px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-weight:800}.sop-section summary::-webkit-details-marker{display:none}.sop-section[open] summary{border-bottom:1px solid var(--line);background:#fafcfd}.sop-body{padding:16px 18px}.note{background:var(--gold2);border-left:4px solid var(--gold);padding:11px 13px;border-radius:8px;margin-bottom:12px}.step-list{display:grid;gap:8px}.sopstep{display:grid;grid-template-columns:31px minmax(0,1fr);gap:10px;padding:10px;border:1px solid #e5eaed;border-radius:10px;background:#fbfcfd}.sopnum{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#edf2f4;font-size:11px;font-weight:800}.sopstep b{display:block}.sopstep span{display:block;color:var(--muted);font-size:13px;margin-top:2px}.table-scroll{overflow:auto}.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}.tbl th,.tbl td{border:1px solid var(--line);padding:8px 9px;text-align:left}.tbl th{background:#eef2f4}.drawer{position:fixed;inset:0;z-index:80;display:none}.drawer.show{display:block}.drawer-bg{position:absolute;inset:0;background:rgba(17,31,40,.48)}.drawer-card{position:absolute;right:0;top:0;bottom:0;width:min(640px,94vw);background:#fff;box-shadow:-18px 0 45px rgba(17,31,40,.25);overflow:auto;padding:22px}.drawer-close{float:right;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 10px}.drawer h2{margin:8px 0 0}.visualgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.visualcard{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow);overflow:hidden}.visualhead{padding:16px 17px;border-bottom:1px solid var(--line)}.visualhead h3{margin:0;font-size:18px}.visualhead p{margin:6px 0 0;color:var(--muted);font-size:13px}.visualtagrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.visualgallery{display:grid;gap:10px;padding:14px 16px}.figure{border:1px solid #e5eaed;border-radius:12px;overflow:hidden;background:#fafcfd}.figure img{display:block;width:100%;height:auto;background:#f2f5f7}.figure figcaption{padding:9px 11px;font-size:12.5px;color:var(--muted);border-top:1px solid #e5eaed}.visualinline{margin-top:14px;padding:12px;border:1px dashed #cfd9de;border-radius:10px;background:#fbfcfd}.visualinline b{display:block;margin-bottom:8px}.inlinebtns{display:flex;gap:8px;flex-wrap:wrap}.inline-mini{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.inline-mini img{width:132px;max-width:100%;border:1px solid #dbe3e8;border-radius:10px;background:#fff;cursor:pointer}.run-actions{display:grid;gap:8px}.sop-extra{margin-top:12px;padding-top:12px;border-top:1px dashed #d6e0e5}.sop-extra .btn{margin-right:8px;margin-top:6px}
 .imgzoom{position:fixed;inset:0;z-index:140;display:none;background:rgba(8,18,25,.88);padding:28px;align-items:center;justify-content:center}.imgzoom.show{display:flex}.imgzoom-inner{max-width:min(1500px,96vw);max-height:94vh;display:flex;flex-direction:column;gap:10px;align-items:center}.imgzoom img{max-width:96vw;max-height:84vh;object-fit:contain;border-radius:10px;box-shadow:0 18px 60px rgba(0,0,0,.45);background:#fff}.imgzoom-cap{color:#fff;text-align:center;max-width:1100px;font-size:14px}.imgzoom-close{position:absolute;top:18px;right:20px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;border-radius:9px;padding:8px 11px;font-weight:800}.figure img{cursor:zoom-in}.visualcard .figure img{max-height:560px;object-fit:contain}.visualcard{scroll-margin-top:82px}
+.print-summary{display:none}.print-summary h1{font:600 22px/1.2 Georgia,serif;margin:0 0 4px}.print-summary h2{font-size:15px;margin:16px 0 4px}.print-summary .tbl{margin:4px 0}.print-summary .tbl th,.print-summary .tbl td{padding:4px 8px}.print-summary ul{list-style:none;padding:0;margin:4px 0;columns:2;font-size:13px}.print-summary .tbl td:first-child{width:34px}.print-summary .tbl td:last-child{width:90px;white-space:nowrap}.ps-meta{color:var(--muted);font-size:12px;margin:0 0 6px}.ps-sign{display:flex;gap:40px;flex-wrap:wrap;margin:28px 0 10px}
 .footer{padding:30px 0 45px;text-align:center;color:var(--muted);font-size:12px}
 @media(max-width:900px){.homegrid{grid-template-columns:1fr 1fr}.codegrid{grid-template-columns:repeat(3,1fr)}.problemgrid{grid-template-columns:1fr 1fr}.visualgrid{grid-template-columns:1fr}.runstep{grid-template-columns:34px minmax(0,1fr)}.howbtn{grid-column:auto}.run-actions{grid-column:2;grid-template-columns:repeat(2,max-content);justify-content:start}.run-top{grid-template-columns:1fr}}
 @media(max-width:580px){.wrap{padding:0 11px}.hero .wrap{padding:20px 14px}.brand{font-size:28px}.hero h1{font-size:25px}.navrow{padding:9px 10px}.homegrid,.codegrid,.problemgrid,.visualgrid{grid-template-columns:1fr}.panel-body,.panel-head{padding:15px}.searchbox input{font-size:16px}.runstep{padding:10px}.run-actions{grid-template-columns:1fr;gap:6px}.inline-mini img{width:100px}.drawer-card{width:100vw}.tab{padding:8px 10px}}
-@media print{.topnav,.homegrid,.searchbox,.chips,.howbtn,.btn,.drawer{display:none!important}.page{display:block!important}.panel,.sop-section{box-shadow:none;break-inside:avoid}.hero{background:#fff;color:var(--navy);border-bottom:2px solid var(--gold)}.hero p,.kicker,.source-line{color:#62737e}}
+@media print{.topnav,.homegrid,.searchbox,.chips,.howbtn,.btn,.drawer{display:none!important}.page{display:block!important}.panel,.sop-section{box-shadow:none;break-inside:avoid}.hero{background:#fff;color:var(--navy);border-bottom:2px solid var(--gold)}.hero p,.kicker,.source-line{color:#62737e}body.print-summary-mode{background:#fff}body.print-summary-mode>*{display:none!important}body.print-summary-mode>.print-summary{display:block!important;color:#000}.print-summary tr{break-inside:avoid}}
 </style>
 </head>
 <body>
 <header class="hero"><div class="wrap">
   <div class="brand">LUME</div><div class="kicker">Front Office Operations · Night Audit</div>
-  <h1>Night Audit Control Center V5</h1>
+  <h1>Night Audit Control Center</h1>
   <p>Checklist tells you <b>WHAT comes next</b>. Live training tells you <b>HOW to do it</b>. Search helps when you are stuck. Stop rules protect you when the action is not confirmed.</p>
   <div class="source-line"><b>Backbone:</b> Checkliste Nachtdienst NEU · 07.12.2025 &nbsp;|&nbsp; <b>Execution:</b> current LUME live training · OPERA PMS 5.6.25.20 · FRANV &nbsp;|&nbsp; <b>Visual layer:</b> uploaded screenshots + video stills</div>
 </div></header>
@@ -63,7 +64,7 @@ button,input{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{max-width:
 
 <section id="view-run" class="page">
   <div class="panel"><div class="panel-head"><div><h2>🌙 Run Night</h2><p>Exact checklist sequence. Tick WHAT is done; open HOW only when needed.</p></div><span class="badge b-check">Checkliste NEU backbone</span></div>
-    <div class="panel-body"><div class="run-top"><div><div id="runNight" class="nightlabel"></div><b id="runCount">0 / 0 completed</b><div class="progress"><span id="runBar"></span></div><div id="runPct" class="muted" style="font-size:12px;margin-top:5px">0%</div></div><div class="runbtns"><button class="btn primary" id="runNext" onclick="goNext()">Go to next step</button><button class="btn danger" onclick="resetRun()">Reset shift</button></div></div><div id="runList"></div></div>
+    <div class="panel-body"><div class="run-top"><div><div id="runNight" class="nightlabel"></div><b id="runCount">0 / 0 completed</b><div class="progress"><span id="runBar"></span></div><div id="runPct" class="muted" style="font-size:12px;margin-top:5px">0%</div></div><div class="runbtns"><button class="btn primary" id="runNext" onclick="goNext()">Go to next step</button><button class="btn" onclick="printSummary()">Print summary</button><button class="btn danger" onclick="resetRun()">Reset shift</button></div></div><div id="runList"></div></div>
   </div>
 </section>
 
@@ -87,7 +88,7 @@ button,input{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{max-width:
 
 
 <section id="view-visual" class="page">
-  <div class="panel"><div class="panel-head"><div><h2>🖼 Visual Guides</h2><p>Step-linked screenshot help from your uploaded files and videos. Click any image to zoom. The V3 workflow and SOP rules remain unchanged.</p></div><span class="badge b-both">Visual support</span></div>
+  <div class="panel"><div class="panel-head"><div><h2>🖼 Visual Guides</h2><p>Step-linked screenshot help from your uploaded files and videos. Click any image to zoom. The written SOP and stop rules remain the source of truth.</p></div><span class="badge b-both">Visual support</span></div>
     <div class="panel-body">
       <div class="note"><b>How to use:</b> Follow <b>RUN NIGHT</b> for the sequence. Press <b>HOW</b> for the written procedure and <b>SEE</b> when a visual guide exists. Click any screenshot to zoom. The written SOP and stop rules remain the source of truth.</div>
       <div id="visualGrid" class="visualgrid"></div>
@@ -96,14 +97,14 @@ button,input{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{max-width:
 </section>
 
 <section id="view-sop" class="page">
-  <div class="panel"><div class="panel-head"><div><h2>Full Detailed SOP</h2><p>All detailed procedures. This library preserves the V2 SOP content; the new Control Center changes navigation, not the underlying confirmed rules.</p></div></div><div class="panel-body"><div class="sop-controls"><button class="btn" onclick="toggleAll(true)">Expand all</button><button class="btn" onclick="toggleAll(false)">Collapse all</button></div><div id="sopLibrary"></div></div></div>
+  <div class="panel"><div class="panel-head"><div><h2>Full Detailed SOP</h2><p>All detailed procedures with their confirmed rules.</p></div></div><div class="panel-body"><div class="sop-controls"><button class="btn" onclick="toggleAll(true)">Expand all</button><button class="btn" onclick="toggleAll(false)">Collapse all</button></div><div id="sopLibrary"></div></div></div>
 </section>
 </main>
-<div class="footer wrap">LUME Boutique Hotel, Autograph Collection · Internal training guide · No guest card numbers, passwords, PINs or login credentials stored. V5 adds step-linked visuals and click-to-zoom while preserving the V3 workflow.</div>
+<div class="footer wrap">LUME Boutique Hotel, Autograph Collection · Internal training guide · No guest card numbers, passwords, PINs or login credentials stored.</div>
 <div id="imgZoom" class="imgzoom" onclick="closeImageZoom()"><button class="imgzoom-close" onclick="closeImageZoom();event.stopPropagation()">Close</button><div class="imgzoom-inner" onclick="event.stopPropagation()"><img id="imgZoomImg" alt=""><div id="imgZoomCap" class="imgzoom-cap"></div></div></div>
+<section id="printSummary" class="print-summary" aria-hidden="true"></section>
 <div id="drawer" class="drawer"><div class="drawer-bg" onclick="closeDrawer()"></div><div class="drawer-card"><button class="drawer-close" onclick="closeDrawer()">Close</button><div id="drawerContent"></div></div></div>
 <script src="data.js?v=20260923-1"></script>
-<script src="app.js?v=20260923-3"></script>
-<script src="quality.js?v=20260923-1"></script>
+<script src="app.js?v=20260925-1"></script>
 </body>
 </html>
