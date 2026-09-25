@@ -8,7 +8,7 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 - breakfast-tablet.html: standalone guest tablet app, with bundled QR libraries.
 - No guest lists, reservations, real checks, payment data or backups are included in this repository.
 - The workstation processes selected reports locally in the browser. Its existing storage keys are unchanged.
-- Breakfast Live reads that local report automatically. Only normalized room numbers, allowed breakfast statuses, a report date and generic source labels are sent to the paired tablet. Filenames and guest-identifying fields stay on the PC.
+- Breakfast Live reads that local report automatically, plus the in-house VIP rooms (sent as room number + INCLUDED only). Only normalized room numbers, allowed breakfast statuses, a report date and generic source labels are sent to the paired tablet. Filenames and guest-identifying fields stay on the PC.
 - Cloudflare is used for temporary WebRTC signaling, not for guest lists or checks. The workstation and tablet request ICE servers from the signaling worker's `/ice` route. If that route is unavailable, they fall back to public STUN; hotel networks that block direct device connections may require TURN.
 - The `parkinn-breakfast-signaling` Worker is managed outside this repository. `cloudflare/worker-ice-snippet.js` is the `/ice` route deployed to it: it calls Cloudflare Realtime TURN with the `TURN_KEY_ID` and `TURN_KEY_API_TOKEN` Worker secrets, returns `{ ok, iceServers }` with 24-hour credentials, and is rate-limited per IP (30 requests per 10 minutes, via the `PAIRING` KV namespace).
 - The tablet keeps its local list and log when disconnected. Re-pairing transfers its retained events in small, deduplicated batches. Other Front Desk data is not synchronized.
@@ -25,6 +25,7 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 
 ## Daily use
 1. Load the breakfast report in the normal Breakfast tab.
+   - Optional, any time: under VIP / Premium / Club, upload yesterday's VIP / arrivals list (PDF). Rooms with a loyalty level are marked automatically. VIP guests get breakfast even when they are not in the F&B report (green "VIP — breakfast included"); Premium (room upgrade only) and Club are shown with their level but get no breakfast. Rooms marked by hand take priority, and a new list replaces the previous one. Rows whose stay does not cover the breakfast day are greyed out and ignored.
 2. Open Breakfast Live and check the room count/report date.
 3. Press Pair tablet. On the tablet, open Staff > Live connection > Scan & connect and photograph the PC QR once.
 4. Wait for Connected and the confirmed room count. Return the tablet to guest mode.
