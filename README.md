@@ -26,6 +26,7 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 ## Events
 The **Events** tab (Alt+7) reads the DEFRAAIR "Event weekly planning" PDF and shows, for each day of that week, which function rooms are booked, for which group, how many people and when.
 
+- Getting the PDF from SAP: House status → Event weekly planning → Print → Output Device `locl` → Microsoft Print to PDF. The button **How to get this PDF from SAP** in the tab shows these steps with screenshots from `events-guide/`, in which group names, booking files and staff names are covered. New screenshots must be redacted the same way before they are added.
 - Upload the PDF in the tab. It is read in this browser with the built-in PDF reader; nothing is uploaded, and the PDF itself is not stored or committed.
 - The parsed bookings (group, status, booking file, event type, people, times, room, organizer, main customer) are kept in this browser until **Clear** or a new week is loaded. They are part of **Back up this shift**.
 - Per day: groups, people (each booking counted once, even when it moves between rooms), rooms in use, first start and last end, a timeline per room, and each group's schedule with its organizer. Today also shows what is running now and what starts next.
