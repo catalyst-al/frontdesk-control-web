@@ -23,6 +23,15 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 - Ticked steps are stored per business date in this browser only. The guide makes no network calls.
 - Content lives in `night-audit-guide/data.js`; screenshots in `night-audit-guide/img/`. Screenshots must have guest names, reservation numbers, contact data and amounts removed before they are added.
 
+## Events
+The **Events** tab (Alt+7) reads the DEFRAAIR "Event weekly planning" PDF and shows, for each day of that week, which function rooms are booked, for which group, how many people and when.
+
+- Upload the PDF in the tab. It is read in this browser with the built-in PDF reader; nothing is uploaded, and the PDF itself is not stored or committed.
+- The parsed bookings (group, status, booking file, event type, people, times, room, organizer, main customer) are kept in this browser until **Clear** or a new week is loaded. They are part of **Back up this shift**.
+- Per day: groups, people (each booking counted once, even when it moves between rooms), rooms in use, first start and last end, a timeline per room, and each group's schedule with its organizer. Today also shows what is running now and what starts next.
+- **Check** lists a group whose number of people differs between its rooms on the same day, and bookings without a people/time line. **Print day** prints the selected day.
+- Creator, Follow Up and 2nd Agent are read but not shown.
+
 ## LUME Night Audit
 `lume-night-audit/` is the Night Audit control center for LUME Boutique Hotel (OPERA PMS): Run Night checklist, Ask / Search, Codes, Problem / Unsure, Visual Guides and the Full SOP. Open `lume-night-audit/index.html` directly.
 

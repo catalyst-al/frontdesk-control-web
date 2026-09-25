@@ -2093,6 +2093,73 @@
 </style>
 
 <meta name="breakfast-live-release" content="2026-09-14-native-1">
+<style id="events-week-style">
+  /* ============ EVENTS (weekly planning) ============ */
+  .ev-privacy{font-size:10.5px; color:var(--ink-faint); line-height:1.5; margin:2px 0 0;}
+  .ev-status{font-size:12px; line-height:1.5; margin:8px 0 0; color:var(--ink-muted);}
+  .ev-status.ok{color:var(--green);} .ev-status.warn{color:#8A5A00;} .ev-status.bad{color:var(--red);}
+  .ev-file{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:12px; padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); background:#F7F9FC; font-size:11.5px; color:var(--ink-muted);}
+  .ev-file strong{display:block; color:var(--ink); font-size:12.5px;}
+  .ev-file .btn-ghost{padding:7px 10px; flex:0 0 auto;}
+  .ev-days{display:grid; gap:6px; margin-top:4px;}
+  .ev-day{display:flex; justify-content:space-between; align-items:center; gap:10px; width:100%; text-align:left; padding:10px 12px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:#fff; color:var(--ink); font:inherit; cursor:pointer;}
+  .ev-day:hover{border-color:var(--navy-200); background:#FBFCFE;}
+  .ev-day:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+  .ev-day[aria-pressed="true"]{border-color:var(--navy); background:#EEF3FA; box-shadow:inset 3px 0 0 var(--navy);}
+  .ev-day b{font-size:13px;} .ev-day small{display:block; font-size:10.5px; color:var(--ink-faint); margin-top:1px;}
+  .ev-day .ev-day-n{font-size:11.5px; font-weight:700; color:var(--navy); white-space:nowrap;}
+  .ev-day.empty{color:var(--ink-faint);} .ev-day.empty .ev-day-n{color:var(--ink-faint); font-weight:600;}
+  .ev-today{display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px; background:var(--gold); color:var(--navy); font-size:9.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; vertical-align:1px;}
+  .ev-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+  .ev-head h2{margin:0; font-size:20px; color:var(--navy);}
+  .ev-head p{margin:3px 0 0; font-size:11px; color:var(--ink-faint);}
+  .ev-head .btn-fill{margin:0;}
+  .ev-kpis{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-bottom:14px;}
+  .ev-kpi{border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; background:#F7F9FC;}
+  .ev-kpi b{display:block; font-size:22px; line-height:1.1; color:var(--navy); font-variant-numeric:tabular-nums;}
+  .ev-kpi span{display:block; font-size:10.5px; color:var(--ink-muted); margin-top:3px; text-transform:uppercase; letter-spacing:.06em; font-weight:700;}
+  .ev-now{border:1px solid var(--green-line); background:var(--green-bg); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:12px; font-size:12.5px; color:#14603A; line-height:1.6;}
+  .ev-now b{color:#0F4D2E;}
+  .ev-warn{border:1px solid var(--amber-line); background:var(--amber-bg); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:12px; font-size:12.5px; color:#6B4A00; line-height:1.55;}
+  .ev-warn ul{margin:4px 0 0; padding-left:18px;}
+  .ev-sec{font-size:11.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--navy-400); margin:18px 0 8px;}
+  .ev-tl{overflow-x:auto;}
+  .ev-tl-in{min-width:560px; padding-right:18px;}
+  .ev-hours,.ev-lane{display:grid; grid-template-columns:92px 1fr; align-items:center;}
+  .ev-hours div:last-child{position:relative; height:16px; font-size:10px; color:var(--ink-faint); font-variant-numeric:tabular-nums;}
+  .ev-hours span{position:absolute; transform:translateX(-50%);}
+  .ev-lane{border-top:1px solid var(--line-soft); min-height:40px;}
+  .ev-lane-room{font-size:12px; font-weight:800; color:var(--navy); padding-right:8px; overflow-wrap:anywhere;}
+  .ev-lane-track{position:relative; height:40px; background:repeating-linear-gradient(90deg,transparent 0 calc(var(--hour) - 1px),var(--line-soft) calc(var(--hour) - 1px) var(--hour));}
+  .ev-block{position:absolute; top:5px; bottom:5px; border-radius:6px; padding:3px 6px; color:#fff; font-size:10.5px; line-height:1.25; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; box-shadow:0 1px 2px rgba(4,35,79,.2);}
+  .ev-block small{display:block; opacity:.85; font-size:9.5px;}
+  .ev-groups{display:grid; gap:10px;}
+  .ev-group{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:var(--radius-sm); padding:12px 14px; background:#fff; break-inside:avoid;}
+  .ev-group-top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start;}
+  .ev-group h3{margin:0; font-size:14.5px; color:var(--ink);}
+  .ev-group-pax{font-size:20px; font-weight:800; color:var(--navy); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .ev-group-pax small{font-size:11px; font-weight:700; color:var(--ink-muted);}
+  .ev-meta{display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:5px; font-size:11.5px; color:var(--ink-muted);}
+  .ev-meta b{color:var(--ink);}
+  .ev-tag{display:inline-block; padding:1px 7px; border-radius:999px; font-size:10px; font-weight:800; letter-spacing:.04em; background:var(--green-bg); color:var(--green); border:1px solid var(--green-line);}
+  .ev-tag.other{background:var(--amber-bg); color:#8A5A00; border-color:var(--amber-line);}
+  .ev-sched{margin:9px 0 0; padding:0; list-style:none; display:grid; gap:3px; font-size:12.5px;}
+  .ev-sched li{display:grid; grid-template-columns:96px 100px 1fr; gap:8px;}
+  .ev-sched .t{font-family:var(--mono); font-size:11.5px; color:var(--ink); font-weight:700;}
+  .ev-sched .r{font-weight:800; color:var(--navy);}
+  .ev-sched .p{color:var(--ink-muted);}
+  .ev-empty{border:1px dashed var(--navy-200); border-radius:var(--radius-md); padding:28px 16px; text-align:center; color:var(--ink-muted); font-size:13px; background:#F7F9FC;}
+  .ev-empty b{display:block; color:var(--navy); font-size:15px; margin-bottom:4px;}
+  #evFile{display:none;}
+  @media (max-width:640px){ .ev-kpis{grid-template-columns:repeat(2,minmax(0,1fr));} .ev-sched li{grid-template-columns:86px 1fr;} .ev-sched .p{grid-column:2;} }
+  @media print{
+    body[data-print="events"] #panel-events{display:block !important;}
+    body[data-print="events"] #panel-events .app-shell{display:block;}
+    body[data-print="events"] #panel-events .card{border:0; box-shadow:none;}
+    body[data-print="events"] .ev-tl-in{min-width:0;}
+    .ev-block,.ev-group{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  }
+</style>
 </head>
 <body>
 
@@ -2149,6 +2216,10 @@
           <span class="tab-icon" aria-hidden="true">&#9673;</span> Breakfast Live
           <span class="tab-badge" id="breakfastLiveBadge">Offline</span>
         </button>
+        <button class="tab" id="tab-events" role="tab" aria-selected="false" aria-controls="panel-events" data-panel="events">
+          <span class="tab-icon" aria-hidden="true">&#128197;</span> Events
+          <span class="tab-badge" id="evBadge">0</span>
+        </button>
       </div>
       <div class="tab-underline" id="tabUnderline"></div>
     </div>
@@ -2157,6 +2228,35 @@
   <!-- ============ BREAKFAST PANEL ============ -->
   <div class="tabpanel" id="panel-breakfastlive" role="tabpanel" aria-labelledby="tab-breakfastlive">
     <div id="breakfastLiveHost"></div>
+  </div>
+  <!-- ============ EVENTS PANEL ============ -->
+  <div class="tabpanel" id="panel-events" role="tabpanel" aria-labelledby="tab-events">
+    <div class="app-shell">
+      <div class="card no-print">
+        <div class="brandstrip"></div>
+        <div class="card-body">
+          <div class="grp-step">
+            <span class="grp-step-n">1</span>
+            <span class="grp-step-copy"><strong>Upload the Event weekly planning</strong><span>Rooms, people and times for every day of the week.</span></span>
+          </div>
+          <div class="grp-drop" id="evDrop" role="button" tabindex="0" aria-label="Upload Event weekly planning PDF">
+            <div class="grp-drop-icon">&#8681;</div>
+            <div class="grp-drop-title">Drop the event planning PDF here</div>
+            <div class="grp-drop-sub">or click to choose the file &middot; PDF</div>
+          </div>
+          <input type="file" id="evFile" accept=".pdf,application/pdf">
+          <p class="ev-privacy">Read on this PC only. Nothing is uploaded; the plan stays in this browser until you clear it or load a new week.</p>
+          <div class="ev-status" id="evStatus" role="status" aria-live="polite"></div>
+          <div id="evFileInfo"></div>
+          <div class="ev-sec">Days</div>
+          <div class="ev-days" id="evDays"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="brandstrip no-print"></div>
+        <div class="card-body" id="evDay"></div>
+      </div>
+    </div>
   </div>
   <div class="tabpanel active" id="panel-breakfast" role="tabpanel" aria-labelledby="tab-breakfast">
     <div class="app-shell">
@@ -4274,7 +4374,7 @@
       if(on && focusIt) t.focus();
       if(on) moveUnderline(t);
     });
-    ["breakfast","handover","group","nightaudit","vcc","breakfastlive"].forEach(function(p){
+    ["breakfast","handover","group","nightaudit","vcc","breakfastlive","events"].forEach(function(p){
       var panel = document.getElementById("panel-" + p);
       if(!panel) return;
       if(p === name){
@@ -4542,10 +4642,12 @@
       var bfOpen = document.getElementById("panel-breakfast").classList.contains("active");
       var vcOpen = document.getElementById("panel-vcc").classList.contains("active");
       var grOpen = document.getElementById("panel-group").classList.contains("active");
-      document.body.setAttribute("data-print", naOpen ? "nightaudit" : (vcOpen ? "vcc" : (grOpen ? "group" : (bfOpen ? "breakfast" : "handover"))));
+      var evOpen = document.getElementById("panel-events").classList.contains("active");
+      document.body.setAttribute("data-print", naOpen ? "nightaudit" : (vcOpen ? "vcc" : (grOpen ? "group" : (bfOpen ? "breakfast" : (evOpen ? "events" : "handover")))));
     }
     var target = document.body.getAttribute("data-print");
-    if(target === "nightaudit"){ prepareNaPrint(); }
+    if(target === "events"){ /* the Events panel prints as shown */ }
+    else if(target === "nightaudit"){ prepareNaPrint(); }
     else if(target === "vcc"){ prepareVccPrint(); }
     else if(target === "group"){ prepareGroupPrint(); }
     else if(target === "breakfast"){ prepareBfPrint(); }
@@ -7609,7 +7711,7 @@
   topBtn.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
   /* Keyboard routing for a busy front desk: Alt+1 ... Alt+5 */
-  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive"];
+  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events"];
   shortcutTabs.forEach(function(name, idx){
     var b = document.getElementById("tab-" + name);
     if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + (idx+1);
@@ -7617,7 +7719,7 @@
   window.addEventListener("keydown", function(e){
     if(!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     var n = parseInt(e.key,10);
-    if(n < 1 || n > 6) return;
+    if(n < 1 || n > shortcutTabs.length) return;
     var target = document.getElementById("tab-" + shortcutTabs[n-1]);
     if(!target) return;
     e.preventDefault();
@@ -20515,6 +20617,320 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 
   paintLog();loadFromFrontDesk(false);setConn("","Not paired","<strong>Ready:</strong> press Pair tablet, then scan the single QR from the tablet. Cloudflare is used only for the temporary handshake.");
   setInterval(function(){loadFromFrontDesk(true);},15000);
+})();
+</script>
+<script id="events-week-script">
+/* Events tab: reads the "Event weekly planning" PDF in this browser and shows,
+   per day, which function rooms are booked, for whom, how many people and when.
+   Only the parsed bookings are kept (localStorage); the PDF itself is not stored. */
+(function(){
+  "use strict";
+  var KEY = "parkInnEventsWeek_v1";   // parkInn prefix: included in Back up / Restore
+  var COLORS = ["#04234F","#7C2E3A","#1B7A4B","#3C5B87","#8A5A00","#5B3A7C"];
+  var $ = function(id){ return document.getElementById(id); };
+  function pad2(n){ return String(n).padStart(2, "0"); }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
+  function mins(t){ if(!t) return -1; var p = t.split(":"); return (+p[0])*60 + (+p[1]); }
+  function todayIso(){ var d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate()); }
+  function dayName(iso, long){
+    var p = iso.split("-"), d = new Date(+p[0], +p[1]-1, +p[2]);
+    return d.toLocaleDateString("en-GB", { weekday: long ? "long" : "short" }) + " " + p[2] + "." + p[1] + (long ? "." + p[0] : "");
+  }
+  function isoDots(iso){ var p = (iso || "").split("-"); return p.length === 3 ? p[2] + "." + p[1] + "." + p[0] : ""; }
+
+  // pages: [[{s, x, y, w}]] text items per page, as pdf.js reports them.
+  // The weekly planning is a grid: room label on the left, one column per day.
+  // Columns are found from the header dates, rows from the y position, and each
+  // day cell is read top to bottom into bookings.
+  function parseEventWeek(pages){
+    var DAYS = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday";
+    var cells = Object.create(null), order = [], cols = null, printed = "", titleSeen = false, stray = 0;
+
+    function chars(items){ // one line: text plus the x of every character
+      var text = "", xs = [];
+      items.sort(function(a,b){ return a.x - b.x; }).forEach(function(it){
+        var s = it.s.replace(/\s+/g, " ");
+        if(!s.trim()) return;
+        if(text) { text += " "; xs.push(it.x); }
+        var cw = s.length ? it.w / s.length : 0;
+        for(var i = 0; i < s.length; i++){ text += s[i]; xs.push(it.x + i*cw); }
+      });
+      return { text:text, xs:xs };
+    }
+    function readHeader(line){
+      var re = new RegExp("(?:(" + DAYS + ")\\s+)?(\\d{2})/(\\d{2})(?:/(\\d{4}))?", "g"), m, out = [], year = null;
+      while((m = re.exec(line.text))){
+        out.push({ x:line.xs[m.index], d:+m[2], m:+m[3], y:m[4] ? +m[4] : null });
+        if(m[4] && !year) year = { y:+m[4], m:+m[3] };
+      }
+      if(!out.length || !year) return null;
+      out.forEach(function(c){
+        if(c.y === null) c.y = year.y + (c.m < year.m - 6 ? 1 : (c.m > year.m + 6 ? -1 : 0));
+        c.iso = c.y + "-" + pad2(c.m) + "-" + pad2(c.d);
+      });
+      return out.sort(function(a,b){ return a.x - b.x; });
+    }
+
+    pages.forEach(function(items){
+      var rows = [];
+      items.forEach(function(it){
+        if(!it.s || !it.s.trim()) return;
+        var row = null;
+        for(var i = 0; i < rows.length; i++){ if(Math.abs(rows[i].y - it.y) <= 2){ row = rows[i]; break; } }
+        if(!row){ row = { y:it.y, items:[] }; rows.push(row); }
+        row.items.push(it);
+      });
+      rows.sort(function(a,b){ return b.y - a.y; });
+      var pageCols = null;
+      rows.forEach(function(r){
+        var line = chars(r.items);
+        if(!line.text) return;
+        if(/Event weekly planning/i.test(line.text)){
+          titleSeen = true;
+          var pm = line.text.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+          if(pm) printed = pm[3] + "-" + pm[2] + "-" + pm[1];
+          return;
+        }
+        if(/^Rooms\b/.test(line.text)){ pageCols = readHeader(line); if(pageCols) cols = pageCols; return; }
+        if(!pageCols) return;
+        var left = pageCols[0].x - 2;
+        var label = "", parts = pageCols.map(function(){ return ""; });
+        for(var i = 0; i < line.text.length; i++){
+          var ch = line.text[i], x = line.xs[i];
+          if(x < left){ label += ch; continue; }
+          var c = 0;
+          while(c + 1 < pageCols.length && x >= pageCols[c+1].x - 2) c++;
+          parts[c] += ch;
+        }
+        var room = label.trim();
+        if(!room) return;
+        parts.forEach(function(t, c){
+          t = t.replace(/\s+/g, " ").trim();
+          if(!t || t === "-") return;
+          var key = room + "|" + pageCols[c].iso;
+          if(!cells[key]){ cells[key] = []; order.push(key); }
+          cells[key].push(t);
+        });
+      });
+    });
+
+    if(!titleSeen || !cols) return null;
+
+    var events = [];
+    order.forEach(function(key){
+      var room = key.split("|")[0], day = key.split("|")[1], cur = null;
+      cells[key].forEach(function(t){
+        var m = t.match(/^\*?(.*?)\s+\d{6}\s*\/\s*Status\s*:\s*(.+)$/);
+        if(m){ cur = { day:day, room:room, name:m[1].trim(), status:m[2].trim(), booking:"", pax:null, from:"", to:"", type:"", organizer:"", customer:"" }; events.push(cur); return; }
+        if(!cur){ stray++; return; }
+        if((m = t.match(/^Booking File\s*:\s*(.+)$/i))) cur.booking = m[1].trim();
+        else if((m = t.match(/^(\d+)\s*PAX\s*\/\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/i))){ cur.pax = +m[1]; cur.from = m[2]; cur.to = m[3]; }
+        else if((m = t.match(/^Event Type\s*:\s*(.+)$/i))) cur.type = m[1].trim();
+        else if((m = t.match(/^Organizer\s*:\s*(.+)$/i))) cur.organizer = m[1].trim();
+        else if((m = t.match(/^Main Cust\.?\s*(.+)$/i))) cur.customer = m[1].trim();
+        else if(!/^(Creator|Follow Up|2nd\. Agent)\s*:/i.test(t)) stray++;
+      });
+    });
+    events.forEach(function(e){ if(e.pax === null || !e.from) e.incomplete = true; });
+    return { printed:printed, days:cols.map(function(c){ return c.iso; }), events:events, stray:stray };
+  }
+
+  var week = null, selected = null;
+  try{ var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if(saved && saved.days && saved.events) week = saved; }catch(e){}
+  function save(){ try{ if(week) localStorage.setItem(KEY, JSON.stringify(week)); else localStorage.removeItem(KEY); }catch(e){} }
+
+  // One entry per booking on a day: a group moves between rooms (meeting room,
+  // foyer for breaks, restaurant for lunch) but is counted once.
+  function dayInfo(iso){
+    var evs = week.events.filter(function(e){ return e.day === iso; })
+      .sort(function(a,b){ return mins(a.from) - mins(b.from) || a.room.localeCompare(b.room); });
+    var groups = [], byKey = Object.create(null), rooms = [], warnings = [];
+    evs.forEach(function(e){
+      var k = e.booking || e.name;
+      var g = byKey[k];
+      if(!g){ g = byKey[k] = { name:e.name, status:e.status, booking:e.booking, type:e.type, organizer:e.organizer, customer:e.customer, pax:0, rows:[], color:"" }; groups.push(g); }
+      g.rows.push(e);
+      if(e.pax > g.pax) g.pax = e.pax;
+      if(rooms.indexOf(e.room) < 0) rooms.push(e.room);
+      if(e.incomplete) warnings.push(e.room + ": a " + e.name + " booking has no \"PAX / time\" line. Check the PDF.");
+    });
+    // Same color for a booking on every day of the week.
+    var weekKeys = [];
+    week.events.forEach(function(e){ var k = e.booking || e.name; if(weekKeys.indexOf(k) < 0) weekKeys.push(k); });
+    groups.forEach(function(g){
+      g.color = COLORS[weekKeys.indexOf(g.booking || g.name) % COLORS.length];
+      var counts = Object.create(null);
+      g.rows.forEach(function(e){ if(e.pax != null) (counts[e.pax] = counts[e.pax] || []).push(e.room); });
+      var keys = Object.keys(counts);
+      if(keys.length > 1) warnings.push(g.name + ": " + keys.map(function(p){ return p + " people in " + counts[p].filter(function(r, j, a){ return a.indexOf(r) === j; }).join(", "); }).join(" but ") + ". Check the number with the organizer" + (g.organizer ? " (" + g.organizer + ")" : "") + ".");
+    });
+    var people = groups.reduce(function(s, g){ return s + g.pax; }, 0);
+    var timed = evs.filter(function(e){ return e.from; });
+    return { evs:evs, groups:groups, rooms:rooms, people:people, warnings:warnings,
+             first: timed.length ? timed.reduce(function(m, e){ return mins(e.from) < mins(m) ? e.from : m; }, timed[0].from) : "",
+             last:  timed.length ? timed.reduce(function(m, e){ return mins(e.to) > mins(m) ? e.to : m; }, timed[0].to) : "" };
+  }
+
+  function pickDay(){
+    if(!week) return null;
+    var t = todayIso();
+    if(week.days.indexOf(t) >= 0) return t;
+    var withEvents = week.days.filter(function(d){ return week.events.some(function(e){ return e.day === d; }); });
+    return withEvents.filter(function(d){ return d >= t; })[0] || withEvents[0] || week.days[0];
+  }
+
+  function setStatus(cls, text){ var el = $("evStatus"); el.className = "ev-status" + (cls ? " " + cls : ""); el.textContent = text; }
+
+  function renderBadge(){
+    var b = $("evBadge"); if(!b) return;
+    var n = 0, t = todayIso();
+    if(week && week.days.indexOf(t) >= 0) n = dayInfo(t).groups.length;
+    b.textContent = n;
+  }
+
+  function renderDays(){
+    var host = $("evDays"), info = $("evFileInfo");
+    if(!week){ host.innerHTML = ""; info.innerHTML = ""; return; }
+    var t = todayIso();
+    info.innerHTML = '<div class="ev-file"><span><strong>' + esc(week.fileName) + '</strong>Printed ' + esc(isoDots(week.printed)) + ' · ' + week.events.length + ' bookings</span><button class="btn-ghost danger" type="button" id="evClear">Clear</button></div>';
+    host.innerHTML = week.days.map(function(d){
+      var di = dayInfo(d), n = di.groups.length;
+      return '<button type="button" class="ev-day' + (n ? "" : " empty") + '" data-day="' + d + '" aria-pressed="' + (d === selected) + '"><span><b>' + esc(dayName(d)) + '</b>' + (d === t ? '<span class="ev-today">Today</span>' : "") +
+        '<small>' + (n ? di.rooms.length + (di.rooms.length === 1 ? " room" : " rooms") + " · " + di.first + "–" + di.last : "No events") + '</small></span>' +
+        '<span class="ev-day-n">' + (n ? n + (n === 1 ? " group · " : " groups · ") + di.people + " ppl" : "—") + '</span></button>';
+    }).join("");
+    if(week.days[week.days.length - 1] < t) setStatus("warn", "This plan ended on " + isoDots(week.days[week.days.length - 1]) + ". Upload the new Event weekly planning.");
+  }
+
+  function timeline(di){
+    var timed = di.evs.filter(function(e){ return e.from && e.to; });
+    if(!timed.length) return "";
+    var start = Math.floor(Math.min.apply(null, timed.map(function(e){ return mins(e.from); })) / 60) * 60;
+    var end = Math.ceil(Math.max.apply(null, timed.map(function(e){ return mins(e.to) > mins(e.from) ? mins(e.to) : 24*60; })) / 60) * 60;
+    var span = Math.max(end - start, 60), hour = (100 * 60 / span) + "%";
+    var hours = "";
+    for(var h = start; h <= end; h += 60) hours += '<span style="left:' + (100 * (h - start) / span) + '%">' + pad2(h / 60 % 24) + ':00</span>';
+    var colorOf = Object.create(null);
+    di.groups.forEach(function(g){ g.rows.forEach(function(e){ colorOf[e.room + e.from + e.name] = g.color; }); });
+    var lanes = di.rooms.slice().sort().map(function(room){
+      var blocks = timed.filter(function(e){ return e.room === room; }).map(function(e){
+        var a = mins(e.from) - start, b = (mins(e.to) > mins(e.from) ? mins(e.to) : 24*60) - start;
+        return '<div class="ev-block" style="left:' + (100 * a / span) + '%;width:' + (100 * (b - a) / span) + '%;background:' + colorOf[e.room + e.from + e.name] + '" title="' + esc(e.from + "–" + e.to + " · " + e.name + " · " + e.pax + " people") + '">' + esc(e.name) + '<small>' + esc(e.from + "–" + e.to + " · " + e.pax) + '</small></div>';
+      }).join("");
+      return '<div class="ev-lane"><div class="ev-lane-room">' + esc(room) + '</div><div class="ev-lane-track" style="--hour:' + hour + '">' + blocks + '</div></div>';
+    }).join("");
+    return '<div class="ev-sec">Rooms through the day</div><div class="ev-tl"><div class="ev-tl-in"><div class="ev-hours"><div></div><div>' + hours + '</div></div>' + lanes + '</div></div>';
+  }
+
+  function nowLine(di){
+    var d = new Date(), now = d.getHours()*60 + d.getMinutes();
+    var running = di.evs.filter(function(e){ return e.from && mins(e.from) <= now && (mins(e.to) > now || mins(e.to) < mins(e.from)); });
+    var next = di.evs.filter(function(e){ return mins(e.from) > now; });
+    var fmt = function(e){ return "<b>" + esc(e.room) + "</b> " + esc(e.name) + " (" + e.pax + ")"; };
+    var h = running.length ? "<b>Now:</b> " + running.map(function(e){ return fmt(e) + " until " + esc(e.to); }).join(" · ") : "<b>Now:</b> no event running.";
+    if(next.length){ var at = next[0].from; h += "<br><b>Next " + esc(at) + ":</b> " + next.filter(function(e){ return e.from === at; }).map(fmt).join(" · "); }
+    else h += "<br>No more events today.";
+    return '<div class="ev-now no-print" id="evNow">' + h + '</div>';
+  }
+
+  function renderDay(){
+    var host = $("evDay");
+    if(!week){
+      host.innerHTML = '<div class="ev-empty"><b>No event plan loaded</b>Upload the Event weekly planning PDF to see which rooms are booked, how many people and when.</div>';
+      return;
+    }
+    var di = dayInfo(selected), isToday = selected === todayIso();
+    var h = '<div class="ev-head"><div><h2>' + esc(dayName(selected, true)) + (isToday ? '<span class="ev-today">Today</span>' : "") + '</h2><p>Event weekly planning · printed ' + esc(isoDots(week.printed)) + '</p></div>' +
+      (di.groups.length ? '<button class="btn-fill no-print" type="button" id="evPrint">Print day</button>' : "") + '</div>';
+    if(!di.groups.length){ host.innerHTML = h + '<div class="ev-empty"><b>No events</b>No function room is booked on this day.</div>'; return; }
+    h += '<div class="ev-kpis">' +
+      '<div class="ev-kpi"><b>' + di.groups.length + '</b><span>' + (di.groups.length === 1 ? "Group" : "Groups") + '</span></div>' +
+      '<div class="ev-kpi"><b>' + di.people + '</b><span>People</span></div>' +
+      '<div class="ev-kpi"><b>' + di.rooms.length + '</b><span>' + (di.rooms.length === 1 ? "Room" : "Rooms") + '</span></div>' +
+      '<div class="ev-kpi"><b>' + esc(di.first) + '</b><span>First start · ends ' + esc(di.last) + '</span></div></div>';
+    if(isToday) h += nowLine(di);
+    if(di.warnings.length) h += '<div class="ev-warn"><b>Check</b><ul>' + di.warnings.map(function(w){ return "<li>" + esc(w) + "</li>"; }).join("") + '</ul></div>';
+    h += timeline(di);
+    h += '<div class="ev-sec">Groups</div><div class="ev-groups">' + di.groups.map(function(g){
+      var norm = function(s){ return (s || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); };
+      var meta = [];
+      if(g.organizer) meta.push("Organizer: <b>" + esc(g.organizer) + "</b>");
+      if(g.customer && norm(g.customer).indexOf(norm(g.name)) !== 0) meta.push("Customer: <b>" + esc(g.customer) + "</b>");
+      if(g.booking) meta.push("Booking file: " + esc(g.booking));
+      if(g.type) meta.push("Type: " + esc(g.type));
+      return '<div class="ev-group" style="--c:' + g.color + '"><div class="ev-group-top"><div><h3>' + esc(g.name) + ' <span class="ev-tag' + (/^CONFIRMED$/i.test(g.status) ? "" : " other") + '">' + esc(g.status) + '</span></h3>' +
+        '<div class="ev-meta">' + meta.map(function(m){ return "<span>" + m + "</span>"; }).join("") + '</div></div>' +
+        '<div class="ev-group-pax">' + g.pax + ' <small>people</small></div></div>' +
+        '<ul class="ev-sched">' + g.rows.map(function(e){ return '<li><span class="t">' + esc(e.from + "–" + e.to) + '</span><span class="r">' + esc(e.room) + '</span><span class="p">' + (e.pax != null ? e.pax + " people" : "people not given") + '</span></li>'; }).join("") + '</ul></div>';
+    }).join("") + '</div>';
+    host.innerHTML = h;
+  }
+
+  function render(){ renderDays(); renderDay(); renderBadge(); }
+
+  function readPdf(buf){
+    if(typeof pdfjsLib === "undefined" || !pdfjsLib.getDocument) return Promise.reject(new Error("pdf.js missing"));
+    if(pdfjsLib.GlobalWorkerOptions && !pdfjsLib.GlobalWorkerOptions.workerSrc){
+      var src = document.getElementById("pdfWorkerSource").textContent;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([src], { type:"application/javascript" }));
+    }
+    return pdfjsLib.getDocument({ data:buf }).promise.then(function(pdf){
+      var pages = [], chain = Promise.resolve();
+      for(var p = 1; p <= pdf.numPages; p++) (function(p){
+        chain = chain.then(function(){ return pdf.getPage(p); }).then(function(page){ return page.getTextContent(); }).then(function(tc){
+          pages.push(tc.items.map(function(it){ return { s:it.str, x:it.transform[4], y:it.transform[5], w:typeof it.width === "number" ? it.width : 0 }; }));
+        });
+      })(p);
+      return chain.then(function(){ return pages; });
+    });
+  }
+
+  function handleFile(file){
+    if(!file) return;
+    if(!/\.pdf$/i.test(file.name) && file.type !== "application/pdf"){ setStatus("bad", file.name + " is not a PDF. Nothing was changed."); return; }
+    setStatus("", "Reading " + file.name + "…");
+    file.arrayBuffer().then(readPdf).then(function(pages){
+      var r = parseEventWeek(pages);
+      if(!r){ setStatus("bad", file.name + " does not look like the Event weekly planning (no title or day columns found). Nothing was changed."); return; }
+      if(!r.events.length){ setStatus("bad", "No bookings found in " + file.name + ". Nothing was changed."); return; }
+      week = { fileName:file.name, loadedAt:Date.now(), printed:r.printed, days:r.days, events:r.events };
+      selected = pickDay();
+      save(); render();
+      setStatus(r.stray ? "warn" : "ok", r.events.length + " bookings read for " + isoDots(r.days[0]) + " – " + isoDots(r.days[r.days.length - 1]) + "." +
+        (r.stray ? " " + r.stray + " line(s) could not be matched to a booking; compare with the PDF." : ""));
+    }).catch(function(err){
+      setStatus("bad", "Could not read " + file.name + ". Try saving the PDF again and re-uploading it.");
+      console.error(err);
+    });
+  }
+
+  var drop = $("evDrop"), input = $("evFile");
+  drop.addEventListener("click", function(){ input.click(); });
+  drop.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); input.click(); } });
+  drop.addEventListener("dragover", function(e){ e.preventDefault(); drop.classList.add("drag"); });
+  drop.addEventListener("dragleave", function(){ drop.classList.remove("drag"); });
+  drop.addEventListener("drop", function(e){ e.preventDefault(); drop.classList.remove("drag"); handleFile(e.dataTransfer.files && e.dataTransfer.files[0]); });
+  input.addEventListener("change", function(){ handleFile(input.files && input.files[0]); input.value = ""; });
+  $("panel-events").addEventListener("click", function(e){
+    var day = e.target.closest(".ev-day");
+    if(day){ selected = day.getAttribute("data-day"); renderDays(); renderDay(); return; }
+    if(e.target.closest("#evClear")){
+      if(!confirm("Remove the loaded event plan from this PC?")) return;
+      week = null; selected = null; save(); setStatus("", "Event plan cleared."); render(); return;
+    }
+    if(e.target.closest("#evPrint")){ document.body.setAttribute("data-print", "events"); window.print(); }
+  });
+
+  selected = pickDay();
+  render();
+  // Keep "Today", the Now/Next line and the tab badge current on a PC left open.
+  var shownDay = todayIso();
+  setInterval(function(){
+    if(!week) return;
+    var t = todayIso();
+    if(t !== shownDay){ shownDay = t; selected = pickDay(); render(); return; }
+    if(selected === t && $("evNow")) $("evNow").outerHTML = nowLine(dayInfo(t));
+  }, 60000);
 })();
 </script>
 </body>
