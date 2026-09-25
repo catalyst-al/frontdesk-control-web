@@ -2151,6 +2151,17 @@
   .ev-empty{border:1px dashed var(--navy-200); border-radius:var(--radius-md); padding:28px 16px; text-align:center; color:var(--ink-muted); font-size:13px; background:#F7F9FC;}
   .ev-empty b{display:block; color:var(--navy); font-size:15px; margin-bottom:4px;}
   #evFile{display:none;}
+  .ev-howbtn{width:100%; margin:10px 0 0;}
+  .ev-guide h2{margin:0; font-size:20px; color:var(--navy);}
+  .ev-guide > p{margin:4px 0 14px; font-size:12px; color:var(--ink-muted); line-height:1.5;}
+  .ev-steps{list-style:none; margin:0; padding:0; display:grid; gap:14px; counter-reset:evstep;}
+  .ev-steps li{display:grid; grid-template-columns:30px minmax(0,1fr); gap:10px; counter-increment:evstep;}
+  .ev-steps li::before{content:counter(evstep); display:grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; font-family:var(--mono); font-size:12px; font-weight:800;}
+  .ev-steps b{color:var(--ink);} .ev-steps p{margin:2px 0 8px; font-size:13px; line-height:1.55; color:var(--ink-muted);}
+  .ev-steps code{font-family:var(--mono); background:#EEF3FA; border:1px solid var(--line); border-radius:5px; padding:0 5px; color:var(--navy);}
+  .ev-steps a{display:inline-block; max-width:100%;}
+  .ev-steps img{display:block; width:auto; max-width:100%; height:auto; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff;}
+  .ev-guide-note{margin-top:14px; padding:10px 12px; border-left:4px solid var(--gold); background:var(--amber-bg); border-radius:var(--radius-sm); font-size:12px; line-height:1.55; color:#6B4A00;}
   @media (max-width:640px){ .ev-kpis{grid-template-columns:repeat(2,minmax(0,1fr));} .ev-sched li{grid-template-columns:86px 1fr;} .ev-sched .p{grid-column:2;} }
   @media print{
     body[data-print="events"] #panel-events{display:block !important;}
@@ -2245,6 +2256,7 @@
             <div class="grp-drop-sub">or click to choose the file &middot; PDF</div>
           </div>
           <input type="file" id="evFile" accept=".pdf,application/pdf">
+          <button class="btn-fill ev-howbtn" type="button" id="evHowBtn">How to get this PDF from SAP</button>
           <p class="ev-privacy">Read on this PC only. Nothing is uploaded; the plan stays in this browser until you clear it or load a new week.</p>
           <div class="ev-status" id="evStatus" role="status" aria-live="polite"></div>
           <div id="evFileInfo"></div>
@@ -20833,10 +20845,27 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     return '<div class="ev-now no-print" id="evNow">' + h + '</div>';
   }
 
+  // Where the PDF comes from: SAP House status -> Event weekly planning -> Print to PDF.
+  // Screenshots in events-guide/ have group names, booking files and staff names covered.
+  var showGuide = false;
+  function guideHtml(){
+    var shot = function(n, alt){ return '<a href="events-guide/events-step-' + n + '.png" target="_blank" rel="noopener" title="Open full size"><img src="events-guide/events-step-' + n + '.png" alt="' + alt + '" loading="lazy"></a>'; };
+    return '<div class="ev-guide"><div class="ev-head"><div><h2>How to get the Event weekly planning PDF</h2></div>' +
+      (week ? '<button class="btn-fill no-print" type="button" id="evGuideBack">Back to the day</button>' : "") + '</div>' +
+      '<p>About one minute in SAP, once a week or whenever the planning changes. The week starts on the date set in House status.</p><ol class="ev-steps">' +
+      '<li><div><p>In <b>SAP Easy Access (TMS_All)</b>, open <b>Favorites &rarr; House status</b>.</p>' + shot(1, "SAP Favorites with House status marked") + '</div></li>' +
+      '<li><div><p>Check the <b>Date</b> (the first day of the week you need), then click <b>Event weekly planning</b> in the top bar.</p>' + shot(2, "House status with the Event weekly planning button marked") + '</div></li>' +
+      '<li><div><p>The list <b>Week from &hellip; to &hellip;</b> opens. Click the <b>Print</b> button in the list toolbar.</p>' + shot(3, "Event weekly planning list with the Print button marked") + '</div></li>' +
+      '<li><div><p>In <b>Print ALV List</b>: Output Device <code>locl</code> (Front office Left printer), 1 copy, Page Area <b>Everything</b>, Print Time <b>Immediately</b>. Confirm with the green <b>&#10003;</b>.</p>' + shot(4, "Print ALV List dialog with Output Device locl and the green check marked") + '</div></li>' +
+      '<li><div><p>In the Windows <b>Print</b> window choose <b>Microsoft Print to PDF</b> and click <b>OK</b>. Save the file on this PC, e.g. <code>Events 25.09.2026.pdf</code> in Downloads.</p>' + shot(5, "Windows Print dialog with Microsoft Print to PDF and OK marked") + '</div></li>' +
+      '<li><div><p>Come back here and <b>drop the saved PDF on the upload box</b>, or click the box and choose the file. A new PDF replaces the previous week.</p></div></li>' +
+      '</ol><div class="ev-guide-note"><b>Keep it on hotel equipment.</b> The PDF lists groups, booking files and staff names. It is read only in this browser; delete it from Downloads when the week is over.</div></div>';
+  }
+
   function renderDay(){
     var host = $("evDay");
-    if(!week){
-      host.innerHTML = '<div class="ev-empty"><b>No event plan loaded</b>Upload the Event weekly planning PDF to see which rooms are booked, how many people and when.</div>';
+    if(showGuide || !week){
+      host.innerHTML = (week ? "" : '<div class="ev-empty" style="margin-bottom:18px"><b>No event plan loaded</b>Upload the Event weekly planning PDF to see which rooms are booked, how many people and when.</div>') + guideHtml();
       return;
     }
     var di = dayInfo(selected), isToday = selected === todayIso();
@@ -20894,6 +20923,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       if(!r){ setStatus("bad", file.name + " does not look like the Event weekly planning (no title or day columns found). Nothing was changed."); return; }
       if(!r.events.length){ setStatus("bad", "No bookings found in " + file.name + ". Nothing was changed."); return; }
       week = { fileName:file.name, loadedAt:Date.now(), printed:r.printed, days:r.days, events:r.events };
+      showGuide = false;
       selected = pickDay();
       save(); render();
       setStatus(r.stray ? "warn" : "ok", r.events.length + " bookings read for " + isoDots(r.days[0]) + " – " + isoDots(r.days[r.days.length - 1]) + "." +
@@ -20913,12 +20943,14 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   input.addEventListener("change", function(){ handleFile(input.files && input.files[0]); input.value = ""; });
   $("panel-events").addEventListener("click", function(e){
     var day = e.target.closest(".ev-day");
-    if(day){ selected = day.getAttribute("data-day"); renderDays(); renderDay(); return; }
+    if(day){ selected = day.getAttribute("data-day"); showGuide = false; renderDays(); renderDay(); return; }
     if(e.target.closest("#evClear")){
       if(!confirm("Remove the loaded event plan from this PC?")) return;
       week = null; selected = null; save(); setStatus("", "Event plan cleared."); render(); return;
     }
-    if(e.target.closest("#evPrint")){ document.body.setAttribute("data-print", "events"); window.print(); }
+    if(e.target.closest("#evPrint")){ document.body.setAttribute("data-print", "events"); window.print(); return; }
+    if(e.target.closest("#evHowBtn")){ showGuide = true; renderDay(); $("evDay").scrollIntoView({ behavior:"smooth", block:"start" }); return; }
+    if(e.target.closest("#evGuideBack")){ showGuide = false; renderDay(); }
   });
 
   selected = pickDay();
