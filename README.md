@@ -23,6 +23,14 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 - Ticked steps are stored per business date in this browser only. The guide makes no network calls.
 - Content lives in `night-audit-guide/data.js`; screenshots in `night-audit-guide/img/`. Screenshots must have guest names, reservation numbers, contact data and amounts removed before they are added.
 
+## LUME Night Audit
+`lume-night-audit/` is the Night Audit control center for LUME Boutique Hotel (OPERA PMS): Run Night checklist, Ask / Search, Codes, Problem / Unsure, Visual Guides and the Full SOP. Open `lume-night-audit/index.html` directly.
+
+- Run Night ticks are stored per night in this browser only. A night runs from 12:00 to 12:00, so a new night starts empty; nights older than a week are removed.
+- **Print summary** on Run Night prints one page for the handover: every step with its tick time, the steps still open and a signature line.
+- Content lives in `lume-night-audit/data.js`; `app.js` only renders it. Screenshots are in `lume-night-audit/images/` and must contain no guest names, reservation numbers, card data or credentials. Export blurry screenshots again from the original source rather than enhancing them in the browser.
+- The page makes no network calls.
+
 ## Daily use
 1. Load the breakfast report in the normal Breakfast tab.
    - Optional, any time: under VIP / Premium / Club, upload yesterday's VIP / arrivals list (PDF). Rooms with a loyalty level are marked automatically. VIP guests get breakfast even when they are not in the F&B report (green "VIP — breakfast included"); Premium (room upgrade only) and Club are shown with their level but get no breakfast. Rooms marked by hand take priority, and a new list replaces the previous one. Rows whose stay does not cover the breakfast day are greyed out and ignored.
