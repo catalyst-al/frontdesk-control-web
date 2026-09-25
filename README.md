@@ -30,6 +30,8 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 - **Print summary** on Run Night prints one page for the handover: every step with its tick time, the steps still open and a signature line.
 - Content lives in `lume-night-audit/data.js`; `app.js` only renders it. Screenshots are in `lume-night-audit/images/` and must contain no guest names, reservation numbers, card data or credentials. Export blurry screenshots again from the original source rather than enhancing them in the browser.
 - The page makes no network calls.
+- After editing `data.js`, run `node lume-night-audit/check-data.js`. It reports broken card, section, visual guide and image references, unused images, and Codes / Problem buttons that find no answer.
+- Keyboard: arrow keys move between tabs; screenshots open with Enter or Space; the help drawer and the zoomed screenshot keep Tab inside and close with Esc, returning focus to where it was.
 
 ## Daily use
 1. Load the breakfast report in the normal Breakfast tab.
