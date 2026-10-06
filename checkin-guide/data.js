@@ -279,9 +279,10 @@ window.CIG = {
       how: [
         "Click <b>Record key</b> in the toolbar of the check-in screen.",
         "The window <b>Key recording process</b> opens: reservation, arrival and departure, key validity (<b>Valid from</b>, <b>Valid. End date</b>, <b>Valid. End time</b>) and the room under <b>Rooms using Key</b>.",
-        "Check that the end date is the <b>departure date</b>."
+        "Check that the end date is the <b>departure date</b>.",
+        "<b>Number of copies</b>: type how many key cards the guest wants."
       ],
-      check: "<b>Rooms using Key</b> shows the guest's room and the validity ends on the departure day.",
+      check: "<b>Rooms using Key</b> shows the guest's room, the validity ends on the departure day and <b>Number of copies</b> is the number of cards the guest wants.",
       imgs: [
         { src: "ci-record-key-toolbar.png", cap: "Check-in screen with a room: <b>Record key</b> is the fourth icon (pressed). Name, reservation, client number and room are covered." },
         { src: "ci-key-recording.png", cap: "<b>Key recording process</b>: validity until the departure day 12:00, the room under <b>Rooms using Key</b>." }
@@ -292,7 +293,7 @@ window.CIG = {
       where: "Key recording process → <b>Save</b> (disk icon, bottom right) → black key encoder",
       how: [
         "Press <b>Save</b> (disk icon at the bottom right).",
-        "Put the key card on the <b>black encoder</b>.",
+        "Put the key card on the <b>black encoder</b> — one card after the other if the guest wants more than one.",
         "Give the card to the guest with their name: say the <b>floor</b>, never the room number."
       ],
       check: "The card is written and the guest has it."
