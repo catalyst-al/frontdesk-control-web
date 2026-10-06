@@ -138,7 +138,7 @@
         "<button type='button' class='ghost' data-go='" + (prev ? prev.id : "") + "'" + (prev ? "" : " disabled") + ">← " + (prev ? labels[prev.id] : "Back") + "</button>" +
         "<span class='mid'>Step " + (i + 1) + " of " + D.steps.length + "</span>" +
         (next ? "<button type='button' class='primary' data-go='" + next.id + "'>Next → " + labels[next.id] + "</button>"
-              : "<span class='more'>More steps coming</span>") +
+              : "<span class='more'>End of the guide</span>") +
         "</div>" : "") +
       "</article>";
   }
@@ -151,7 +151,7 @@
       html = D.phases.map(function(p){
         return "<div class='phase-head'><span class='ph-no'>" + p.no + "</span><h3>" + esc(p.title) + "</h3><span>" + esc(p.sub) + "</span></div>" +
           D.steps.filter(function(s){ return s.phase === p.id; }).map(renderStep).join("");
-      }).join("") + "<p class='more-all'>More steps coming.</p>";
+      }).join("") + "<p class='more-all'>End of the guide.</p>";
     }
     $("#stage").innerHTML = html;
   }
@@ -274,6 +274,8 @@
     if((t = e.target.closest("[data-mode]"))){ setMode(t.getAttribute("data-mode")); return; }
   });
   document.addEventListener("keydown", function(e){
+    // Ctrl+P prints every step, the same as the Print button.
+    if((e.ctrlKey || e.metaKey) && !e.altKey && String(e.key).toLowerCase() === "p"){ e.preventDefault(); $("#printBtn").click(); return; }
     if($("#lb").classList.contains("on")){
       if(e.key === "Escape") closeLb();
       else if(e.key === "ArrowRight") stepLb(1);

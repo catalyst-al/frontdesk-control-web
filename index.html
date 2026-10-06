@@ -4425,6 +4425,16 @@
     setTimeout(sizeCiGuide, 350);
   }
   window.addEventListener("resize", sizeCiGuide);
+  // Ctrl+P on this tab prints the guide (all steps) instead of the Handover report.
+  window.addEventListener("keydown", function(e){
+    if(!(e.ctrlKey || e.metaKey) || e.altKey || String(e.key).toLowerCase() !== "p") return;
+    if(!document.getElementById("panel-checkin").classList.contains("active")) return;
+    var btn = null;
+    try { btn = document.getElementById("ciGuideFrame").contentDocument.getElementById("printBtn"); } catch(err){}
+    if(!btn) return;
+    e.preventDefault();
+    btn.click();
+  });
 
   tabs.forEach(function(t){
     t.addEventListener("click", function(){ activateTab(t.getAttribute("data-panel"), false); });
