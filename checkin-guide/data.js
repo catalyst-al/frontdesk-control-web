@@ -244,7 +244,7 @@ window.CIG = {
         "Confirm with the <b>green tick</b>."
       ],
       check: "The payment is confirmed and the paid lines in the folio turn <b>red</b> (step E7).",
-      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it; ask the manager on duty.",
+      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it — <b>ask the guest</b>. The company name can be put on the folio (<b>F1</b>, <b>F2</b>, <b>F3</b> or <b>F4</b>).",
       tip: "<b>VCC</b> covers only the booking. The guest pays the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …), with PinPad.",
       imgs: [
         { src: "ci-gateway-pinpad.png", cap: "<b>Charge via PinPad</b>: the guest pays on the terminal at the desk." },
@@ -338,7 +338,7 @@ window.CIG = {
         "<b>All red</b> = everything is paid → click the <b>chequered flag</b> (Check-out) in the toolbar.",
         "A line is still <b>green</b> = not paid → take the payment first with <b>Create invoice</b> (<button type='button' class='linkbtn' data-go='create-invoice'>steps E2 – E6</button>), then check out."
       ],
-      check: "Every line is red before you press Check-out.",
+      check: "Every line is red before you press Check-out. After the chequered flag the check-out is done — there are no further steps.",
       stop: "Never check out while a line is still green.",
       imgs: [
         { src: "co-folio.png", cap: "All lines red = paid. Name, reservation, voucher, invoice and room covered." },
@@ -357,7 +357,7 @@ window.CIG = {
     { q: "Guest has a voucher",
       a: "Check what the voucher includes: room with breakfast, room only, welcome drink. It is prepaid at the travel agency. Keep the voucher in the cost-coverage folder (Kostenübernahme); at departure it is sent to the agency with the invoice checked out to direct bill. A copy stays with the copy of the invoice in your cashier closing." },
     { q: "Booking with a VCC (Booking.com, Agoda, Ctrip …)",
-      a: "The VCC covers only the booking. The guest pays at check-in the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …). Charge only a VCC whose holder name is the company." },
+      a: "The VCC covers only the booking. The guest pays at check-in the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …). Charge only a VCC whose holder name is the company. If it is not the company, do not charge it — ask the guest; the company name can be put on folio F1, F2, F3 or F4." },
     { q: "Radisson Rewards member",
       a: "Full attention, thank them for being a member and explain their benefits in the hotel. <b>Gold</b> and <b>Concierge</b>: welcome letter and welcome gift. Every Rewards arrival gets a bottle of water." },
     { q: "VIP arrival",
