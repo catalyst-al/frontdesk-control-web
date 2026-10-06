@@ -27,8 +27,8 @@ window.CIG = {
       text: "Charge only a VCC in the <b>company's name</b> (Booking.com, Agoda, Ctrip …). The guest pays the <b>tourist tax: €2 per person per night</b> and <b>every extra</b> added at the desk (breakfast, parking …)." },
     { icon: "form", title: "Registration form complete",
       text: "First and last name, home address, passport no. (non-German guests), <b>Business or Leisure</b> (Frankfurt tourism tax) and signature. In a double room one person's full details are enough." },
-    { icon: "stop", title: "Floor only, never the room number",
-      text: "When you hand over the key card, say the <b>floor</b>, not the room number. VIP arrivals: complete discretion, no information about a guest leaves the desk." }
+    { icon: "key", title: "Tell the guest the room",
+      text: "When you hand over the key card, say the room: the first two digits are the <b>floor</b>, the last two the <b>room</b> — <b>0231</b> = 2nd floor, room 31. VIP arrivals: complete discretion, no information about a guest leaves the desk." }
   ],
 
   steps: [
@@ -297,7 +297,7 @@ window.CIG = {
       how: [
         "Press <b>Save</b> (disk icon at the bottom right).",
         "Put the key card on the <b>black encoder</b> — one card after the other if the guest wants more than one.",
-        "Give the card to the guest with their name: say the <b>floor</b>, never the room number."
+        "Give the card to the guest with their name and say the room: <b>0231</b> = 2nd floor, room 31."
       ],
       check: "The card is written and the guest has it.",
       tip: "When you hand over the card, tell the guest the breakfast time: <b>06:30 – 10:00</b>."
