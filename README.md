@@ -33,6 +33,14 @@ The **Events** tab (Alt+7) reads the DEFRAAIR "Event weekly planning" PDF and sh
 - **Check** lists a group whose number of people differs between its rooms on the same day, and bookings without a people/time line. **Print day** prints the selected day.
 - Creator, Follow Up and 2nd Agent are read but not shown.
 
+## Check-in
+The **Check-in** tab (Alt+8) shows `checkin-guide/`, a step-by-step check-in guide for DEFRAAIR in SAP (TMS). It can also be opened directly at `checkin-guide/index.html`.
+
+- **Step by step**: House status → Arrivals Expected → select the reservation → Check In → Enter → room, each with its screenshot. The guide grows as further screenshots arrive.
+- **Special cases** and **What to say** summarise the Front Office SOPs 4.7 – 4.10 (on-the-day rates, early arrivals, guest arrival, registration form, card authorisation and cash).
+- Content lives in `checkin-guide/data.js`; screenshots in `checkin-guide/img/`. Screenshots must have guest names, reservation numbers, room numbers, contact data and company names covered before they are added.
+- The page makes no network calls. Only the display choice (one step / all steps, last step open) is stored in this browser.
+
 ## LUME Night Audit
 `lume-night-audit/` is the Night Audit control center for LUME Boutique Hotel (OPERA PMS): Run Night checklist, Ask / Search, Codes, Problem / Unsure, Visual Guides and the Full SOP. Open `lume-night-audit/index.html` directly.
 

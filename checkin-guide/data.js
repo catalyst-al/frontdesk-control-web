@@ -1,0 +1,138 @@
+/* Check-in Guide — content.
+   Source material: SAP (TMS) screenshots from the front desk, step by step, and the
+   Front Office SOPs 4.7 On the day rates, 4.8 Early Arrivals, 4.9 Gastanreise,
+   4.10 Check-in procedure and 4.10 Credit Card Authorisation und Barzahlung.
+   The guide grows as new screenshots arrive; add the next steps at the end of `steps`.
+   No guest names, reservation numbers, room numbers, contact data or card data are stored
+   here; all screenshots were redacted before being added. */
+window.CIG = {
+
+  phases: [
+    { id: "find",   no: "A", title: "Find the arrival",  sub: "House status → Arrivals expected → Check In" },
+    { id: "screen", no: "B", title: "Check-in screen",   sub: "Remarks, room" }
+  ],
+
+  rules: [
+    { icon: "card", title: "Card authorisation",
+      text: "Read the guest's card with <b>Chip&amp;Pin</b>. The amount is all nights <b>+ €50 per night</b> for extras. Show it on the display and tell the guest it is <b>not a charge</b>." },
+    { icon: "cash", title: "No card → cash or direct bill",
+      text: "Cash: the full stay <b>+ €50 per night</b> is paid at check-in. No deposit for extras → the account is set to <b>No-Post</b>. Direct bill needs no card only when <b>everything</b> goes a/c." },
+    { icon: "form", title: "Registration form complete",
+      text: "First and last name, home address, passport no. (non-German guests), <b>Business or Leisure</b> (Frankfurt tourism tax) and signature. In a double room one person's full details are enough." },
+    { icon: "stop", title: "Floor only, never the room number",
+      text: "When you hand over the key card, say the <b>floor</b>, not the room number. VIP arrivals: complete discretion, no information about a guest leaves the desk." }
+  ],
+
+  steps: [
+    /* ---------------- A. FIND THE ARRIVAL ---------------- */
+    { id: "house-status", phase: "find", title: "Open House status",
+      lead: "Every check-in starts from House status.",
+      where: "SAP Easy Access <b>TMS_All</b> → Favorites → <b>House status</b>",
+      how: [
+        "In <b>SAP Easy Access</b> find <b>House status</b> in the Favorites list.",
+        "<b>Double-click</b> House status."
+      ],
+      check: "The screen <b>PI Frankfurt Airport – HOUSE STATUS</b> opens with today's date.",
+      imgs: [
+        { src: "ci-favourites.png", cap: "Favorites → double-click <b>House status</b>." }
+      ] },
+
+    { id: "arrivals", phase: "find", title: "Open the expected arrivals",
+      lead: "The number next to Arrivals Expected opens the list of today's arrivals.",
+      where: "House status → tab <b>Activity</b> → line <b>Arrivals Expected</b>",
+      how: [
+        "Check the <b>Date</b> at the top: it must be today.",
+        "In the line <b>Arrivals Expected</b>, <b>double-click the number</b> under <b>Room</b>."
+      ],
+      check: "The list <b>Arrivals Expected</b> opens: name, reservation, room, meal plan, adults/children, arrival, departure, room type, company/channel.",
+      imgs: [
+        { src: "ci-house-status.png", cap: "Line <b>Arrivals Expected</b> → double-click the number in the <b>Room</b> column." }
+      ] },
+
+    { id: "select", phase: "find", title: "Select the reservation and press Check In",
+      lead: "Find the guest in the list and open the check-in for that reservation.",
+      where: "Arrivals Expected (list)",
+      how: [
+        "Find the guest: the list is sorted by <b>Guest or Group's name</b>.",
+        "Compare <b>arrival</b>, <b>departure</b>, <b>adults / children</b> and <b>room type</b> with what the guest tells you.",
+        "Select the <b>whole line</b>: click the grey box at the very left of the line.",
+        "Press <b>Check In</b>."
+      ],
+      check: "The screen <b>DEFRAAIR. Check In.</b> opens with the guest's name in the title.",
+      stop: "Two guests with the same or a similar name? Open the right one by comparing the dates and the company/channel (<b>Name 1</b>), not just the name.",
+      imgs: [
+        { src: "ci-arrivals.png", cap: "Arrivals Expected: select the whole line (grey box on the left), then <b>Check In</b>. Names, reservation and room numbers are covered." }
+      ] },
+
+    /* ---------------- B. CHECK-IN SCREEN ---------------- */
+    { id: "enter", phase: "screen", title: "Press Enter to open the screen for editing",
+      lead: "The check-in screen first opens read-only. Enter makes it editable.",
+      where: "DEFRAAIR. Check In. → tab <b>General Data</b>",
+      how: [
+        "Read the reservation first: <b>Arrival</b>, <b>Nights</b>, <b>Depart.</b>, <b>RoomType</b>, <b>Guests</b>, <b>Meal Plan</b> in the guest list (BB = with breakfast, RO = room only).",
+        "Read the <b>Remarks</b> on the right (for example how the stay is paid).",
+        "Press <kbd>Enter</kbd>.",
+        "Now the fields can be written in, including the <b>Remarks</b>, and the toolbar appears at the top: <b>Welcome Card</b>, <b>Assign room</b>, <b>Save without check-in</b>, <b>Check-in in queue</b>."
+      ],
+      check: "The toolbar with <b>Assign room</b> and <b>Check-in in queue</b> is visible at the top.",
+      imgs: [
+        { src: "ci-screen.png", cap: "Check-in screen as it opens — read-only, no toolbar yet." },
+        { src: "ci-screen-edit.png", cap: "After <kbd>Enter</kbd>: fields editable, toolbar at the top." }
+      ] },
+
+    { id: "room", phase: "screen", title: "Select the room",
+      lead: "Give the guest a room of the booked room type.",
+      where: "Check-in screen → field <b>Room</b> (yellow)",
+      how: [
+        "Click in the yellow field <b>Room</b>.",
+        "Choose a room of the booked <b>RoomType</b>.",
+        "Upgrade? Tell the guest that they receive an upgrade."
+      ],
+      check: "The room number is in the <b>Room</b> field.",
+      tip: "Guest arrives before the room is ready (early arrival)? Use <b>Check-in in queue</b>: the guest has registered and paid, and you can see how long they have been waiting. Call Housekeeping to clean that room first.",
+      imgs: [
+        { src: "ci-screen-edit.png", cap: "Yellow field <b>Room</b>. The toolbar also has <b>Assign room</b> and <b>Check-in in queue</b>." }
+      ] }
+  ],
+
+  /* Special cases from the Front Office SOPs (4.7 – 4.10). */
+  cases: [
+    { q: "Guest arrives early (before 15:00)",
+      a: "Check-in is from <b>15:00</b>. If a room is available, check in earlier. Otherwise give a room that is still dirty and ask Housekeeping to clean it first. The guest can already fill in the registration form and settle the payment; then put the reservation <b>in queue</b>. Luggage goes to the luggage room with a <b>luggage tag</b>." },
+    { q: "Guest pays cash",
+      a: "The full stay is paid at check-in, plus <b>€50 per night</b> as deposit for extras. The guest receives a payment confirmation from the system. If the guest does not want to leave a deposit, the account is set to <b>No-Post</b>: nothing can be charged to the room (restaurant, outlets, phone)." },
+    { q: "Company or travel agent pays the room",
+      a: "If the company's or agent's card pays the nights, authorise only the nights on it. Authorise the guest's own card only for possible extras. <b>Direct bill</b> needs no card only when <b>all</b> charges go to the account." },
+    { q: "Guest has a voucher",
+      a: "Check what the voucher includes: room with breakfast, room only, welcome drink. It is prepaid at the travel agency. Keep the voucher in the cost-coverage folder (Kostenübernahme); at departure it is sent to the agency with the invoice checked out to direct bill. A copy stays with the copy of the invoice in your cashier closing." },
+    { q: "Final bill will be higher than the authorisation",
+      a: "During the stay check whether the guest's charges have gone over the authorised amount. If yes, authorise a further amount according to hotel policy." },
+    { q: "Radisson Rewards member",
+      a: "Full attention, thank them for being a member and explain their benefits in the hotel. <b>Gold</b> and <b>Concierge</b>: welcome letter and welcome gift. Every Rewards arrival gets a bottle of water." },
+    { q: "VIP arrival",
+      a: "Complete discretion. No information about a guest leaves the desk. Never ask for an autograph." },
+    { q: "Walk-in or rate question",
+      a: "Offer the highest rate first, before lower rates. A special rate depends on today's availability, the time of day and availability at Frankfurt Airport and City. An unsold room is lost forever — never send a guest away; if you are unsure, ask the FOM, SM or DM." },
+    { q: "Guest asks you to park the car",
+      a: "Staff never drive a guest's car into or out of the garage. You may help the guest, but never sit at the wheel." }
+  ],
+
+  /* What to say — SOP 4.9 Gastanreise. */
+  phrases: [
+    { when: "Welcome",
+      de: "Herzlich willkommen im Park Inn Frankfurt Airport. Wie darf ich Ihnen behilflich sein?",
+      en: "Welcome to the Park Inn Frankfurt Airport. How may I help you?" },
+    { when: "Guest had to wait",
+      de: "Herzlich willkommen im Park Inn Frankfurt Airport. Entschuldigen Sie, dass Sie warten mussten. Wie darf ich Ihnen behilflich sein?",
+      en: "Welcome to the Park Inn Frankfurt Airport. I am sorry to keep you waiting. How may I help you?" },
+    { when: "Confirm the booking",
+      de: "Herr / Frau NAME, Ihre Buchung ist für X Personen und X Nächte. Möchten Sie ein Raucher- oder Nichtraucherzimmer?",
+      en: "Mr / Ms NAME, your booking is for X people for X nights. Do you prefer a smoking or non-smoking room?" },
+    { when: "Payment",
+      de: "Wie möchten Sie die Rechnung begleichen, in bar oder mit Kreditkarte? Dürfte ich die Kreditkarte bitte im System einlesen?",
+      en: "How would you like to settle your bill, by cash or by credit card? May I take your credit card, please?" },
+    { when: "Card authorisation",
+      de: "Das ist nur eine Autorisierung, keine Abbuchung. Der Betrag wird bei der Abreise wieder freigegeben.",
+      en: "This is only an authorisation, not a charge. The amount is released when you check out." }
+  ]
+};
