@@ -3,7 +3,8 @@
    Front Office SOPs 4.7 On the day rates, 4.8 Early Arrivals, 4.9 Gastanreise,
    4.10 Check-in procedure and 4.10 Credit Card Authorisation und Barzahlung.
    The authorisation rule of SOP 4.10 (nights + €50 per night, released at check-out) is not
-   used: at Park Inn Frankfurt Airport everything is paid at check-in (confirmed 06.10.2026).
+   used: at Park Inn Frankfurt Airport everything is paid at check-in, by card only - no cash
+   (confirmed 06.10.2026).
    The guide grows as new screenshots arrive; add the next steps at the end of `steps`.
    No guest names, reservation numbers, room numbers, contact data or card data are stored
    here; all screenshots were redacted before being added. */
@@ -20,8 +21,8 @@ window.CIG = {
   ],
 
   rules: [
-    { icon: "cash", title: "Everything is paid at check-in",
-      text: "The whole stay is paid <b>at check-in</b>: Create invoice → till <b>FD128</b> → <b>Payment Gateway</b> → PinPad or the card on the reservation (steps E2 – E6). There is no pre-authorisation." },
+    { icon: "card", title: "Everything is paid at check-in",
+      text: "The whole stay is paid <b>at check-in</b>, <b>by card only — no cash</b>: Create invoice → till <b>FD128</b> → <b>Payment Gateway</b> → PinPad or the card on the reservation (steps E2 – E6). There is no pre-authorisation." },
     { icon: "card", title: "VCC covers only the booking",
       text: "Charge only a VCC in the <b>company's name</b> (Booking.com, Agoda, Ctrip …). The guest pays the <b>tourist tax: €2 per person per night</b> and <b>every extra</b> added at the desk (breakfast, parking …)." },
     { icon: "form", title: "Registration form complete",
@@ -347,8 +348,8 @@ window.CIG = {
   cases: [
     { q: "Guest arrives early (before 15:00)",
       a: "Check-in is from <b>15:00</b>. If a room is available, check in earlier. Otherwise give a room that is still dirty and ask Housekeeping to clean it first. The guest can already fill in the registration form and settle the payment; then put the reservation <b>in queue</b>. Luggage goes to the luggage room with a <b>luggage tag</b>." },
-    { q: "Guest pays cash",
-      a: "Also with cash the whole stay is paid <b>at check-in</b>. How cash is booked in SAP (which payment method) is not in this guide yet — ask the manager on duty." },
+    { q: "Guest wants to pay cash",
+      a: "We take <b>cards only — no cash</b>. The whole stay is paid by card at check-in. If the guest has no card, ask the manager on duty." },
     { q: "Company or travel agent pays the room",
       a: "Bill to = the company (step C3). What the company does not cover — for example extras added at the desk — the guest pays at check-in." },
     { q: "Guest has a voucher",
@@ -377,8 +378,8 @@ window.CIG = {
       de: "Herr / Frau NAME, Ihre Buchung ist für X Personen und X Nächte. Möchten Sie ein Raucher- oder Nichtraucherzimmer?",
       en: "Mr / Ms NAME, your booking is for X people for X nights. Do you prefer a smoking or non-smoking room?" },
     { when: "Payment",
-      de: "Wie möchten Sie die Rechnung begleichen, in bar oder mit Kreditkarte? Dürfte ich die Kreditkarte bitte im System einlesen?",
-      en: "How would you like to settle your bill, by cash or by credit card? May I take your credit card, please?" },
+      de: "Bei uns ist nur Kartenzahlung möglich. Dürfte ich Ihre Karte bitte einlesen?",
+      en: "We accept card payment only. May I take your card, please?" },
     { when: "Payment at check-in",
       de: "Der gesamte Aufenthalt wird jetzt beim Check-in bezahlt. Bitte stecken Sie Ihre Karte in das Terminal.",
       en: "The whole stay is paid now at check-in. Please insert your card into the terminal." }
