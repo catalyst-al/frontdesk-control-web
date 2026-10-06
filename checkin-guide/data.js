@@ -13,7 +13,8 @@ window.CIG = {
     { id: "billing", no: "C", title: "Billing",          sub: "Billing Information, Modify header, bill to" },
     { id: "extras",  no: "D", title: "Extras",           sub: "Breakfast, parking and other stay options" },
     { id: "folio",   no: "E", title: "Folio & payment",  sub: "Folio maintenance, Create invoice, Payment Gateway" },
-    { id: "key",     no: "F", title: "Key card",         sub: "Record key, encoder, hand over" }
+    { id: "key",     no: "F", title: "Key card",         sub: "Record key, encoder, hand over" },
+    { id: "checkout", no: "G", title: "Check-out",       sub: "Room → folio all red → Check-out" }
   ],
 
   rules: [
@@ -297,7 +298,49 @@ window.CIG = {
         "Give the card to the guest with their name: say the <b>floor</b>, never the room number."
       ],
       check: "The card is written and the guest has it."
-    }
+    },
+
+    /* ---------------- G. CHECK-OUT ---------------- */
+    { id: "co-open", phase: "checkout", title: "Open Check-out",
+      lead: "Check-out starts from the favourites, like check-in.",
+      where: "SAP Easy Access <b>TMS_All</b> → Favorites → <b>Check-out</b>",
+      how: [
+        "In <b>SAP Easy Access</b> find <b>Check-out</b> in the Favorites list.",
+        "<b>Double-click</b> Check-out."
+      ],
+      check: "A screen with only the field <b>Room</b> opens.",
+      imgs: [
+        { src: "co-favourites.png", cap: "Favorites → double-click <b>Check-out</b>." }
+      ] },
+
+    { id: "co-room", phase: "checkout", title: "Type the room number",
+      lead: "The room opens the guest's folios.",
+      where: "Check-out → field <b>Room</b>",
+      how: [
+        "Type the guest's room number in the yellow field <b>Room</b>.",
+        "Press <kbd>Enter</kbd>.",
+        "<b>Modify items of all folios</b> opens for that room."
+      ],
+      check: "Status <b>Check in</b> and the guest's charges in <b>F1</b> (and F2 – F4 if used).",
+      stop: "Compare the name with the guest in front of you before you go on.",
+      imgs: [
+        { src: "co-room.png", cap: "Check-out: type the room number in <b>Room</b>, then Enter." }
+      ] },
+
+    { id: "co-checkout", phase: "checkout", title: "Everything red → Check-out",
+      lead: "Check the guest out only when every line is paid.",
+      where: "Modify items of all folios → toolbar → <b>Check-out</b> (chequered flag) <img class='ico' src='img/co-icon.png' alt='Check-out icon'>",
+      how: [
+        "Look at the status light of <b>every line</b> in every folio.",
+        "<b>All red</b> = everything is paid → click the <b>chequered flag</b> (Check-out) in the toolbar.",
+        "A line is still <b>green</b> = not paid → take the payment first with <b>Create invoice</b> (<button type='button' class='linkbtn' data-go='create-invoice'>steps E2 – E6</button>), then check out."
+      ],
+      check: "Every line is red before you press Check-out.",
+      stop: "Never check out while a line is still green.",
+      imgs: [
+        { src: "co-folio.png", cap: "All lines red = paid. Name, reservation, voucher, invoice and room covered." },
+        { src: "co-toolbar.png", cap: "Folio toolbar: the <b>chequered flag</b> is Check-out." }
+      ] }
   ],
 
   /* Special cases from the Front Office SOPs (4.7 – 4.10). */
