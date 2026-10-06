@@ -153,7 +153,7 @@ window.CIG = {
         "The extra is added to <b>Folio maintenance</b>."
       ],
       check: "The line is green and the extra appears in <b>Folio maintenance</b>.",
-      tip: "Prices in the list (October 2026): <b>Breakfast €17 per person</b>, <b>Parking €25 per night</b>, Extra bed €25, Early check-in €25, Welcome gift €15, Pet €8, Welcome drink / cocktail €7.50, Transportation €6 per person. Always check the price shown in the list.",
+      tip: "Breakfast is served <b>06:30 – 10:00</b>. Prices in the list (October 2026): <b>Breakfast €17 per person</b>, <b>Parking €25 per night</b>, Extra bed €25, Early check-in €25, Welcome gift €15, Pet €8, Welcome drink / cocktail €7.50, Transportation €6 per person. Always check the price shown in the list.",
       stop: "Tell the guest the price before you add it, and that breakfast is charged per person. For breakfast use <b>FB_BB</b> — not WUFB_BRFS or FB_BBOA. Extras are paid at check-in by the guest, also when the room is on a VCC.",
       imgs: [
         { src: "ci-stay-toolbar.png", cap: "Reservation toolbar: the <b>Stay options</b> icon (star)." },
@@ -240,10 +240,11 @@ window.CIG = {
         "Press <b>Save</b>. The window <b>TMSforPay. Gateway payment</b> opens with the amount.",
         "<b>Charge via PinPad</b> — the guest pays now, at the desk, on the card terminal.",
         "<b>Import data from reservation</b> — a <b>VCC</b> or the guest's <b>credit card</b> is attached to the reservation and the guest has approved that this card is charged. The window <b>Selection the card</b> shows the cards on the reservation: choose the right one.",
+        "<b>Change payment method</b> is not used.",
         "Confirm with the <b>green tick</b>."
       ],
       check: "The payment is confirmed and the paid lines in the folio turn <b>red</b> (step E7).",
-      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it; ask the manager on duty.",
+      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it — <b>ask the guest</b>. The company name can be put on the folio (<b>F1</b>, <b>F2</b>, <b>F3</b> or <b>F4</b>).",
       tip: "<b>VCC</b> covers only the booking. The guest pays the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …), with PinPad.",
       imgs: [
         { src: "ci-gateway-pinpad.png", cap: "<b>Charge via PinPad</b>: the guest pays on the terminal at the desk." },
@@ -298,7 +299,8 @@ window.CIG = {
         "Put the key card on the <b>black encoder</b> — one card after the other if the guest wants more than one.",
         "Give the card to the guest with their name: say the <b>floor</b>, never the room number."
       ],
-      check: "The card is written and the guest has it."
+      check: "The card is written and the guest has it.",
+      tip: "When you hand over the card, tell the guest the breakfast time: <b>06:30 – 10:00</b>."
     },
 
     /* ---------------- G. CHECK-OUT ---------------- */
@@ -336,7 +338,7 @@ window.CIG = {
         "<b>All red</b> = everything is paid → click the <b>chequered flag</b> (Check-out) in the toolbar.",
         "A line is still <b>green</b> = not paid → take the payment first with <b>Create invoice</b> (<button type='button' class='linkbtn' data-go='create-invoice'>steps E2 – E6</button>), then check out."
       ],
-      check: "Every line is red before you press Check-out.",
+      check: "Every line is red before you press Check-out. After the chequered flag the check-out is done — there are no further steps.",
       stop: "Never check out while a line is still green.",
       imgs: [
         { src: "co-folio.png", cap: "All lines red = paid. Name, reservation, voucher, invoice and room covered." },
@@ -355,7 +357,7 @@ window.CIG = {
     { q: "Guest has a voucher",
       a: "Check what the voucher includes: room with breakfast, room only, welcome drink. It is prepaid at the travel agency. Keep the voucher in the cost-coverage folder (Kostenübernahme); at departure it is sent to the agency with the invoice checked out to direct bill. A copy stays with the copy of the invoice in your cashier closing." },
     { q: "Booking with a VCC (Booking.com, Agoda, Ctrip …)",
-      a: "The VCC covers only the booking. The guest pays at check-in the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …). Charge only a VCC whose holder name is the company." },
+      a: "The VCC covers only the booking. The guest pays at check-in the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …). Charge only a VCC whose holder name is the company. If it is not the company, do not charge it — ask the guest; the company name can be put on folio F1, F2, F3 or F4." },
     { q: "Radisson Rewards member",
       a: "Full attention, thank them for being a member and explain their benefits in the hotel. <b>Gold</b> and <b>Concierge</b>: welcome letter and welcome gift. Every Rewards arrival gets a bottle of water." },
     { q: "VIP arrival",
@@ -377,6 +379,9 @@ window.CIG = {
     { when: "Confirm the booking",
       de: "Herr / Frau NAME, Ihre Buchung ist für X Personen und X Nächte. Möchten Sie ein Raucher- oder Nichtraucherzimmer?",
       en: "Mr / Ms NAME, your booking is for X people for X nights. Do you prefer a smoking or non-smoking room?" },
+    { when: "Breakfast",
+      de: "Das Frühstück wird täglich von 06:30 bis 10:00 Uhr serviert.",
+      en: "Breakfast is served daily from 06:30 to 10:00." },
     { when: "Payment",
       de: "Bei uns ist nur Kartenzahlung möglich. Dürfte ich Ihre Karte bitte einlesen?",
       en: "We accept card payment only. May I take your card, please?" },
