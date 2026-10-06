@@ -12,7 +12,8 @@ window.CIG = {
     { id: "screen", no: "B", title: "Check-in screen",   sub: "Remarks, room" },
     { id: "billing", no: "C", title: "Billing",          sub: "Billing Information, Modify header, bill to" },
     { id: "extras",  no: "D", title: "Extras",           sub: "Breakfast, parking and other stay options" },
-    { id: "folio",   no: "E", title: "Folio & payment",  sub: "Folio maintenance, Create invoice, Payment Gateway" }
+    { id: "folio",   no: "E", title: "Folio & payment",  sub: "Folio maintenance, Create invoice, Payment Gateway" },
+    { id: "key",     no: "F", title: "Key card",         sub: "Record key, encoder, hand over" }
   ],
 
   rules: [
@@ -243,7 +244,56 @@ window.CIG = {
         { src: "ci-gateway-pinpad.png", cap: "<b>Charge via PinPad</b>: the guest pays on the terminal at the desk." },
         { src: "ci-gateway-import.png", cap: "<b>Import data from reservation</b>: charge the card attached to the reservation." },
         { src: "ci-select-card.png", cap: "<b>Selection the card</b>: the cards on the reservation (numbers covered). A Booking.com VCC shows as <i>Bookingcom Agent</i>." }
-      ] }
+      ] },
+
+    { id: "paid-check", phase: "folio", title: "Check the folio: red = paid",
+      lead: "Back in Folio maintenance the status light shows whether a line is paid.",
+      where: "Folio maintenance → column <b>Stat…</b> (status)",
+      how: [
+        "Look at the status lights in the first column of the folio.",
+        "<b>Red</b> = paid.",
+        "<b>Green</b> = still open, not paid yet."
+      ],
+      check: "Every line that had to be paid is <b>red</b>.",
+      tip: "Example with a VCC: only the <b>Touristic Tax</b> (TTAX, €2 per person per night) is in the guest's folio, and it is red — paid.",
+      imgs: [
+        { src: "ci-folio-status.png", cap: "Status light <b>red</b> = paid. Name, room, invoice number covered." }
+      ] },
+
+    { id: "back", phase: "folio", title: "Press Back",
+      lead: "Return from the folio to the check-in screen.",
+      where: "Toolbar at the top → <b>Back</b> (green arrow) <img class='ico ico-lg' src='img/ci-back-toolbar.png' alt='SAP toolbar with the Back button'>",
+      how: [
+        "Press <b>Back</b> — the green round arrow in the top toolbar.",
+        "The check-in screen of the reservation is shown again."
+      ],
+      check: "You are on the check-in screen; the room is in the <b>Room</b> field." },
+
+    /* ---------------- F. KEY CARD ---------------- */
+    { id: "record-key", phase: "key", title: "Record key",
+      lead: "Write the key card for the room.",
+      where: "Check-in screen → toolbar → <b>Record key</b> <img class='ico' src='img/ci-record-key-icon.png' alt='Record key icon'>",
+      how: [
+        "Click <b>Record key</b> in the toolbar of the check-in screen.",
+        "The window <b>Key recording process</b> opens: reservation, arrival and departure, key validity (<b>Valid from</b>, <b>Valid. End date</b>, <b>Valid. End time</b>) and the room under <b>Rooms using Key</b>.",
+        "Check that the end date is the <b>departure date</b>."
+      ],
+      check: "<b>Rooms using Key</b> shows the guest's room and the validity ends on the departure day.",
+      imgs: [
+        { src: "ci-record-key-toolbar.png", cap: "Check-in screen with a room: <b>Record key</b> is the fourth icon (pressed). Name, reservation, client number and room are covered." },
+        { src: "ci-key-recording.png", cap: "<b>Key recording process</b>: validity until the departure day 12:00, the room under <b>Rooms using Key</b>." }
+      ] },
+
+    { id: "encode-key", phase: "key", title: "Save, encode the card and hand it over",
+      lead: "The card is written on the black key encoder.",
+      where: "Key recording process → <b>Save</b> (disk icon, bottom right) → black key encoder",
+      how: [
+        "Press <b>Save</b> (disk icon at the bottom right).",
+        "Put the key card on the <b>black encoder</b>.",
+        "Give the card to the guest with their name: say the <b>floor</b>, never the room number."
+      ],
+      check: "The card is written and the guest has it."
+    }
   ],
 
   /* Special cases from the Front Office SOPs (4.7 – 4.10). */
