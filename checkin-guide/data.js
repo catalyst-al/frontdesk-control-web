@@ -9,7 +9,8 @@ window.CIG = {
 
   phases: [
     { id: "find",   no: "A", title: "Find the arrival",  sub: "House status → Arrivals expected → Check In" },
-    { id: "screen", no: "B", title: "Check-in screen",   sub: "Remarks, room" }
+    { id: "screen", no: "B", title: "Check-in screen",   sub: "Remarks, room" },
+    { id: "billing", no: "C", title: "Billing",          sub: "Billing Information, Modify header, bill to" }
   ],
 
   rules: [
@@ -92,6 +93,46 @@ window.CIG = {
       tip: "Guest arrives before the room is ready (early arrival)? Use <b>Check-in in queue</b>: the guest has registered and paid, and you can see how long they have been waiting. Call Housekeeping to clean that room first.",
       imgs: [
         { src: "ci-screen-edit.png", cap: "Yellow field <b>Room</b>. The toolbar also has <b>Assign room</b> and <b>Check-in in queue</b>." }
+      ] }
+,
+
+    /* ---------------- C. BILLING ---------------- */
+    { id: "billing-info", phase: "billing", title: "Open Billing Information",
+      lead: "Here you see who pays and on which rate.",
+      where: "Reservation screen → tab <b>*Billing Information</b>",
+      how: [
+        "Click the tab <b>*Billing Information</b> (next to General Data).",
+        "Look at <b>Client information</b> (Receiver, Holder, Payer), <b>Contract</b> and <b>Rate</b>, <b>Card information</b> and <b>Pre-authorization</b>."
+      ],
+      check: "You know who pays: the guest, a company or a travel agent.",
+      imgs: [
+        { src: "ci-billing.png", cap: "Tab <b>*Billing Information</b>: Client information, Contract / Rate, Card information, Pre-authorization." }
+      ] },
+
+    { id: "modify-header", phase: "billing", title: "Press Modify header",
+      lead: "Opens the reservation for changes.",
+      where: "Toolbar at the top → <b>pencil</b> icon (second icon)",
+      how: [
+        "Click the <b>pencil</b> icon <img class='ico' src='img/ci-modify-icon.png' alt='Modify header icon'> — <b>Modify header</b> — in the toolbar.",
+        "The icon stays pressed and the fields can be changed."
+      ],
+      check: "The pencil icon is pressed and the <b>Room</b> field is yellow.",
+      imgs: [
+        { src: "ci-modify-header.png", cap: "After the click: pencil pressed, the fields can be changed." }
+      ] },
+
+    { id: "bill-to", phase: "billing", title: "Bill to: company or guest",
+      lead: "Decide who the invoice is made out to.",
+      where: "Tab <b>*Billing Information</b> → <b>Bill to</b>",
+      how: [
+        "<b>The guest asks for an invoice to a company:</b> open the name search. The window <b>Restrict Value Range</b> opens on the tab <b>Companies</b>.",
+        "Type the company name in <b>Name</b> and press the <b>green tick</b> or <kbd>Enter</kbd>. Choose the company from the list.",
+        "<b>Nothing requested:</b> type the code <code>100</code> and press <kbd>Enter</kbd>, or <code>400</code> and <kbd>Enter</kbd>, and go to the next step."
+      ],
+      check: "The bill-to name is the company the guest asked for, or code 100 / 400.",
+      tip: "<code>100</code> is <b>GUEST, DIRECT</b> — the same as <b>Client: 100</b> at the top of the reservation.",
+      imgs: [
+        { src: "ci-company-search.png", cap: "<b>Restrict Value Range</b> → tab <b>Companies</b>: company name in <b>Name</b>, then the green tick or Enter." }
       ] }
   ],
 
