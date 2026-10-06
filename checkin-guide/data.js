@@ -153,7 +153,7 @@ window.CIG = {
         "The extra is added to <b>Folio maintenance</b>."
       ],
       check: "The line is green and the extra appears in <b>Folio maintenance</b>.",
-      tip: "Prices in the list (October 2026): <b>Breakfast €17 per person</b>, <b>Parking €25 per night</b>, Extra bed €25, Early check-in €25, Welcome gift €15, Pet €8, Welcome drink / cocktail €7.50, Transportation €6 per person. Always check the price shown in the list.",
+      tip: "Breakfast is served <b>06:30 – 10:00</b>. Prices in the list (October 2026): <b>Breakfast €17 per person</b>, <b>Parking €25 per night</b>, Extra bed €25, Early check-in €25, Welcome gift €15, Pet €8, Welcome drink / cocktail €7.50, Transportation €6 per person. Always check the price shown in the list.",
       stop: "Tell the guest the price before you add it, and that breakfast is charged per person. For breakfast use <b>FB_BB</b> — not WUFB_BRFS or FB_BBOA. Extras are paid at check-in by the guest, also when the room is on a VCC.",
       imgs: [
         { src: "ci-stay-toolbar.png", cap: "Reservation toolbar: the <b>Stay options</b> icon (star)." },
@@ -240,6 +240,7 @@ window.CIG = {
         "Press <b>Save</b>. The window <b>TMSforPay. Gateway payment</b> opens with the amount.",
         "<b>Charge via PinPad</b> — the guest pays now, at the desk, on the card terminal.",
         "<b>Import data from reservation</b> — a <b>VCC</b> or the guest's <b>credit card</b> is attached to the reservation and the guest has approved that this card is charged. The window <b>Selection the card</b> shows the cards on the reservation: choose the right one.",
+        "<b>Change payment method</b> is not used.",
         "Confirm with the <b>green tick</b>."
       ],
       check: "The payment is confirmed and the paid lines in the folio turn <b>red</b> (step E7).",
@@ -298,7 +299,8 @@ window.CIG = {
         "Put the key card on the <b>black encoder</b> — one card after the other if the guest wants more than one.",
         "Give the card to the guest with their name: say the <b>floor</b>, never the room number."
       ],
-      check: "The card is written and the guest has it."
+      check: "The card is written and the guest has it.",
+      tip: "When you hand over the card, tell the guest the breakfast time: <b>06:30 – 10:00</b>."
     },
 
     /* ---------------- G. CHECK-OUT ---------------- */
@@ -377,6 +379,9 @@ window.CIG = {
     { when: "Confirm the booking",
       de: "Herr / Frau NAME, Ihre Buchung ist für X Personen und X Nächte. Möchten Sie ein Raucher- oder Nichtraucherzimmer?",
       en: "Mr / Ms NAME, your booking is for X people for X nights. Do you prefer a smoking or non-smoking room?" },
+    { when: "Breakfast",
+      de: "Das Frühstück wird täglich von 06:30 bis 10:00 Uhr serviert.",
+      en: "Breakfast is served daily from 06:30 to 10:00." },
     { when: "Payment",
       de: "Bei uns ist nur Kartenzahlung möglich. Dürfte ich Ihre Karte bitte einlesen?",
       en: "We accept card payment only. May I take your card, please?" },
