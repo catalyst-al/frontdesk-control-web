@@ -127,10 +127,10 @@ window.CIG = {
       how: [
         "<b>The guest asks for an invoice to a company:</b> open the name search. The window <b>Restrict Value Range</b> opens on the tab <b>Companies</b>.",
         "Type the company name in <b>Name</b> and press the <b>green tick</b> or <kbd>Enter</kbd>. Choose the company from the list.",
-        "<b>Nothing requested:</b> type the code <code>100</code> and press <kbd>Enter</kbd>, or <code>400</code> and <kbd>Enter</kbd>, and go to the next step."
+        "<b>Nothing requested:</b> type the code <code>100</code> (GUEST, DIRECT) and press <kbd>Enter</kbd>, or <code>400</code> (Generic Company) and <kbd>Enter</kbd>, and go to the next step."
       ],
       check: "The bill-to name is the company the guest asked for, or code 100 / 400.",
-      tip: "<code>100</code> is <b>GUEST, DIRECT</b> — the same as <b>Client: 100</b> at the top of the reservation.",
+      tip: "<code>100</code> = <b>GUEST, DIRECT</b> (the same as <b>Client: 100</b> at the top of the reservation). <code>400</code> = <b>Generic Company</b>.",
       imgs: [
         { src: "ci-company-search.png", cap: "<b>Restrict Value Range</b> → tab <b>Companies</b>: company name in <b>Name</b>, then the green tick or Enter." }
       ] }
