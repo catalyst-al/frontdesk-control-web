@@ -97,8 +97,7 @@ window.CIG = {
       tip: "Guest arrives before the room is ready (early arrival)? Use <b>Check-in in queue</b>: the guest has registered and paid, and you can see how long they have been waiting. Call Housekeeping to clean that room first.",
       imgs: [
         { src: "ci-screen-edit.png", cap: "Yellow field <b>Room</b>. The toolbar also has <b>Assign room</b> and <b>Check-in in queue</b>." }
-      ] }
-,
+      ] },
 
     /* ---------------- C. BILLING ---------------- */
     { id: "billing-info", phase: "billing", title: "Open Billing Information",
@@ -137,8 +136,7 @@ window.CIG = {
       tip: "<code>100</code> = <b>GUEST, DIRECT</b> (the same as <b>Client: 100</b> at the top of the reservation). <code>400</code> = <b>Generic Company</b>.",
       imgs: [
         { src: "ci-company-search.png", cap: "<b>Restrict Value Range</b> → tab <b>Companies</b>: company name in <b>Name</b>, then the green tick or Enter." }
-      ] }
-,
+      ] },
 
     /* ---------------- D. EXTRAS ---------------- */
     { id: "stay-options", phase: "extras", title: "Add breakfast, parking or another extra",
@@ -160,8 +158,7 @@ window.CIG = {
         { src: "ci-stay-parking.png", cap: "Parking: line <b>OR_PRKG – Parking</b>, €25 per night." },
         { src: "ci-stay-options.png", cap: "Stay options: a chosen extra is <b>green</b> with the second box ticked (top line)." },
         { src: "ci-stay-options-2.png", cap: "Further down the list: welcome drink, pet, parking, transport, welcome gift, extra bed, early check-in." }
-      ] }
-,
+      ] },
 
     /* ---------------- E. FOLIO & PAYMENT ---------------- */
     { id: "folio", phase: "folio", title: "Open Folio maintenance",
@@ -186,11 +183,11 @@ window.CIG = {
         "In the toolbar of the folio that is paid (usually <b>F1</b>), find the orange icons on the right.",
         "Click <b>Create invoice</b> — the first orange icon."
       ],
+      check: "The window <b>Print and/or send invoice by e-mail</b> opens.",
       stop: "Take the payment <b>only</b> with <b>Create invoice</b>, never in another way.",
       imgs: [
         { src: "ci-folio-f1-toolbar.png", cap: "Folio F1 toolbar: <b>Create invoice</b> is the first of the orange icons." }
-      ] }
-,
+      ] },
 
     { id: "invoice-email", phase: "folio", title: "Invoice by e-mail / print → Continue",
       lead: "After Create invoice a small window asks about e-mail and printing.",
@@ -242,6 +239,7 @@ window.CIG = {
         "<b>Import data from reservation</b> — a <b>VCC</b> or the guest's <b>credit card</b> is attached to the reservation and the guest has approved that this card is charged. The window <b>Selection the card</b> shows the cards on the reservation: choose the right one.",
         "Confirm with the <b>green tick</b>."
       ],
+      check: "The payment is confirmed and the paid lines in the folio turn <b>red</b> (step E7).",
       stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it; ask the manager on duty.",
       tip: "<b>VCC:</b> the guest pays only the <b>tourist tax (CT)</b> — <b>€2 per person per night</b>. Everything else goes on the VCC.",
       imgs: [
