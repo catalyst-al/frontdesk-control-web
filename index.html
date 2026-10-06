@@ -2231,6 +2231,9 @@
           <span class="tab-icon" aria-hidden="true">&#128197;</span> Events
           <span class="tab-badge" id="evBadge">0</span>
         </button>
+        <button class="tab" id="tab-checkin" role="tab" aria-selected="false" aria-controls="panel-checkin" data-panel="checkin">
+          <span class="tab-icon" aria-hidden="true">&#128718;</span> Check-in
+        </button>
       </div>
       <div class="tab-underline" id="tabUnderline"></div>
     </div>
@@ -2239,6 +2242,14 @@
   <!-- ============ BREAKFAST PANEL ============ -->
   <div class="tabpanel" id="panel-breakfastlive" role="tabpanel" aria-labelledby="tab-breakfastlive">
     <div id="breakfastLiveHost"></div>
+  </div>
+  <!-- ============ CHECK-IN GUIDE PANEL ============ -->
+  <div class="tabpanel" id="panel-checkin" role="tabpanel" aria-labelledby="tab-checkin">
+    <div class="na-guide-bar no-print" id="ciGuideBar">
+      <span class="na-guide-hint">Check-in step by step in SAP, with screenshots, payment rules, special cases and what to say to the guest.</span>
+      <a class="btn-ghost" href="checkin-guide/index.html" target="_blank" rel="noopener">Open in new window &#8599;</a>
+    </div>
+    <div class="na-guide-host no-print" id="ciGuideHost"><iframe id="ciGuideFrame" title="Check-in Guide"></iframe></div>
   </div>
   <!-- ============ EVENTS PANEL ============ -->
   <div class="tabpanel" id="panel-events" role="tabpanel" aria-labelledby="tab-events">
@@ -4386,7 +4397,7 @@
       if(on && focusIt) t.focus();
       if(on) moveUnderline(t);
     });
-    ["breakfast","handover","group","nightaudit","vcc","breakfastlive","events"].forEach(function(p){
+    ["breakfast","handover","group","nightaudit","vcc","breakfastlive","events","checkin"].forEach(function(p){
       var panel = document.getElementById("panel-" + p);
       if(!panel) return;
       if(p === name){
@@ -4396,7 +4407,24 @@
       }
     });
     try{ if(window.localStorage) localStorage.setItem(TAB_KEY, name); }catch(e){}
+    if(name === "checkin") showCiGuide();
   }
+
+  // ---- Check-in Guide (checkin-guide/) inside its tab; loaded the first time the tab opens ----
+  function sizeCiGuide(){
+    var panel = document.getElementById("panel-checkin");
+    if(!panel.classList.contains("active")) return;
+    var bar = document.querySelector(".brandbar");
+    var used = (bar ? Math.max(0, bar.getBoundingClientRect().bottom) : 0) + 10 + document.getElementById("ciGuideBar").offsetHeight + 14 + 12;
+    document.getElementById("ciGuideHost").style.height = Math.max(560, window.innerHeight - used) + "px";
+  }
+  function showCiGuide(){
+    var frame = document.getElementById("ciGuideFrame");
+    if(!frame.getAttribute("src")) frame.setAttribute("src", "checkin-guide/index.html");
+    sizeCiGuide();
+    setTimeout(sizeCiGuide, 350);
+  }
+  window.addEventListener("resize", sizeCiGuide);
 
   tabs.forEach(function(t){
     t.addEventListener("click", function(){ activateTab(t.getAttribute("data-panel"), false); });
@@ -7723,7 +7751,7 @@
   topBtn.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
   /* Keyboard routing for a busy front desk: Alt+1 ... Alt+5 */
-  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events"];
+  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin"];
   shortcutTabs.forEach(function(name, idx){
     var b = document.getElementById("tab-" + name);
     if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + (idx+1);
