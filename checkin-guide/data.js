@@ -125,13 +125,13 @@ window.CIG = {
 
     { id: "bill-to", phase: "billing", title: "Bill to: company or guest",
       lead: "Decide who the invoice is made out to.",
-      where: "Tab <b>*Billing Information</b> → <b>Bill to</b>",
+      where: "Column <b>Bill to</b> <img class='ico ico-lg' src='img/ci-bill-to.png' alt='Bill to column'>",
       how: [
         "<b>The guest asks for an invoice to a company:</b> open the name search. The window <b>Restrict Value Range</b> opens on the tab <b>Companies</b>.",
-        "Type the company name in <b>Name</b> and press the <b>green tick</b> or <kbd>Enter</kbd>. Choose the company from the list.",
+        "Type the company name in <b>Name</b> and press the <b>green tick</b> or <kbd>Enter</kbd>. Choose the company from the list — its client number is written in <b>Bill to</b>.",
         "<b>Nothing requested:</b> type the code <code>100</code> (GUEST, DIRECT) and press <kbd>Enter</kbd>, or <code>400</code> (Generic Company) and <kbd>Enter</kbd>, and go to the next step."
       ],
-      check: "The bill-to name is the company the guest asked for, or code 100 / 400.",
+      check: "<b>Bill to</b> shows the company's client number, or <code>100</code> / <code>400</code>.",
       tip: "<code>100</code> = <b>GUEST, DIRECT</b> (the same as <b>Client: 100</b> at the top of the reservation). <code>400</code> = <b>Generic Company</b>.",
       imgs: [
         { src: "ci-company-search.png", cap: "<b>Restrict Value Range</b> → tab <b>Companies</b>: company name in <b>Name</b>, then the green tick or Enter." }
@@ -203,11 +203,11 @@ window.CIG = {
       lead: "The payment is booked on a till (Till Identifier).",
       where: "<b>Till movements (Starting image)</b> → <b>Till Identifier</b>",
       how: [
-        "In <b>Till Identifier</b> choose the till: <code>FD128</code> is the till for our company.",
+        "In <b>Till Identifier</b> choose <code>FD128</code> — the till for our company.",
         "Press <kbd>Enter</kbd>."
       ],
       check: "<b>Invoice payment movements</b> opens: Operation Type <b>Invoice payment</b>, the invoice, folio, customer and <b>Total Amount</b>.",
-      note: "The screenshots show another till (FD136); the screens are the same.",
+      note: "The screenshots show another till (FD136); always choose <b>FD128</b>.",
       imgs: [
         { src: "ci-till.png", cap: "<b>Till movements</b>: Till Identifier, then Enter." },
         { src: "ci-payment.png", cap: "<b>Invoice payment movements</b>: total amount, still open under <b>Differences</b>. Staff name, invoice and reservation are covered." }
@@ -228,16 +228,21 @@ window.CIG = {
         { src: "ci-payment-gateway.png", cap: "Payment Gateway chosen: Accrued 371,00, Differences 0,00." }
       ] },
 
-    { id: "save-charge", phase: "folio", title: "Save and charge: PIN pad or card on the reservation",
-      lead: "After Save SAP asks how the card is charged.",
-      where: "Invoice payment movements → <b>Save</b> (disk icon at the top)",
+    { id: "save-charge", phase: "folio", title: "Save and charge: PinPad or card on the reservation",
+      lead: "After Save the window TMSforPay. Gateway payment asks how the card is charged.",
+      where: "Invoice payment movements → <b>Save</b> (disk icon at the top) → <b>TMSforPay. Gateway payment</b>",
       how: [
-        "Press <b>Save</b>. Two options appear.",
-        "<b>Charged via PIN pad</b> — the guest pays now, at the desk, on the card terminal.",
-        "<b>Import data from reservation</b> — a <b>VCC</b> or the guest's <b>credit card</b> is attached to the reservation and the guest has approved that this card is charged."
+        "Press <b>Save</b>. The window <b>TMSforPay. Gateway payment</b> opens with the amount.",
+        "<b>Charge via PinPad</b> — the guest pays now, at the desk, on the card terminal.",
+        "<b>Import data from reservation</b> — a <b>VCC</b> or the guest's <b>credit card</b> is attached to the reservation and the guest has approved that this card is charged. The window <b>Selection the card</b> shows the cards on the reservation: choose the right one.",
+        "Confirm with the <b>green tick</b>."
       ],
-      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b>. If the name on the card is not the company, do not charge it; ask the manager on duty."
-    }
+      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it; ask the manager on duty.",
+      imgs: [
+        { src: "ci-gateway-pinpad.png", cap: "<b>Charge via PinPad</b>: the guest pays on the terminal at the desk." },
+        { src: "ci-gateway-import.png", cap: "<b>Import data from reservation</b>: charge the card attached to the reservation." },
+        { src: "ci-select-card.png", cap: "<b>Selection the card</b>: the cards on the reservation (numbers covered). A Booking.com VCC shows as <i>Bookingcom Agent</i>." }
+      ] }
   ],
 
   /* Special cases from the Front Office SOPs (4.7 – 4.10). */
