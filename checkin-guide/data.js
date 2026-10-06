@@ -11,7 +11,8 @@ window.CIG = {
     { id: "find",   no: "A", title: "Find the arrival",  sub: "House status → Arrivals expected → Check In" },
     { id: "screen", no: "B", title: "Check-in screen",   sub: "Remarks, room" },
     { id: "billing", no: "C", title: "Billing",          sub: "Billing Information, Modify header, bill to" },
-    { id: "extras",  no: "D", title: "Extras",           sub: "Breakfast, parking and other stay options" }
+    { id: "extras",  no: "D", title: "Extras",           sub: "Breakfast, parking and other stay options" },
+    { id: "folio",   no: "E", title: "Folio & payment",  sub: "Folio maintenance, Create invoice" }
   ],
 
   rules: [
@@ -154,6 +155,35 @@ window.CIG = {
         { src: "ci-stay-toolbar.png", cap: "Reservation toolbar: the <b>Stay options</b> icon (star)." },
         { src: "ci-stay-options.png", cap: "Stay options: a chosen extra is <b>green</b> with the second box ticked (top line)." },
         { src: "ci-stay-options-2.png", cap: "Further down the list: welcome drink, pet, parking, transport, welcome gift, extra bed, early check-in." }
+      ] }
+,
+
+    /* ---------------- E. FOLIO & PAYMENT ---------------- */
+    { id: "folio", phase: "folio", title: "Open Folio maintenance",
+      lead: "All charges of the stay, split into folios F1 – F4.",
+      where: "Reservation toolbar → <b>Folio maintenance</b> icon <img class='ico' src='img/ci-folio-icon.png' alt='Folio maintenance icon'>",
+      how: [
+        "Click the <b>Folio maintenance</b> icon in the reservation toolbar.",
+        "The screen <b>DEFRAAIR. Modify items of all folios</b> opens.",
+        "At the top: Main Client, arrival / departure, room type and the total of each folio (<b>F1</b>, <b>F2</b>, <b>F3</b>, <b>F4</b>).",
+        "Below: every charge per night — for example <b>Bed and Breakfast</b> and <b>Touristic Tax</b> — with the total in the yellow line."
+      ],
+      check: "The charges and the total in <b>F1</b> match the booking: nights, rate and the extras you added.",
+      imgs: [
+        { src: "ci-folio-toolbar.png", cap: "Reservation toolbar: the <b>Folio maintenance</b> icon (third from the left in this picture)." },
+        { src: "ci-folio.png", cap: "<b>Modify items of all folios</b>: F1 with room and tourist tax per night and the total. Name, reservation and voucher are covered." }
+      ] },
+
+    { id: "create-invoice", phase: "folio", title: "Take payment only with Create invoice",
+      lead: "Payment is done only through Create invoice.",
+      where: "Folio maintenance → toolbar of the folio (<b>F1</b>) → <b>Create invoice</b> <img class='ico' src='img/ci-invoice-icon.png' alt='Create invoice icon'>",
+      how: [
+        "In the toolbar of the folio that is paid (usually <b>F1</b>), find the orange icons on the right.",
+        "Click <b>Create invoice</b> — the first orange icon."
+      ],
+      stop: "Take the payment <b>only</b> with <b>Create invoice</b>, never in another way.",
+      imgs: [
+        { src: "ci-folio-f1-toolbar.png", cap: "Folio F1 toolbar: <b>Create invoice</b> is the first of the orange icons." }
       ] }
   ],
 
