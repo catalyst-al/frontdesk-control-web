@@ -1,4 +1,6 @@
 *.pdf
+# Exception: the redacted check-in / check-out SOP (no guest data). All other PDFs stay out.
+!checkin-guide/SOP_FO-CICO_Check-in_Check-out.pdf
 *.csv
 *.tsv
 *.xls
