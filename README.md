@@ -40,7 +40,7 @@ The **Check-in / out** tab (Alt+8) shows `checkin-guide/`, a step-by-step check-
 - **Special cases** and **What to say** summarise the Front Office SOPs 4.7 – 4.10 (on-the-day rates, early arrivals, guest arrival, registration form). Payment follows the current practice: everything is paid at check-in, by card only (no cash); a VCC covers only the booking, the guest pays the tourist tax and extras.
 - Content lives in `checkin-guide/data.js`; screenshots in `checkin-guide/img/`. Screenshots must have guest names, reservation numbers, room numbers, contact data, company names, staff names, invoice numbers, client numbers and card digits covered before they are added.
 - The page makes no network calls. Only the display choice (one step / all steps, last step open) is stored in this browser.
-- `checkin-guide/SOP_FO-CICO_Check-in_Check-out.pdf` is the same procedure as a German SOP (FO-CICO v1.4, draft for FOM approval), opened with **SOP (PDF)** in the guide. When the guide's steps or rules change, update the PDF as well.
+- `checkin-guide/SOP_FO-CICO_Check-in_Check-out.pdf` is the same procedure as a German SOP (FO-CICO v1.5, draft for FOM approval), opened with **SOP (PDF)** in the guide. When the guide's steps or rules change, update the PDF as well.
 
 ## LUME Night Audit
 `lume-night-audit/` is the Night Audit control center for LUME Boutique Hotel (OPERA PMS): Run Night checklist, Ask / Search, Codes, Problem / Unsure, Visual Guides and the Full SOP. Open `lume-night-audit/index.html` directly.
