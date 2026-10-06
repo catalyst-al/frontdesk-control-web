@@ -2,6 +2,8 @@
    Source material: SAP (TMS) screenshots from the front desk, step by step, and the
    Front Office SOPs 4.7 On the day rates, 4.8 Early Arrivals, 4.9 Gastanreise,
    4.10 Check-in procedure and 4.10 Credit Card Authorisation und Barzahlung.
+   The authorisation rule of SOP 4.10 (nights + €50 per night, released at check-out) is not
+   used: at Park Inn Frankfurt Airport everything is paid at check-in (confirmed 06.10.2026).
    The guide grows as new screenshots arrive; add the next steps at the end of `steps`.
    No guest names, reservation numbers, room numbers, contact data or card data are stored
    here; all screenshots were redacted before being added. */
@@ -18,10 +20,10 @@ window.CIG = {
   ],
 
   rules: [
-    { icon: "card", title: "Card authorisation",
-      text: "Read the guest's card with <b>Chip&amp;Pin</b>. The amount is all nights <b>+ €50 per night</b> for extras. Show it on the display and tell the guest it is <b>not a charge</b>." },
-    { icon: "cash", title: "No card → cash or direct bill",
-      text: "Cash: the full stay <b>+ €50 per night</b> is paid at check-in. No deposit for extras → the account is set to <b>No-Post</b>. Direct bill needs no card only when <b>everything</b> goes a/c." },
+    { icon: "cash", title: "Everything is paid at check-in",
+      text: "The whole stay is paid <b>at check-in</b>: Create invoice → till <b>FD128</b> → <b>Payment Gateway</b> → PinPad or the card on the reservation (steps E2 – E6). There is no pre-authorisation." },
+    { icon: "card", title: "VCC covers only the booking",
+      text: "Charge only a VCC in the <b>company's name</b> (Booking.com, Agoda, Ctrip …). The guest pays the <b>tourist tax: €2 per person per night</b> and <b>every extra</b> added at the desk (breakfast, parking …)." },
     { icon: "form", title: "Registration form complete",
       text: "First and last name, home address, passport no. (non-German guests), <b>Business or Leisure</b> (Frankfurt tourism tax) and signature. In a double room one person's full details are enough." },
     { icon: "stop", title: "Floor only, never the room number",
@@ -151,7 +153,7 @@ window.CIG = {
       ],
       check: "The line is green and the extra appears in <b>Folio maintenance</b>.",
       tip: "Prices in the list (October 2026): <b>Breakfast €17 per person</b>, <b>Parking €25 per night</b>, Extra bed €25, Early check-in €25, Welcome gift €15, Pet €8, Welcome drink / cocktail €7.50, Transportation €6 per person. Always check the price shown in the list.",
-      stop: "Tell the guest the price before you add it, and that breakfast is charged per person. For breakfast use <b>FB_BB</b> — not WUFB_BRFS or FB_BBOA.",
+      stop: "Tell the guest the price before you add it, and that breakfast is charged per person. For breakfast use <b>FB_BB</b> — not WUFB_BRFS or FB_BBOA. Extras are paid at check-in by the guest, also when the room is on a VCC.",
       imgs: [
         { src: "ci-stay-toolbar.png", cap: "Reservation toolbar: the <b>Stay options</b> icon (star)." },
         { src: "ci-stay-breakfast.png", cap: "Breakfast: line <b>FB_BB – Upsell – Breakfast</b>, €17 per person." },
@@ -241,7 +243,7 @@ window.CIG = {
       ],
       check: "The payment is confirmed and the paid lines in the folio turn <b>red</b> (step E7).",
       stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it; ask the manager on duty.",
-      tip: "<b>VCC:</b> the guest pays only the <b>tourist tax (CT)</b> — <b>€2 per person per night</b>. Everything else goes on the VCC.",
+      tip: "<b>VCC</b> covers only the booking. The guest pays the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …), with PinPad.",
       imgs: [
         { src: "ci-gateway-pinpad.png", cap: "<b>Charge via PinPad</b>: the guest pays on the terminal at the desk." },
         { src: "ci-gateway-import.png", cap: "<b>Import data from reservation</b>: charge the card attached to the reservation." },
@@ -346,15 +348,13 @@ window.CIG = {
     { q: "Guest arrives early (before 15:00)",
       a: "Check-in is from <b>15:00</b>. If a room is available, check in earlier. Otherwise give a room that is still dirty and ask Housekeeping to clean it first. The guest can already fill in the registration form and settle the payment; then put the reservation <b>in queue</b>. Luggage goes to the luggage room with a <b>luggage tag</b>." },
     { q: "Guest pays cash",
-      a: "The full stay is paid at check-in, plus <b>€50 per night</b> as deposit for extras. The guest receives a payment confirmation from the system. If the guest does not want to leave a deposit, the account is set to <b>No-Post</b>: nothing can be charged to the room (restaurant, outlets, phone)." },
+      a: "Also with cash the whole stay is paid <b>at check-in</b>. How cash is booked in SAP (which payment method) is not in this guide yet — ask the manager on duty." },
     { q: "Company or travel agent pays the room",
-      a: "If the company's or agent's card pays the nights, authorise only the nights on it. Authorise the guest's own card only for possible extras. <b>Direct bill</b> needs no card only when <b>all</b> charges go to the account." },
+      a: "Bill to = the company (step C3). What the company does not cover — for example extras added at the desk — the guest pays at check-in." },
     { q: "Guest has a voucher",
       a: "Check what the voucher includes: room with breakfast, room only, welcome drink. It is prepaid at the travel agency. Keep the voucher in the cost-coverage folder (Kostenübernahme); at departure it is sent to the agency with the invoice checked out to direct bill. A copy stays with the copy of the invoice in your cashier closing." },
     { q: "Booking with a VCC (Booking.com, Agoda, Ctrip …)",
-      a: "The guest pays only the <b>tourist tax (CT)</b>: <b>€2 per person per night</b>. Everything else is charged to the VCC. Charge only a VCC whose holder name is the company." },
-    { q: "Final bill will be higher than the authorisation",
-      a: "During the stay check whether the guest's charges have gone over the authorised amount. If yes, authorise a further amount according to hotel policy." },
+      a: "The VCC covers only the booking. The guest pays at check-in the <b>tourist tax (CT)</b> — <b>€2 per person per night</b> — and <b>every extra</b> added at the desk (breakfast, parking …). Charge only a VCC whose holder name is the company." },
     { q: "Radisson Rewards member",
       a: "Full attention, thank them for being a member and explain their benefits in the hotel. <b>Gold</b> and <b>Concierge</b>: welcome letter and welcome gift. Every Rewards arrival gets a bottle of water." },
     { q: "VIP arrival",
@@ -379,8 +379,8 @@ window.CIG = {
     { when: "Payment",
       de: "Wie möchten Sie die Rechnung begleichen, in bar oder mit Kreditkarte? Dürfte ich die Kreditkarte bitte im System einlesen?",
       en: "How would you like to settle your bill, by cash or by credit card? May I take your credit card, please?" },
-    { when: "Card authorisation",
-      de: "Das ist nur eine Autorisierung, keine Abbuchung. Der Betrag wird bei der Abreise wieder freigegeben.",
-      en: "This is only an authorisation, not a charge. The amount is released when you check out." }
+    { when: "Payment at check-in",
+      de: "Der gesamte Aufenthalt wird jetzt beim Check-in bezahlt. Bitte stecken Sie Ihre Karte in das Terminal.",
+      en: "The whole stay is paid now at check-in. Please insert your card into the terminal." }
   ]
 };
