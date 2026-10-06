@@ -238,6 +238,7 @@ window.CIG = {
         "Confirm with the <b>green tick</b>."
       ],
       stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b> (in the card list: <i>Bookingcom Agent</i>). If the name on the card is not the company, do not charge it; ask the manager on duty.",
+      tip: "<b>VCC:</b> the guest pays only the <b>tourist tax (CT)</b> — <b>€2 per person per night</b>. Everything else goes on the VCC.",
       imgs: [
         { src: "ci-gateway-pinpad.png", cap: "<b>Charge via PinPad</b>: the guest pays on the terminal at the desk." },
         { src: "ci-gateway-import.png", cap: "<b>Import data from reservation</b>: charge the card attached to the reservation." },
@@ -255,6 +256,8 @@ window.CIG = {
       a: "If the company's or agent's card pays the nights, authorise only the nights on it. Authorise the guest's own card only for possible extras. <b>Direct bill</b> needs no card only when <b>all</b> charges go to the account." },
     { q: "Guest has a voucher",
       a: "Check what the voucher includes: room with breakfast, room only, welcome drink. It is prepaid at the travel agency. Keep the voucher in the cost-coverage folder (Kostenübernahme); at departure it is sent to the agency with the invoice checked out to direct bill. A copy stays with the copy of the invoice in your cashier closing." },
+    { q: "Booking with a VCC (Booking.com, Agoda, Ctrip …)",
+      a: "The guest pays only the <b>tourist tax (CT)</b>: <b>€2 per person per night</b>. Everything else is charged to the VCC. Charge only a VCC whose holder name is the company." },
     { q: "Final bill will be higher than the authorisation",
       a: "During the stay check whether the guest's charges have gone over the authorised amount. If yes, authorise a further amount according to hotel policy." },
     { q: "Radisson Rewards member",
