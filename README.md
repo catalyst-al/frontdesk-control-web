@@ -36,9 +36,9 @@ The **Events** tab (Alt+7) reads the DEFRAAIR "Event weekly planning" PDF and sh
 ## Check-in
 The **Check-in** tab (Alt+8) shows `checkin-guide/`, a step-by-step check-in guide for DEFRAAIR in SAP (TMS). It can also be opened directly at `checkin-guide/index.html`.
 
-- **Step by step**: House status → Arrivals Expected → select the reservation → Check In → Enter → room → Billing Information → Modify header → bill to → stay options (breakfast, parking) → Folio maintenance → Create invoice, each with its screenshot. The guide grows as further screenshots arrive.
+- **Step by step**: House status → Arrivals Expected → select the reservation → Check In → Enter → room → Billing Information → Modify header → bill to → stay options (breakfast, parking) → Folio maintenance → Create invoice → till → Payment Gateway → Save (PIN pad or card on the reservation), each with its screenshot. The guide grows as further screenshots arrive.
 - **Special cases** and **What to say** summarise the Front Office SOPs 4.7 – 4.10 (on-the-day rates, early arrivals, guest arrival, registration form, card authorisation and cash).
-- Content lives in `checkin-guide/data.js`; screenshots in `checkin-guide/img/`. Screenshots must have guest names, reservation numbers, room numbers, contact data and company names covered before they are added.
+- Content lives in `checkin-guide/data.js`; screenshots in `checkin-guide/img/`. Screenshots must have guest names, reservation numbers, room numbers, contact data, company names, staff names and invoice numbers covered before they are added.
 - The page makes no network calls. Only the display choice (one step / all steps, last step open) is stored in this browser.
 
 ## LUME Night Audit

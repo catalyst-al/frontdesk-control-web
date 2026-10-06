@@ -12,7 +12,7 @@ window.CIG = {
     { id: "screen", no: "B", title: "Check-in screen",   sub: "Remarks, room" },
     { id: "billing", no: "C", title: "Billing",          sub: "Billing Information, Modify header, bill to" },
     { id: "extras",  no: "D", title: "Extras",           sub: "Breakfast, parking and other stay options" },
-    { id: "folio",   no: "E", title: "Folio & payment",  sub: "Folio maintenance, Create invoice" }
+    { id: "folio",   no: "E", title: "Folio & payment",  sub: "Folio maintenance, Create invoice, Payment Gateway" }
   ],
 
   rules: [
@@ -185,6 +185,59 @@ window.CIG = {
       imgs: [
         { src: "ci-folio-f1-toolbar.png", cap: "Folio F1 toolbar: <b>Create invoice</b> is the first of the orange icons." }
       ] }
+,
+
+    { id: "invoice-email", phase: "folio", title: "Invoice by e-mail / print → Continue",
+      lead: "After Create invoice a small window asks about e-mail and printing.",
+      where: "Window <b>Print and/or send invoice by e-mail</b>",
+      how: [
+        "The window offers Reservation E-mail, Other E-mail, No E-mail and Print.",
+        "Click the <b>green tick</b> (Continue)."
+      ],
+      check: "The screen <b>Till movements</b> opens.",
+      imgs: [
+        { src: "ci-invoice-email.png", cap: "<b>Print and/or send invoice by e-mail</b> → green tick (Continue)." }
+      ] },
+
+    { id: "till", phase: "folio", title: "Choose the till",
+      lead: "The payment is booked on a till (Till Identifier).",
+      where: "<b>Till movements (Starting image)</b> → <b>Till Identifier</b>",
+      how: [
+        "In <b>Till Identifier</b> choose the till: <code>FD128</code> is the till for our company.",
+        "Press <kbd>Enter</kbd>."
+      ],
+      check: "<b>Invoice payment movements</b> opens: Operation Type <b>Invoice payment</b>, the invoice, folio, customer and <b>Total Amount</b>.",
+      note: "The screenshots show another till (FD136); the screens are the same.",
+      imgs: [
+        { src: "ci-till.png", cap: "<b>Till movements</b>: Till Identifier, then Enter." },
+        { src: "ci-payment.png", cap: "<b>Invoice payment movements</b>: total amount, still open under <b>Differences</b>. Staff name, invoice and reservation are covered." }
+      ] },
+
+    { id: "payment-gateway", phase: "folio", title: "Payment method: always Payment Gateway",
+      lead: "Every card payment goes through Payment Gateway.",
+      where: "Invoice payment movements → column <b>Payment method</b>",
+      how: [
+        "Click the arrow in the first line under <b>Payment method</b>.",
+        "Choose <b>Payment Gateway</b> — always, not JCB, Visa, Mastercard or another card from the list.",
+        "The amount moves to <b>Accrued</b> and <b>Differences</b> becomes <b>0,00</b>."
+      ],
+      check: "Payment method <b>Payment Gateway</b>, <b>Differences 0,00</b>.",
+      stop: "Do not choose a card type from the list. The payment method is <b>always Payment Gateway</b>.",
+      imgs: [
+        { src: "ci-payment-method.png", cap: "The list of payment methods → <b>Payment Gateway</b>." },
+        { src: "ci-payment-gateway.png", cap: "Payment Gateway chosen: Accrued 371,00, Differences 0,00." }
+      ] },
+
+    { id: "save-charge", phase: "folio", title: "Save and charge: PIN pad or card on the reservation",
+      lead: "After Save SAP asks how the card is charged.",
+      where: "Invoice payment movements → <b>Save</b> (disk icon at the top)",
+      how: [
+        "Press <b>Save</b>. Two options appear.",
+        "<b>Charged via PIN pad</b> — the guest pays now, at the desk, on the card terminal.",
+        "<b>Import data from reservation</b> — a <b>VCC</b> or the guest's <b>credit card</b> is attached to the reservation and the guest has approved that this card is charged."
+      ],
+      stop: "<b>VCC</b>: charge only a virtual card whose holder name is the <b>company</b> — for example <b>Booking.com</b>, <b>Agoda</b>, <b>Ctrip</b>. If the name on the card is not the company, do not charge it; ask the manager on duty."
+    }
   ],
 
   /* Special cases from the Front Office SOPs (4.7 – 4.10). */
