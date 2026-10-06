@@ -146,14 +146,17 @@ window.CIG = {
       how: [
         "After the bill to (100 / 400), click the <b>Stay options</b> icon in the toolbar.",
         "The list of extras opens: code, description, price and price type (<b>Per Pax</b> = per person, <b>Per room</b>).",
-        "On the line the guest wants, click the <b>second box</b> on the right. The line turns <b>green</b>.",
+        "Find the line: breakfast = <code>FB_BB</code> <b>Upsell – Breakfast</b> (€17 per person); parking = <code>OR_PRKG</code> <b>Parking</b> (€25 per night).",
+        "On that line, click the <b>second box</b> on the right. The line turns <b>green</b>.",
         "The extra is added to <b>Folio maintenance</b>."
       ],
       check: "The line is green and the extra appears in <b>Folio maintenance</b>.",
       tip: "Prices in the list (October 2026): <b>Breakfast €17 per person</b>, <b>Parking €25 per night</b>, Extra bed €25, Early check-in €25, Welcome gift €15, Pet €8, Welcome drink / cocktail €7.50, Transportation €6 per person. Always check the price shown in the list.",
-      stop: "Tell the guest the price before you add it, and that breakfast is charged per person.",
+      stop: "Tell the guest the price before you add it, and that breakfast is charged per person. For breakfast use <b>FB_BB</b> — not WUFB_BRFS or FB_BBOA.",
       imgs: [
         { src: "ci-stay-toolbar.png", cap: "Reservation toolbar: the <b>Stay options</b> icon (star)." },
+        { src: "ci-stay-breakfast.png", cap: "Breakfast: line <b>FB_BB – Upsell – Breakfast</b>, €17 per person." },
+        { src: "ci-stay-parking.png", cap: "Parking: line <b>OR_PRKG – Parking</b>, €25 per night." },
         { src: "ci-stay-options.png", cap: "Stay options: a chosen extra is <b>green</b> with the second box ticked (top line)." },
         { src: "ci-stay-options-2.png", cap: "Further down the list: welcome drink, pet, parking, transport, welcome gift, extra bed, early check-in." }
       ] }
