@@ -2171,6 +2171,105 @@
     .ev-block,.ev-group{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
   }
 </style>
+<style id="registration-style">
+  /* Nine tabs: a little tighter so they fit the 1280px shell without a badge
+     running into the next tab; narrower than the shell, the bar scrolls instead
+     of squeezing them. */
+  @media (min-width:901px){
+    .tabbar{gap:2px;}
+    .tab{min-width:0; padding-left:10px; padding-right:10px; gap:6px;}
+    .tab .tab-icon{width:24px; height:24px;}
+  }
+  @media (max-width:1311px){ .tab{flex-shrink:0;} }
+
+  /* ============ REGISTRATION CARD (Meldeschein) ============ */
+  @media (min-width:881px){
+    #panel-registration .app-shell{grid-template-columns:minmax(270px,330px) minmax(0,1fr);}
+    #panel-registration .card:first-child{position:sticky; top:84px;}
+  }
+  .reg-side-head{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px;}
+  .reg-side-head .card-title{margin:0;}
+  .reg-side-head .btn-fill{margin:0;}
+  .reg-search{width:100%; font:inherit; font-size:13px; padding:9px 11px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:#fff; color:var(--ink);}
+  .reg-search:focus{outline:2px solid var(--navy); outline-offset:1px; border-color:var(--navy);}
+  .reg-filter{display:flex; gap:4px; margin:8px 0 10px; flex-wrap:wrap;}
+  .reg-filter button{flex:1 1 auto; font:inherit; font-size:11px; font-weight:700; padding:6px 8px; border:1.5px solid var(--line); border-radius:999px; background:#fff; color:var(--ink-muted); cursor:pointer;}
+  .reg-filter button[aria-pressed="true"]{border-color:var(--navy); background:#EEF3FA; color:var(--navy);}
+  .reg-filter button:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+  .reg-list{display:grid; gap:6px; max-height:calc(100vh - 380px); min-height:120px; overflow:auto; padding:1px;}
+  .reg-item{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:6px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:#fff;}
+  .reg-item:hover{border-color:var(--navy-200);}
+  .reg-item.is-open{border-color:var(--navy); background:#EEF3FA; box-shadow:inset 3px 0 0 var(--navy);}
+  .reg-item.is-sap .reg-room{color:var(--ink-faint);}
+  .reg-open{display:flex; align-items:center; gap:10px; min-width:0; padding:8px 0 8px 10px; border:0; background:none; font:inherit; color:var(--ink); text-align:left; cursor:pointer;}
+  .reg-open:focus-visible{outline:2px solid var(--navy); outline-offset:-2px; border-radius:var(--radius-sm);}
+  .reg-room{font-family:var(--mono); font-size:17px; font-weight:800; color:var(--navy); min-width:46px;}
+  .reg-who{min-width:0;}
+  .reg-who b{display:block; font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .reg-who small{display:block; font-size:10.5px; color:var(--ink-faint); margin-top:1px;}
+  .reg-right{display:grid; justify-items:end; gap:3px; padding:6px 10px 6px 0;}
+  .reg-state{font-size:9.5px; font-weight:800; letter-spacing:.04em; padding:1px 7px; border-radius:999px; white-space:nowrap;}
+  .reg-state.ok{background:var(--green-bg); color:var(--green); border:1px solid var(--green-line);}
+  .reg-state.warn{background:var(--amber-bg); color:#8A5A00; border:1px solid var(--amber-line);}
+  .reg-sap{display:flex; align-items:center; gap:4px; font-size:10.5px; color:var(--ink-muted); cursor:pointer; white-space:nowrap;}
+  .reg-empty{border:1px dashed var(--navy-200); border-radius:var(--radius-md); padding:20px 14px; text-align:center; color:var(--ink-muted); font-size:12px; line-height:1.5; background:#F7F9FC;}
+  .reg-empty b{display:block; color:var(--navy); font-size:13.5px; margin-bottom:3px;}
+  .reg-side-actions{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:10px;}
+  .reg-side-actions .btn-ghost{padding:9px 8px; font-size:11.5px;}
+  .reg-form-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px;}
+  .reg-form-head h2{margin:0; font-size:20px; color:var(--navy);}
+  .reg-form-head p{margin:3px 0 0; font-size:11px; color:var(--ink-faint);}
+  .reg-drop{flex:0 0 auto; display:block; text-align:center; padding:8px 12px; border:2px dashed var(--navy-200); border-radius:var(--radius-sm); background:#F7F9FC; color:var(--navy); font-size:12px; font-weight:800; cursor:pointer;}
+  .reg-drop small{display:block; font-size:10px; font-weight:600; color:var(--ink-faint); margin-top:1px;}
+  .reg-drop:hover,.reg-drop.drag{border-color:var(--navy); background:#EEF3FA;}
+  .reg-drop:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+  .reg-sec{font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--navy-400); margin:16px 0 8px;}
+  .reg-sec:first-child{margin-top:0;}
+  .reg-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:10px 12px;}
+  .reg-grid .field{margin:0;}
+  .reg-grid .wide{grid-column:span 2;}
+  #panel-registration .field input, #panel-registration .field select{padding:8px 10px; font-size:13.5px;}
+  #panel-registration .field input.bad{border-color:var(--red); background:var(--red-bg);}
+  #panel-registration .field.need label::after{content:" *"; color:var(--maroon);}
+  .reg-key{margin-top:16px; border:1px solid var(--amber-line); border-left:4px solid var(--gold); background:#FFFBF2; border-radius:var(--radius-sm); padding:10px 12px 12px;}
+  .reg-key .reg-sec{margin-top:0; color:#8A5A00;}
+  .reg-room-in{font-family:var(--mono) !important; font-size:17px !important; font-weight:800; color:var(--navy) !important;}
+  .reg-purpose{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; font-size:13px;}
+  .reg-purpose > label{display:flex; align-items:center; gap:6px; cursor:pointer;}
+  .reg-purpose .field{flex:1 1 320px;}
+  .reg-actions{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:18px; padding-top:14px; border-top:1px solid var(--line-soft);}
+  .reg-actions .btn-generate{padding:11px 26px; font-size:13px;}
+  .reg-actions .btn-ghost.danger{margin-left:auto;}
+  .reg-sap-form{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-muted); cursor:pointer; padding:0 4px;}
+  .reg-missing{margin-top:10px; font-size:12px; color:#8A5A00;}
+  .reg-missing:empty{display:none;}
+  .reg-keys{margin:10px 0 0; font-size:10.5px; color:var(--ink-faint); line-height:1.5;}
+
+  /* the printed card: one A4 page per guest, laid out like the SAP card */
+  #regPrintOut{display:none !important;}
+  .rc-page{font-family:Arial, Helvetica, sans-serif; color:#000; font-size:8.6pt; line-height:1.28;}
+  .rc-head{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10pt; margin-bottom:6pt;}
+  .rc-title{font-size:13pt; font-weight:700; color:#2A7DE1;}
+  .rc-logo{height:56pt; width:auto; max-width:150pt; object-fit:contain;}
+  .rc-hotel{justify-self:end; font-size:8pt; line-height:1.35;}
+  .rc-hotel b{display:block; font-size:8.6pt;}
+  .rc-page h3{margin:7pt 0 3pt; text-align:center; font-size:10pt; color:#8E1D21; letter-spacing:.02em;}
+  .rc-t{width:100%; border-collapse:collapse; table-layout:fixed; font-size:8.8pt;}
+  /* .rc-page in front: beats the workstation's own "tbody td" rules (mono font, no last border) */
+  .rc-page .rc-t td{border:.7pt solid #000; padding:1.4pt 5pt; height:13pt; vertical-align:middle; overflow-wrap:anywhere; font-family:inherit; color:#000;}
+  .rc-page .rc-t td.l{font-weight:700; font-size:7.8pt;}
+  .rc-sign{display:flex; align-items:flex-end; gap:14pt; margin:9pt 0 7pt;}
+  .rc-sign b{font-size:8pt;}
+  .rc-sign span{flex:0 0 160pt; border-bottom:1.6pt solid #000; height:16pt; margin-left:auto; margin-right:auto;}
+  .rc-legal p{margin:0 0 2.2pt; font-size:7.9pt; line-height:1.3; text-align:justify;}
+  .rc-box{display:inline-block; width:8pt; height:8pt; border:.8pt solid #000; margin-right:3pt; vertical-align:-1pt; text-align:center; font-size:7pt; line-height:7.5pt; font-weight:700;}
+  .rc-fill{font-weight:700; text-decoration:underline;}
+  @media print{
+    body[data-print="registration"] #regPrintOut{display:block !important;}
+    .rc-page{break-after:page; page-break-after:always;}
+    .rc-page:last-child{break-after:auto; page-break-after:auto;}
+  }
+</style>
 </head>
 <body>
 
@@ -2234,6 +2333,10 @@
         <button class="tab" id="tab-checkin" role="tab" aria-selected="false" aria-controls="panel-checkin" data-panel="checkin">
           <span class="tab-icon" aria-hidden="true">&#128718;</span> Check-in / out
         </button>
+        <button class="tab" id="tab-registration" role="tab" aria-selected="false" aria-controls="panel-registration" data-panel="registration">
+          <span class="tab-icon" aria-hidden="true">&#128221;</span> Registration
+          <span class="tab-badge" id="regBadge" title="Cards not yet entered in SAP">0</span>
+        </button>
       </div>
       <div class="tab-underline" id="tabUnderline"></div>
     </div>
@@ -2278,6 +2381,56 @@
       <div class="card">
         <div class="brandstrip no-print"></div>
         <div class="card-body" id="evDay"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ============ REGISTRATION CARD PANEL ============ -->
+  <div class="tabpanel" id="panel-registration" role="tabpanel" aria-labelledby="tab-registration">
+    <div class="app-shell">
+      <div class="card no-print">
+        <div class="brandstrip"></div>
+        <div class="card-body">
+          <div class="reg-side-head">
+            <h2 class="card-title">Saved cards</h2>
+            <button class="btn-fill" type="button" id="regNew">+ New card</button>
+          </div>
+          <input class="reg-search" type="search" id="regSearch" placeholder="Room or name" aria-label="Search saved cards" autocomplete="off">
+          <div class="reg-filter" role="group" aria-label="Show">
+            <button type="button" data-f="all" aria-pressed="true">All</button>
+            <button type="button" data-f="today" aria-pressed="false">Arrivals today</button>
+            <button type="button" data-f="open" aria-pressed="false">Not in SAP</button>
+          </div>
+          <div class="reg-list" id="regList"></div>
+          <div class="reg-side-actions">
+            <button class="btn-ghost" type="button" id="regPrintAll">Print all</button>
+            <button class="btn-ghost" type="button" id="regCsv">Download Excel</button>
+          </div>
+          <p class="ev-privacy">Saved in this browser only; nothing is uploaded. Cards are deleted automatically 3 days after check-out. The card the guest signed stays the original. Printouts and downloaded lists carry passport data: keep them on hotel equipment.</p>
+        </div>
+      </div>
+      <div class="card no-print">
+        <div class="brandstrip"></div>
+        <div class="card-body">
+          <form id="regForm" autocomplete="off" novalidate>
+            <div class="reg-form-head">
+              <div><h2 id="regTitle">New registration card</h2><p id="regSub">Fill in at the desk, print, the guest signs.</p></div>
+              <label class="reg-drop" id="regDrop" tabindex="0" title="Optional: the registration card printed from SAP to PDF">
+                <input type="file" id="regFile" accept=".pdf,application/pdf" hidden>
+                &#8681; SAP card (PDF)<small>fills name, room, dates</small>
+              </label>
+            </div>
+            <div id="regFields"></div>
+            <div class="reg-actions">
+              <button class="btn-generate" type="submit" id="regSave">Save</button>
+              <button class="btn-ghost" type="button" id="regPrint">&#128424; Print for signature</button>
+              <label class="reg-sap-form"><input type="checkbox" id="regInSap"> Entered in SAP</label>
+              <button class="btn-ghost danger" type="button" id="regDelete" hidden>Delete</button>
+            </div>
+            <div class="reg-missing" id="regMissing"></div>
+            <div class="ev-status" id="regStatus" role="status" aria-live="polite"></div>
+            <p class="reg-keys">Enter or Ctrl+S saves &middot; Ctrl+P prints this card &middot; 3 digits are enough for the room (423 &rarr; 0423), 8 for a date (06101990 &rarr; 06.10.1990).</p>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -3129,6 +3282,9 @@
     <div class="print-only" id="naPrintOut"></div>
 
   </div>
+
+  <!-- ===== PRINTED REGISTRATION CARDS (filled by the Registration tab) ===== -->
+  <div class="print-only" id="regPrintOut"></div>
 
   <div class="photo-lightbox" id="photoLightbox"><img id="lightboxImg" alt="Attached photo"></div>
 
@@ -4397,7 +4553,7 @@
       if(on && focusIt) t.focus();
       if(on) moveUnderline(t);
     });
-    ["breakfast","handover","group","nightaudit","vcc","breakfastlive","events","checkin"].forEach(function(p){
+    ["breakfast","handover","group","nightaudit","vcc","breakfastlive","events","checkin","registration"].forEach(function(p){
       var panel = document.getElementById("panel-" + p);
       if(!panel) return;
       if(p === name){
@@ -4693,10 +4849,12 @@
       var vcOpen = document.getElementById("panel-vcc").classList.contains("active");
       var grOpen = document.getElementById("panel-group").classList.contains("active");
       var evOpen = document.getElementById("panel-events").classList.contains("active");
-      document.body.setAttribute("data-print", naOpen ? "nightaudit" : (vcOpen ? "vcc" : (grOpen ? "group" : (bfOpen ? "breakfast" : (evOpen ? "events" : "handover")))));
+      var rgOpen = document.getElementById("panel-registration").classList.contains("active");
+      document.body.setAttribute("data-print", naOpen ? "nightaudit" : (vcOpen ? "vcc" : (grOpen ? "group" : (bfOpen ? "breakfast" : (evOpen ? "events" : (rgOpen ? "registration" : "handover"))))));
     }
     var target = document.body.getAttribute("data-print");
     if(target === "events"){ /* the Events panel prints as shown */ }
+    else if(target === "registration"){ /* the Registration tab fills #regPrintOut itself */ }
     else if(target === "nightaudit"){ prepareNaPrint(); }
     else if(target === "vcc"){ prepareVccPrint(); }
     else if(target === "group"){ prepareGroupPrint(); }
@@ -7761,7 +7919,7 @@
   topBtn.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
   /* Keyboard routing for a busy front desk: Alt+1 ... Alt+5 */
-  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin"];
+  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin","registration"];
   shortcutTabs.forEach(function(name, idx){
     var b = document.getElementById("tab-" + name);
     if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + (idx+1);
@@ -21000,6 +21158,698 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     var t = todayIso();
     if(t !== shownDay){ shownDay = t; selected = pickDay(); render(); return; }
     if(selected === t && $("evNow")) $("evNow").outerHTML = nowLine(dayInfo(t));
+  }, 60000);
+})();
+</script>
+<script id="registration-script">
+/* Registration tab: the hotel registration card (Meldeschein) is filled in at the
+   desk, saved under its room number and printed for the guest to sign.
+   Colleagues enter the cards in SAP later and tick them off here.
+   Cards stay in this browser (localStorage) and are removed 3 days after
+   check-out. A registration card printed from SAP to PDF can prefill a card;
+   the PDF itself is not stored. */
+(function(){
+  "use strict";
+  var KEY = "parkInnRegCards_v1";        // parkInn prefix: included in Back up / Restore
+  var DRAFT_KEY = "parkInnRegDraft_v1";  // the card being typed, so a reload loses nothing
+  var KEEP_DAYS = 3;                     // removed this many days after check-out
+  var MAX_DAYS = 60;                     // and never kept longer than this after saving
+  var $ = function(id){ return document.getElementById(id); };
+  function pad2(n){ return String(n).padStart(2, "0"); }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
+  function isoOfDate(d){ return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate()); }
+  function todayIso(){ return isoOfDate(new Date()); }
+  function addDays(iso, n){ var p = iso.split("-"); return isoOfDate(new Date(+p[0], +p[1]-1, +p[2] + n)); }
+  function isoOf(d){ var m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(d || ""); return m ? m[3] + "-" + m[2] + "-" + m[1] : ""; }
+  function dotsOf(iso){ var p = iso.split("-"); return p[2] + "." + p[1] + "." + p[0]; }
+  function stamp(ms){ var d = new Date(ms); return pad2(d.getDate()) + "." + pad2(d.getMonth()+1) + "." + d.getFullYear() + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()); }
+
+  // The fields of the SAP registration card, in its order and with its labels.
+  // need: listed as missing until filled.
+  var FIELDS = [
+    { k:"salutation",  label:"Salutation", list:"regSalutations" },
+    { k:"first",       label:"First name", need:true },
+    { k:"last",        label:"Last name", need:true },
+    { k:"company",     label:"Company name" },
+    { k:"street",      label:"Street", wide:true },
+    { k:"city",        label:"City" },
+    { k:"zip",         label:"Postal code" },
+    { k:"country",     label:"Country", list:"regCountries" },
+    { k:"dob",         label:"Date of birth", date:"past" },
+    { k:"birthplace",  label:"Place of birth" },
+    { k:"nationality", label:"Nationality", list:"regCountries" },
+    { k:"docNo",       label:"Document number", mark:"**" },
+    { k:"issueDate",   label:"Issue date", date:"past" },
+    { k:"issuePlace",  label:"Expeditor place" },
+    { k:"language",    label:"Language", mark:"*" },
+    { k:"email",       label:"E-mail", mark:" *", need:true, type:"email" },
+    { k:"phone",       label:"Phone number", mark:"*", type:"tel" },
+    { k:"room",        label:"Room Nº", need:true },
+    { k:"checkIn",     label:"Check in date", date:"stay" },
+    { k:"checkOut",    label:"Check out date", date:"stay" },
+    { k:"guests",      label:"Guests", num:true },
+    { k:"reservation", label:"Reservation" },
+    { k:"companyNo",   label:"Company number" },
+    { k:"total",       label:"Total price" },
+    { k:"payment",     label:"Payment method", ph:"Card, VCC …" },
+    { k:"express",     label:"Express checkout", opts:["", "NO", "YES"] },
+    { k:"vehicle",     label:"Vehicle" },
+    { k:"model",       label:"Model" },
+    { k:"plate",       label:"License number" }
+  ];
+  var F = {};
+  FIELDS.forEach(function(f){ F[f.k] = f; });
+  // The form: room and dates first (the card is saved under the room), then the main details.
+  var GROUPS = [
+    { title:"Room and stay", keys:["room","checkIn","checkOut","guests"] },
+    { title:"Main details", main:true, keys:["salutation","first","last","company","email"] },
+    { title:"Personal information", keys:["street","zip","city","country","dob","birthplace","nationality","docNo","issueDate","issuePlace","language","phone"] },
+    { title:"Booking information", keys:["reservation","companyNo","total","payment","express"] },
+    { title:"Additional information", keys:["vehicle","model","plate"] }
+  ];
+  var COUNTRIES = ("Afghanistan|Albania|Algeria|Andorra|Angola|Antigua and Barbuda|Argentina|Armenia|Australia|Austria|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belgium|Belize|Benin|Bhutan|Bolivia|Bosnia and Herzegovina|Botswana|Brazil|Brunei|Bulgaria|Burkina Faso|Burundi|Cambodia|Cameroon|Canada|Cape Verde|Central African Republic|Chad|Chile|China|Colombia|Comoros|Congo|Costa Rica|Croatia|Cuba|Cyprus|Czech Republic|Democratic Republic of the Congo|Denmark|Djibouti|Dominica|Dominican Republic|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Eswatini|Ethiopia|Fiji|Finland|France|Gabon|Gambia|Georgia|Germany|Ghana|Greece|Grenada|Guatemala|Guinea|Guinea-Bissau|Guyana|Haiti|Honduras|Hong Kong|Hungary|Iceland|India|Indonesia|Iran|Iraq|Ireland|Israel|Italy|Ivory Coast|Jamaica|Japan|Jordan|Kazakhstan|Kenya|Kiribati|Kosovo|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Macau|Madagascar|Malawi|Malaysia|Maldives|Mali|Malta|Marshall Islands|Mauritania|Mauritius|Mexico|Micronesia|Moldova|Monaco|Mongolia|Montenegro|Morocco|Mozambique|Myanmar|Namibia|Nauru|Nepal|Netherlands|New Zealand|Nicaragua|Niger|Nigeria|North Korea|North Macedonia|Norway|Oman|Pakistan|Palau|Palestine|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Poland|Portugal|Qatar|Romania|Russia|Rwanda|Saint Kitts and Nevis|Saint Lucia|Saint Vincent and the Grenadines|Samoa|San Marino|Sao Tome and Principe|Saudi Arabia|Senegal|Serbia|Seychelles|Sierra Leone|Singapore|Slovakia|Slovenia|Solomon Islands|Somalia|South Africa|South Korea|South Sudan|Spain|Sri Lanka|Sudan|Suriname|Sweden|Switzerland|Syria|Taiwan|Tajikistan|Tanzania|Thailand|Timor-Leste|Togo|Tonga|Trinidad and Tobago|Tunisia|Turkey|Turkmenistan|Tuvalu|Uganda|Ukraine|United Arab Emirates|United Kingdom|United States|Uruguay|Uzbekistan|Vanuatu|Vatican City|Venezuela|Vietnam|Yemen|Zambia|Zimbabwe").split("|");
+
+  // ---------- values ----------
+  function normRoom(s){
+    s = s.toUpperCase().replace(/\s+/g, "");
+    return /^\d{1,3}$/.test(s) ? s.padStart(4, "0") : s;   // 423 -> 0423
+  }
+  // DD.MM.YYYY from 06.10.1990, 6/10/90, 06101990 or 061090; null when it is not a real date.
+  // kind "past": a two-digit year later than this year is 19xx (birth and issue dates).
+  function normDate(s, kind){
+    if(!s) return "";
+    var m = /^(\d{1,2})[.\/\- ]+(\d{1,2})[.\/\- ]+(\d{4}|\d{2})$/.exec(s) || /^(\d{2})(\d{2})(\d{4}|\d{2})$/.exec(s);
+    if(!m) return null;
+    var d = +m[1], mo = +m[2], y = +m[3];
+    if(m[3].length === 2) y += (kind === "past" && y > new Date().getFullYear() % 100) ? 1900 : 2000;
+    var dt = new Date(y, mo - 1, d);
+    if(dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+    return pad2(d) + "." + pad2(mo) + "." + y;
+  }
+  function normValue(f, s){
+    s = String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+    if(f.k === "room") return normRoom(s);
+    if(f.k === "email") return s.replace(/\s/g, "").toLowerCase();
+    if(f.date){ var d = normDate(s, f.date); return d === null ? s : d; }
+    if(f.opts) return f.opts.indexOf(s.toUpperCase()) >= 0 ? s.toUpperCase() : "";
+    return s;
+  }
+  // What is still needed before the card is complete; "(DD.MM.YYYY)" marks a date to correct.
+  function missingOf(c){
+    var out = [];
+    FIELDS.forEach(function(f){
+      if(f.need && !c[f.k]) out.push(f.label.replace(" Nº", ""));
+      else if(f.date && c[f.k] && !isoOf(c[f.k])) out.push(f.label + " (DD.MM.YYYY)");
+    });
+    if(c.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) out.push("E-mail (check it)");
+    return out;
+  }
+  function nameKey(c){ return ((c.first || "") + " " + (c.last || "")).toLowerCase().replace(/\s+/g, " ").trim(); }
+  // The same guest in the same room on the same arrival day: saving again updates that card.
+  function sameGuest(a, b){ return !!nameKey(a) && a.room === b.room && isoOf(a.checkIn) === isoOf(b.checkIn) && nameKey(a) === nameKey(b); }
+
+  // ---------- storage ----------
+  var cards = [], currentId = null, dirty = false, filter = "all", seq = 0;
+  function newId(){ return "r" + Date.now().toString(36) + (seq++).toString(36); }
+  function byId(id){ for(var i = 0; i < cards.length; i++) if(cards[i].id === id) return cards[i]; return null; }
+  function load(){
+    var v = null;
+    try{ v = JSON.parse(localStorage.getItem(KEY) || "[]"); }catch(e){}
+    cards = (Array.isArray(v) ? v : []).filter(function(c){ return c && typeof c === "object" && c.id; });
+    cards.forEach(function(c){ FIELDS.forEach(function(f){ c[f.k] = c[f.k] == null ? "" : String(c[f.k]); }); });
+  }
+  function persist(){
+    try{ localStorage.setItem(KEY, JSON.stringify(cards)); return true; }
+    catch(e){
+      load();
+      setStatus("bad", "Not saved: this browser's storage is full. Back up this shift, then clear old data.");
+      return false;
+    }
+  }
+  function purge(){
+    var t = todayIso(), now = Date.now(), before = cards.length;
+    cards = cards.filter(function(c){
+      if(c.savedAt && now - c.savedAt > MAX_DAYS * 864e5) return false;
+      var base = isoOf(c.checkOut) || isoOf(c.checkIn) || (c.savedAt ? isoOfDate(new Date(c.savedAt)) : "");
+      return !base || addDays(base, KEEP_DAYS) >= t;
+    });
+    if(cards.length !== before){
+      persist();
+      if(currentId && !byId(currentId)) currentId = null;
+    }
+    return before - cards.length;
+  }
+  var draftTimer = null;
+  function saveDraft(){
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(function(){
+      try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({ id:currentId, card:readForm(), at:Date.now() })); }catch(e){}
+    }, 400);
+  }
+  function dropDraft(){
+    clearTimeout(draftTimer);
+    try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+  }
+  function restoreDraft(){
+    var d = null;
+    try{ d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); }catch(e){}
+    if(!d || !d.card || Date.now() - (d.at || 0) > 12 * 3600e3){ dropDraft(); return false; }
+    currentId = d.id && byId(d.id) ? d.id : null;
+    fillForm(d.card);
+    dirty = true;
+    setStatus("warn", "Changes that were not saved have been restored. Save them, or start a new card.");
+    return true;
+  }
+
+  // ---------- form ----------
+  function fieldHtml(f){
+    var id = "rg_" + f.k, a = ' id="' + id + '" data-k="' + f.k + '"', ctl;
+    if(f.opts) ctl = '<select' + a + '>' + f.opts.map(function(o){ return '<option value="' + o + '">' + (o || "—") + '</option>'; }).join("") + '</select>';
+    else ctl = '<input' + a + ' type="' + (f.type || "text") + '" autocomplete="off" spellcheck="false"' +
+      (f.list ? ' list="' + f.list + '"' : "") +
+      (f.date ? ' placeholder="DD.MM.YYYY" inputmode="numeric" maxlength="10"' : "") +
+      (f.num ? ' inputmode="numeric" maxlength="3"' : "") +
+      (f.ph ? ' placeholder="' + esc(f.ph) + '"' : "") +
+      (f.k === "room" ? ' class="reg-room-in" inputmode="numeric" maxlength="6" placeholder="e.g. 0423"' : "") + '>';
+    return '<div class="field' + (f.need ? " need" : "") + (f.wide ? " wide" : "") + '"><label for="' + id + '">' + esc(f.label) + '</label>' + ctl + '</div>';
+  }
+  function buildForm(){
+    var h = GROUPS.map(function(g){
+      var inner = '<div class="reg-sec">' + g.title + '</div><div class="reg-grid">' + g.keys.map(function(k){ return fieldHtml(F[k]); }).join("") + '</div>';
+      return g.main ? '<div class="reg-key">' + inner + '</div>' : inner;
+    }).join("");
+    h += '<div class="reg-sec">Stay &middot; Frankfurt tourism contribution</div><div class="reg-purpose">' +
+      '<label><input type="radio" name="regPurpose" value="leisure"> Leisure</label>' +
+      '<label><input type="radio" name="regPurpose" value="business"> Business</label>' +
+      '<div class="field"><label for="rg_employer">Employer name and business address (business stays)</label><input id="rg_employer" type="text" autocomplete="off" spellcheck="false"></div></div>';
+    h += '<datalist id="regCountries">' + COUNTRIES.map(function(c){ return '<option value="' + esc(c) + '">'; }).join("") + '</datalist>' +
+      '<datalist id="regSalutations"><option value="Mr"><option value="Ms"><option value="Mrs"><option value="Dr"></datalist>';
+    $("regFields").innerHTML = h;
+  }
+  function readForm(){
+    var c = {};
+    FIELDS.forEach(function(f){ c[f.k] = normValue(f, $("rg_" + f.k).value); });
+    var p = document.querySelector('input[name="regPurpose"]:checked');
+    c.purpose = p ? p.value : "";
+    c.employer = $("rg_employer").value.replace(/\s+/g, " ").trim();
+    c.inSap = $("regInSap").checked;
+    return c;
+  }
+  function fillForm(c){
+    c = c || {};
+    FIELDS.forEach(function(f){ var el = $("rg_" + f.k); el.value = c[f.k] || ""; el.classList.remove("bad"); });
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="regPurpose"]'), function(r){ r.checked = r.value === c.purpose; });
+    $("rg_employer").value = c.employer || "";
+    $("regInSap").checked = !!c.inSap;
+  }
+  function blank(){ return { checkIn: dotsOf(todayIso()) }; }
+  function confirmDiscard(){ return !dirty || window.confirm("Discard the changes on this card that are not saved?"); }
+  function focusFirstEmpty(){
+    var inputs = $("regFields").querySelectorAll("input[data-k]");
+    for(var i = 0; i < inputs.length; i++) if(!inputs[i].value){ inputs[i].focus(); return; }
+  }
+
+  function setStatus(cls, text){ var el = $("regStatus"); el.className = "ev-status" + (cls ? " " + cls : ""); el.textContent = text; }
+
+  function save(quiet){
+    var c = readForm();
+    if(!c.room){ setStatus("bad", "Enter the room number to save the card."); $("rg_room").focus(); return null; }
+    var now = Date.now(), card = currentId ? byId(currentId) : null, merged = false;
+    if(card){
+      FIELDS.forEach(function(f){ card[f.k] = c[f.k]; });
+      card.purpose = c.purpose; card.employer = c.employer; card.inSap = c.inSap;
+    } else {
+      card = cards.filter(function(x){ return sameGuest(x, c); })[0] || null;
+      if(card){
+        // the same guest saved again from a new form: keep what was entered before
+        merged = true;
+        FIELDS.forEach(function(f){ if(c[f.k]) card[f.k] = c[f.k]; });
+        if(c.purpose) card.purpose = c.purpose;
+        if(c.employer) card.employer = c.employer;
+        card.inSap = card.inSap || c.inSap;
+      } else {
+        card = { id:newId(), savedAt:now };
+        FIELDS.forEach(function(f){ card[f.k] = c[f.k]; });
+        card.purpose = c.purpose; card.employer = c.employer; card.inSap = c.inSap;
+        cards.push(card);
+      }
+    }
+    card.updatedAt = now;
+    if(!persist()) return null;
+    currentId = card.id;
+    dirty = false;
+    dropDraft();
+    fillForm(card);
+    render();
+    if(!quiet){
+      var miss = missingOf(card);
+      setStatus(miss.length ? "warn" : "ok", "Saved under room " + card.room + (merged ? ", together with the card already saved for this guest" : "") + "." +
+        (miss.length ? " Still missing: " + miss.join(", ") + "." : ""));
+    }
+    return card;
+  }
+  function openCard(id){
+    if(id === currentId || !confirmDiscard()) return;
+    var c = byId(id);
+    if(!c) return;
+    currentId = id; dirty = false; dropDraft();
+    fillForm(c); render(); setStatus("", "");
+  }
+  function newCard(){
+    if(!confirmDiscard()) return;
+    currentId = null; dirty = false; dropDraft();
+    fillForm(blank()); render(); setStatus("", "");
+    $("rg_room").focus();
+  }
+
+  // ---------- list ----------
+  function sorted(){
+    return cards.slice().sort(function(a, b){
+      return a.room.localeCompare(b.room, undefined, { numeric:true }) || isoOf(b.checkIn).localeCompare(isoOf(a.checkIn)) || a.last.localeCompare(b.last);
+    });
+  }
+  function shown(){
+    var q = $("regSearch").value.trim().toLowerCase(), t = todayIso();
+    return sorted().filter(function(c){
+      if(filter === "today" && isoOf(c.checkIn) !== t) return false;
+      if(filter === "open" && c.inSap) return false;
+      return !q || (c.room + " " + c.first + " " + c.last + " " + c.reservation).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+  function stateOf(c){
+    var miss = missingOf(c);
+    if(!miss.length) return '<span class="reg-state ok" title="Room, name and e-mail are filled in">Ready</span>';
+    var text = miss.length > 1 ? miss.length + " to complete" : (/\(/.test(miss[0]) ? "Check " + miss[0].replace(/ \(.*$/, "") : "Missing " + miss[0]);
+    return '<span class="reg-state warn" title="' + esc(miss.join(", ")) + '">' + esc(text) + '</span>';
+  }
+  function rowHtml(c){
+    var name = [c.last, c.first].filter(Boolean).join(", ") || "No name yet";
+    var when = c.checkIn ? c.checkIn.slice(0, 5) + (c.checkOut ? " – " + c.checkOut.slice(0, 5) : "") : "No dates";
+    if(c.guests) when += " · " + c.guests + (c.guests === "1" ? " guest" : " guests");
+    return '<div class="reg-item' + (c.id === currentId ? " is-open" : "") + (c.inSap ? " is-sap" : "") + '">' +
+      '<button type="button" class="reg-open" data-open="' + esc(c.id) + '"><span class="reg-room">' + esc(c.room) + '</span>' +
+      '<span class="reg-who"><b>' + esc(name) + '</b><small>' + esc(when) + '</small></span></button>' +
+      '<div class="reg-right">' + stateOf(c) +
+      '<label class="reg-sap"><input type="checkbox" data-sap="' + esc(c.id) + '"' + (c.inSap ? " checked" : "") + '> In SAP</label></div></div>';
+  }
+  function renderList(){
+    var t = todayIso(), list = shown(), narrowed = filter !== "all" || !!$("regSearch").value.trim();
+    var counts = { all:cards.length,
+      today:cards.filter(function(c){ return isoOf(c.checkIn) === t; }).length,
+      open:cards.filter(function(c){ return !c.inSap; }).length };
+    var names = { all:"All", today:"Arrivals today", open:"Not in SAP" };
+    Array.prototype.forEach.call(document.querySelectorAll("#panel-registration .reg-filter button"), function(b){
+      var f = b.getAttribute("data-f");
+      b.textContent = names[f] + " · " + counts[f];
+      b.setAttribute("aria-pressed", f === filter ? "true" : "false");
+    });
+    $("regList").innerHTML = list.length ? list.map(rowHtml).join("") :
+      '<div class="reg-empty">' + (cards.length ? "<b>No card matches</b>Change the search or the filter." :
+        "<b>No cards yet</b>Fill in the form and press Save: the card appears here under its room number.") + '</div>';
+    $("regPrintAll").textContent = (narrowed ? "Print shown · " : "Print all · ") + list.length;
+    $("regCsv").textContent = "Download Excel · " + list.length;
+    $("regBadge").textContent = counts.open;
+  }
+  function renderHead(){
+    var c = currentId ? byId(currentId) : null;
+    $("regTitle").textContent = c ? "Room " + c.room + (c.last ? " · " + c.last : "") : "New registration card";
+    $("regSub").textContent = (dirty ? "Not saved yet · " : "") +
+      (c ? "Saved " + stamp(c.updatedAt || c.savedAt) : "Fill in at the desk, print, the guest signs.");
+    $("regDelete").hidden = !c;
+    var miss = missingOf(readForm());
+    $("regMissing").textContent = miss.length ? "Still missing: " + miss.join(" · ") : "";
+  }
+  function render(){ renderList(); renderHead(); }
+
+  // ---------- printed card ----------
+  var LEGAL = {
+    business: "The data will be collected for the payment of the tourism contribution. The indication of the employer and full company address is obligatory for business stays. The given information may be verified by Kassen- und Steueramt Frankfurt am Main. If no information on your employer is provided, the tourism contribution must be paid to the City of Frankfurt am Main. General information on the EU-DSGVO can be found at http://www.kassen-steueramt.stadt-frankfurt.de.",
+    rewards: "Yes, I want to become a Radisson Rewards&trade; member and start enjoying instant benefits and recognition right away for my stay.",
+    marketing: "Yes, I agree to receive commercial messages (including email) from Radisson Hotel Group relating to hotels' products and services including special offers and promotions. I understand that even if I do not check this box, I may receive transactional messages. I may opt out of marketing communications at any time and will be given the option to do so in each communication.",
+    end: [
+      "Express Check-Out: I hereby authorize Park Inn by Radisson Frankfurt Airport to charge my credit card, provided at check-in, for services used, but not paid upon my departure: my invoice will thus be sent by email. I accept and agree to obey the Hotel Regulations.",
+      "I understand that by staying in this hotel my personal data will be processed by the Radisson Hotel Group for the purposes described in, and in accordance with the Privacy Policy available at https://www.radissonhotels.com/en-us/privacy and at the front desk.",
+      "Participation in Radisson Rewards is subject to the terms and conditions available in https://www.radissonhotels.com/en-us/terms-and-conditions and our privacy policy available at https://www.radissonhotels.com/en-us/privacy.",
+      "Joining Radisson Rewards constitutes your acceptance of the Radisson Rewards programme terms and conditions and our privacy policy."
+    ]
+  };
+  // One A4 page, laid out like the card SAP prints. The guest ticks the Rewards and
+  // marketing boxes and signs by hand.
+  function cardHtml(c){
+    var v = function(k){ return esc(c[k] || ""); };
+    var lab = function(k){ return esc(F[k].label + (F[k].mark || "")); };
+    var one = function(k){ return '<tr><td class="l">' + lab(k) + '</td><td colspan="3">' + v(k) + '</td></tr>'; };
+    var two = function(a, b){ return '<tr><td class="l">' + lab(a) + '</td><td>' + v(a) + '</td><td class="l">' + (b ? lab(b) : "") + '</td><td>' + (b ? v(b) : "") + '</td></tr>'; };
+    var box = function(on){ return '<span class="rc-box">' + (on ? "X" : "") + '</span>'; };
+    var cols = function(w){ return '<colgroup>' + w.map(function(x){ return '<col style="width:' + x + '%">'; }).join("") + '</colgroup>'; };
+    var sign = '<div class="rc-sign"><b>Guest signature</b><span></span></div>';
+    var logo = $("logoImg") ? $("logoImg").src : "";
+    return '<section class="rc-page">' +
+      '<div class="rc-head"><div class="rc-title">REGISTRATION CARD</div>' + (logo ? '<img class="rc-logo" src="' + esc(logo) + '" alt="">' : "<span></span>") +
+      '<div class="rc-hotel"><b>Park Inn by Radisson Frankfurt Airport</b><i>Amelia-Mary-Earhart-Straße 10<br>60549 Frankfurt, Germany</i></div></div>' +
+      '<h3>PERSONAL INFORMATION</h3><table class="rc-t">' + cols([38, 26, 16, 20]) +
+      ["salutation","first","last","company","street","city","zip","country","dob","birthplace","nationality","docNo","issueDate"].map(one).join("") +
+      two("issuePlace", "language") + one("email") + one("phone") + '</table>' +
+      '<h3>BOOKING INFORMATION</h3><table class="rc-t rc-t4">' + cols([38, 17, 27, 18]) +
+      two("room") + two("checkIn", "guests") + two("checkOut", "reservation") + two("companyNo", "total") + two("payment", "express") + '</table>' +
+      '<h3>ADDITIONAL INFORMATION</h3><table class="rc-t">' + cols([38, 26, 16, 20]) + ["vehicle","model","plate"].map(one).join("") + '</table>' +
+      sign +
+      '<div class="rc-legal"><p>' + box(c.purpose === "leisure") + 'Leisure reservation.</p>' +
+      '<p>' + box(c.purpose === "business") + 'Business reservation. No.: Name of employer and business address: ' +
+        (c.employer ? '<span class="rc-fill">' + esc(c.employer) + '</span> ' : "") + LEGAL.business + '</p>' +
+      '<p>' + box(false) + LEGAL.rewards + '</p><p>' + box(false) + LEGAL.marketing + '</p></div>' +
+      sign +
+      '<div class="rc-legal">' + LEGAL.end.map(function(t){ return "<p>" + t + "</p>"; }).join("") + '</div></section>';
+  }
+  var printReady = false;
+  function printCards(list){
+    $("regPrintOut").innerHTML = list.map(cardHtml).join("");
+    printReady = true;
+    document.body.setAttribute("data-print", "registration");
+    window.print();
+  }
+  // Ctrl+P on this tab: print the card in the form (saved first when it has a room).
+  window.addEventListener("beforeprint", function(){
+    if(document.body.getAttribute("data-print") !== "registration" || printReady) return;
+    var c = readForm();
+    if(c.room && dirty){ var s = save(true); if(s) c = s; }
+    $("regPrintOut").innerHTML = cardHtml(c);
+  });
+  window.addEventListener("afterprint", function(){ printReady = false; $("regPrintOut").innerHTML = ""; });
+
+  // ---------- Excel list ----------
+  // A small .xlsx (stored zip, every cell text) so that room 0423, "+49 …" phone
+  // numbers and long document numbers stay exactly as typed.
+  var CRC = null;
+  function crc32(bytes){
+    if(!CRC){
+      CRC = [];
+      for(var n = 0; n < 256; n++){ var c = n; for(var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; CRC[n] = c >>> 0; }
+    }
+    var crc = 0xFFFFFFFF;
+    for(var i = 0; i < bytes.length; i++) crc = CRC[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+  function zipStore(files, type){
+    var enc = new TextEncoder(), out = [], central = [], offset = 0, d = new Date();
+    var time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+    var date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+    files.forEach(function(f){
+      var name = enc.encode(f.name), data = enc.encode(f.text), crc = crc32(data);
+      var h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true);
+      h.setUint16(10, time, true); h.setUint16(12, date, true); h.setUint32(14, crc, true);
+      h.setUint32(18, data.length, true); h.setUint32(22, data.length, true); h.setUint16(26, name.length, true);
+      out.push(h.buffer, name, data);
+      var c = new DataView(new ArrayBuffer(46));
+      c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true);
+      c.setUint16(12, time, true); c.setUint16(14, date, true); c.setUint32(16, crc, true);
+      c.setUint32(20, data.length, true); c.setUint32(24, data.length, true); c.setUint16(28, name.length, true);
+      c.setUint32(42, offset, true);
+      central.push(c.buffer, name);
+      offset += 30 + name.length + data.length;
+    });
+    var size = central.reduce(function(s, b){ return s + b.byteLength; }, 0);
+    var e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true);
+    e.setUint32(12, size, true); e.setUint32(16, offset, true);
+    return new Blob(out.concat(central, [e.buffer]), { type:type });
+  }
+  function xmlEsc(s){
+    return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+      .replace(/[&<>"]/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]; });
+  }
+  function colName(i){ var s = ""; for(i++; i; i = Math.floor((i - 1) / 26)) s = String.fromCharCode(65 + (i - 1) % 26) + s; return s; }
+  function xlsxBlob(rows, sheetName){
+    var head = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+    var widths = rows[0].map(function(_, ci){
+      return Math.min(40, Math.max.apply(null, rows.map(function(r){ return String(r[ci]).length; })) + 2);
+    });
+    var sheet = head + '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+      '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>' +
+      '<cols>' + widths.map(function(w, i){ return '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + Math.max(8, w) + '" customWidth="1"/>'; }).join("") + '</cols>' +
+      '<sheetData>' + rows.map(function(r, ri){
+        return '<row r="' + (ri + 1) + '">' + r.map(function(v, ci){
+          return '<c r="' + colName(ci) + (ri + 1) + '" t="inlineStr"' + (ri ? "" : ' s="1"') + '><is><t xml:space="preserve">' + xmlEsc(v) + '</t></is></c>';
+        }).join("") + '</row>';
+      }).join("") + '</sheetData></worksheet>';
+    var rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+    var ct = "application/vnd.openxmlformats-officedocument.spreadsheetml";
+    return zipStore([
+      { name:"[Content_Types].xml", text: head + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' +
+        '<Override PartName="/xl/workbook.xml" ContentType="' + ct + '.sheet.main+xml"/>' +
+        '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="' + ct + '.worksheet+xml"/>' +
+        '<Override PartName="/xl/styles.xml" ContentType="' + ct + '.styles+xml"/></Types>' },
+      { name:"_rels/.rels", text: head + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+        '<Relationship Id="rId1" Type="' + rel + '/officeDocument" Target="xl/workbook.xml"/></Relationships>' },
+      { name:"xl/workbook.xml", text: head + '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="' + rel + '">' +
+        '<sheets><sheet name="' + xmlEsc(sheetName) + '" sheetId="1" r:id="rId1"/></sheets></workbook>' },
+      { name:"xl/_rels/workbook.xml.rels", text: head + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+        '<Relationship Id="rId1" Type="' + rel + '/worksheet" Target="worksheets/sheet1.xml"/>' +
+        '<Relationship Id="rId2" Type="' + rel + '/styles" Target="styles.xml"/></Relationships>' },
+      { name:"xl/styles.xml", text: head + '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+        '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>' +
+        '<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>' +
+        '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>' +
+        '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+        '<cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>' +
+        '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>' },
+      { name:"xl/worksheets/sheet1.xml", text: sheet }
+    ], ct + ".sheet");
+  }
+  var XLSX_COLS = ["room","checkIn","checkOut","guests","salutation","first","last","company","email","phone","street","zip","city","country",
+    "dob","birthplace","nationality","docNo","issueDate","issuePlace","language","reservation","companyNo","total","payment","express","vehicle","model","plate"];
+  function downloadList(list){
+    var rows = [XLSX_COLS.map(function(k){ return F[k].label; }).concat(["Stay", "Employer", "In SAP", "Saved"])];
+    list.forEach(function(c){
+      rows.push(XLSX_COLS.map(function(k){ return c[k] || ""; }).concat([
+        c.purpose === "business" ? "Business" : (c.purpose === "leisure" ? "Leisure" : ""),
+        c.employer || "", c.inSap ? "Yes" : "No", c.savedAt ? stamp(c.savedAt) : ""]));
+    });
+    var d = new Date();
+    var name = "registration-cards-" + d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) + "-" + pad2(d.getHours()) + pad2(d.getMinutes()) + ".xlsx";
+    var url = URL.createObjectURL(xlsxBlob(rows, "Registration cards"));
+    var a = document.createElement("a");
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+    setStatus("ok", list.length + (list.length === 1 ? " card" : " cards") + " saved to " + name + ". It carries passport data: keep it on hotel equipment.");
+  }
+
+  // ---------- registration card PDF from SAP ----------
+  // SAP prints each card as label / value text on a fixed grid: a label is followed
+  // on its line by its value, up to the next label.
+  function labelKey(s){ return String(s).toLowerCase().replace(/[^a-z]/g, ""); }
+  var LABEL_OF = {};
+  FIELDS.forEach(function(f){ LABEL_OF[labelKey(f.label)] = f.k; });
+  function parseSapCards(pages){
+    var found = [];
+    pages.forEach(function(items){
+      if(!items.some(function(it){ return /REGISTRATION CARD/i.test(it.s); })) return;
+      var rows = [];
+      items.forEach(function(it){
+        if(!it.s || !it.s.trim()) return;
+        for(var i = 0; i < rows.length; i++) if(Math.abs(rows[i].y - it.y) <= 2){ rows[i].items.push(it); return; }
+        rows.push({ y:it.y, items:[it] });
+      });
+      var raw = {}, any = false;
+      rows.forEach(function(r){
+        var cur = null;
+        r.items.sort(function(a, b){ return a.x - b.x; }).forEach(function(it){
+          var t = it.s.replace(/\s+/g, " ").trim(), k = LABEL_OF[labelKey(t)];
+          if(k){ cur = k; return; }
+          if(cur){ raw[cur] = raw[cur] ? raw[cur] + " " + t : t; any = true; }
+        });
+      });
+      if(!any) return;
+      var c = {};
+      FIELDS.forEach(function(f){ c[f.k] = normValue(f, raw[f.k]); });
+      found.push(c);
+    });
+    return found;
+  }
+  function readPdf(buf){
+    if(typeof pdfjsLib === "undefined" || !pdfjsLib.getDocument) return Promise.reject(new Error("pdf.js missing"));
+    if(pdfjsLib.GlobalWorkerOptions && !pdfjsLib.GlobalWorkerOptions.workerSrc){
+      var src = document.getElementById("pdfWorkerSource").textContent;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([src], { type:"application/javascript" }));
+    }
+    return pdfjsLib.getDocument({ data:buf }).promise.then(function(pdf){
+      var pages = [], chain = Promise.resolve();
+      for(var p = 1; p <= pdf.numPages; p++) (function(p){
+        chain = chain.then(function(){ return pdf.getPage(p); }).then(function(page){ return page.getTextContent(); }).then(function(tc){
+          pages.push(tc.items.map(function(it){ return { s:it.str, x:it.transform[4], y:it.transform[5] }; }));
+        });
+      })(p);
+      return chain.then(function(){ return pages; });
+    });
+  }
+  function importOne(v){
+    var existing = v.room ? cards.filter(function(c){ return sameGuest(c, v); })[0] : null;
+    var base = null, c = {};
+    if(existing && existing.id === currentId) base = readForm();   // that card is open: keep what is typed
+    else if(!confirmDiscard()) return;
+    else if(existing) base = existing;
+    if(base){
+      // a card for this guest is already saved: only its empty fields are filled
+      FIELDS.forEach(function(f){ c[f.k] = base[f.k] || v[f.k]; });
+      c.purpose = base.purpose; c.employer = base.employer; c.inSap = base.inSap;
+      currentId = existing.id;
+    } else {
+      c = v; currentId = null;
+    }
+    fillForm(c);
+    dirty = true;
+    render(); saveDraft();
+    setStatus("ok", existing ?
+      "Room " + existing.room + " already has a card for this guest: its empty fields were filled from the PDF. Check them and press Save." :
+      "Filled from the SAP card" + (v.room ? " for room " + v.room : "") + ". Complete the rest and press Save.");
+    focusFirstEmpty();
+  }
+  function importMany(list){
+    var added = 0, merged = 0, skipped = 0, now = Date.now();
+    list.forEach(function(v){
+      if(!v.room){ skipped++; return; }
+      var c = cards.filter(function(x){ return sameGuest(x, v); })[0];
+      if(c){ FIELDS.forEach(function(f){ if(!c[f.k] && v[f.k]) c[f.k] = v[f.k]; }); c.updatedAt = now; merged++; }
+      else {
+        c = { id:newId(), savedAt:now, updatedAt:now, purpose:"", employer:"", inSap:false };
+        FIELDS.forEach(function(f){ c[f.k] = v[f.k]; });
+        cards.push(c); added++;
+      }
+    });
+    if(!persist()) return;
+    render();
+    setStatus(added || merged ? "ok" : "warn", list.length + " cards in the PDF: " + added + " added" + (merged ? ", " + merged + " already saved (empty fields filled)" : "") +
+      (skipped ? ", " + skipped + " without a room number left out" : "") + ". Open each card to complete it.");
+  }
+  function handleFile(file){
+    if(!file) return;
+    if(!/\.pdf$/i.test(file.name) && file.type !== "application/pdf"){ setStatus("bad", file.name + " is not a PDF. Nothing was changed."); return; }
+    setStatus("", "Reading " + file.name + "…");
+    file.arrayBuffer().then(readPdf).then(function(pages){
+      var found = parseSapCards(pages);
+      if(!found.length){ setStatus("bad", file.name + " does not look like a registration card printed from SAP. Nothing was changed."); return; }
+      if(found.length === 1) importOne(found[0]);
+      else importMany(found);
+    }).catch(function(err){
+      setStatus("bad", "Could not read " + file.name + ". Try saving the PDF again and re-uploading it.");
+      console.error(err);
+    });
+  }
+
+  // ---------- events ----------
+  buildForm();
+  var form = $("regForm");
+  form.addEventListener("submit", function(e){ e.preventDefault(); save(); });
+  form.addEventListener("input", function(e){
+    var t = e.target;
+    if(t.id === "regInSap" || t.type === "file") return;
+    if(t.id === "rg_employer" && t.value.trim()) form.querySelector('input[name="regPurpose"][value="business"]').checked = true;
+    var f = F[t.getAttribute("data-k")];
+    if(f && f.date && /^\d{8}$/.test(t.value)){ var d = normDate(t.value, f.date); if(d) t.value = d; }
+    t.classList.remove("bad");
+    dirty = true;
+    renderHead(); saveDraft();
+  });
+  // Tidy a value when leaving its field: 423 -> 0423, 06101990 -> 06.10.1990.
+  form.addEventListener("focusout", function(e){
+    var t = e.target, f = t.getAttribute && F[t.getAttribute("data-k")];
+    if(!f || t.tagName !== "INPUT") return;
+    var v = normValue(f, t.value);
+    if(v !== t.value) t.value = v;
+    if(f.date && v && !isoOf(v)) t.classList.add("bad");
+    if(f.k === "room" && v && !currentId){
+      var other = cards.filter(function(c){ return c.room === v && isoOf(c.checkIn) === isoOf(normValue(F.checkIn, $("rg_checkIn").value)); });
+      if(other.length) setStatus("warn", "Room " + v + " already has a card for this arrival (" + other.map(function(c){ return c.last || "no name"; }).join(", ") +
+        "). Open it from the list, or carry on for a second guest.");
+    }
+    renderHead();
+  });
+  $("regInSap").addEventListener("change", function(){
+    var c = currentId ? byId(currentId) : null;
+    if(c){ c.inSap = this.checked; persist(); renderList(); }
+  });
+  $("regPrint").addEventListener("click", function(){
+    var c = readForm();
+    if(c.room){ var s = save(true); if(s) c = s; setStatus("ok", "Saved under room " + c.room + " and sent to the printer."); }
+    else setStatus("warn", "Printed without saving: enter the room number to save this card.");
+    printCards([c]);
+  });
+  $("regDelete").addEventListener("click", function(){
+    var c = currentId ? byId(currentId) : null;
+    if(!c || !window.confirm("Delete the card for room " + c.room + (c.last ? " (" + c.last + ")" : "") + " from this PC?")) return;
+    cards = cards.filter(function(x){ return x !== c; });
+    persist();
+    currentId = null; dirty = false; dropDraft();
+    fillForm(blank()); render(); setStatus("", "Card deleted.");
+  });
+  $("regNew").addEventListener("click", newCard);
+  $("regSearch").addEventListener("input", renderList);
+  $("panel-registration").querySelector(".reg-filter").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-f]");
+    if(!b) return;
+    filter = b.getAttribute("data-f");
+    renderList();
+  });
+  $("regList").addEventListener("click", function(e){
+    var b = e.target.closest("[data-open]");
+    if(b) openCard(b.getAttribute("data-open"));
+  });
+  $("regList").addEventListener("change", function(e){
+    var box = e.target.closest("[data-sap]"), c = box && byId(box.getAttribute("data-sap"));
+    if(!c) return;
+    c.inSap = box.checked;
+    persist();
+    if(c.id === currentId) $("regInSap").checked = c.inSap;
+    renderList();
+  });
+  $("regPrintAll").addEventListener("click", function(){
+    var list = shown();
+    if(!list.length){ window.alert("There are no cards to print."); return; }
+    printCards(list);
+  });
+  $("regCsv").addEventListener("click", function(){
+    var list = shown();
+    if(!list.length){ window.alert("There are no cards to download."); return; }
+    downloadList(list);
+  });
+  var drop = $("regDrop");
+  drop.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); $("regFile").click(); } });
+  drop.addEventListener("dragover", function(e){ e.preventDefault(); drop.classList.add("drag"); });
+  drop.addEventListener("dragleave", function(){ drop.classList.remove("drag"); });
+  drop.addEventListener("drop", function(e){ e.preventDefault(); drop.classList.remove("drag"); handleFile(e.dataTransfer.files && e.dataTransfer.files[0]); });
+  $("regFile").addEventListener("change", function(){ handleFile(this.files && this.files[0]); this.value = ""; });
+  // Ctrl+S saves the card while this tab is open.
+  window.addEventListener("keydown", function(e){
+    if(!(e.ctrlKey || e.metaKey) || e.altKey || String(e.key).toLowerCase() !== "s") return;
+    if(!$("panel-registration").classList.contains("active")) return;
+    e.preventDefault();
+    save();
+  });
+
+  // The workstation open in a second window: follow the cards saved there.
+  window.addEventListener("storage", function(e){
+    if(e.key !== KEY) return;
+    load();
+    if(currentId && !byId(currentId)) currentId = null;
+    render();
+  });
+
+  load();
+  var removed = purge();
+  if(!restoreDraft()) fillForm(blank());
+  render();
+  if(removed && !dirty) setStatus("", removed + (removed === 1 ? " card was" : " cards were") + " removed, " + KEEP_DAYS + " days after check-out.");
+  // A PC left open: remove old cards and keep "Arrivals today" current when the day changes.
+  var shownDay = todayIso();
+  setInterval(function(){
+    var t = todayIso();
+    if(t === shownDay) return;
+    shownDay = t;
+    purge();
+    render();
   }, 60000);
 })();
 </script>

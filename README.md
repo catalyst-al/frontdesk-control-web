@@ -42,6 +42,16 @@ The **Check-in / out** tab (Alt+8) shows `checkin-guide/`, a step-by-step check-
 - The page makes no network calls. Only the display choice (one step / all steps, last step open) is stored in this browser.
 - `checkin-guide/SOP_FO-CICO_Check-in_Check-out.pdf` is the same procedure as a German SOP (FO-CICO v1.5, draft for FOM approval), opened with **SOP (PDF)** in the guide. When the guide's steps or rules change, update the PDF as well.
 
+## Registration
+The **Registration** tab (Alt+9) is the hotel registration card (Meldeschein): reception fills it in at the desk and prints it for the guest to sign; colleagues enter the cards in SAP later.
+
+- The form has every field of the SAP registration card. Room, first name, last name and e-mail are needed before a card shows as **Ready**; salutation, names, company and e-mail are grouped at the top as the main details. Leisure / Business (with the employer, for the Frankfurt tourism contribution) is ticked at the desk; the Radisson Rewards and marketing boxes are left for the guest.
+- **Save** (Enter or Ctrl+S) keeps the card under its room number in the list on the left. Saving the same guest, room and arrival date again updates that card. Three digits are enough for the room (423 → 0423), eight for a date (06101990 → 06.10.1990).
+- **Print for signature** (or Ctrl+P on this tab) prints the card on one A4 page in the layout of the SAP card. **Print all** prints every card shown in the list, one page each; **Download Excel** saves them as an .xlsx file in which every cell is text, so 0423, "+49 …" and long document numbers stay as typed.
+- Colleagues tick **In SAP** once a card is entered; the tab badge counts the cards not yet in SAP.
+- Optional: drop the registration card printed from SAP to PDF (Microsoft Print to PDF) on **SAP card (PDF)** to fill name, company, country, e-mail, room, dates, guests, reservation and payment. A PDF with several cards adds them all. The PDF is read in this browser and not stored.
+- Cards are kept in this browser only, are part of **Back up this shift**, and are deleted automatically 3 days after check-out (60 days after saving at the latest). A card that is being typed survives a reload. The card the guest signed stays the original; printouts and downloaded lists carry passport data and stay on hotel equipment.
+
 ## LUME Night Audit
 `lume-night-audit/` is the Night Audit control center for LUME Boutique Hotel (OPERA PMS): Run Night checklist, Ask / Search, Codes, Problem / Unsure, Visual Guides and the Full SOP. Open `lume-night-audit/index.html` directly.
 
