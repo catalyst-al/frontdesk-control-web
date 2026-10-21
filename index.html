@@ -2322,6 +2322,9 @@
           <span class="tab-icon">&#127769;</span> Night Audit
           <span class="tab-badge" id="naBadge">0</span>
         </button>
+        <button class="tab" id="tab-nightaudit2" role="tab" aria-selected="false" aria-controls="panel-nightaudit2" data-panel="nightaudit2">
+          <span class="tab-icon" aria-hidden="true">&#10024;</span> Night Audit 2.0
+        </button>
         <button class="tab" id="tab-breakfastlive" role="tab" aria-selected="false" aria-controls="panel-breakfastlive" data-panel="breakfastlive">
           <span class="tab-icon" aria-hidden="true">&#9673;</span> Breakfast Live
           <span class="tab-badge" id="breakfastLiveBadge">Offline</span>
@@ -2345,6 +2348,14 @@
   <!-- ============ BREAKFAST PANEL ============ -->
   <div class="tabpanel" id="panel-breakfastlive" role="tabpanel" aria-labelledby="tab-breakfastlive">
     <div id="breakfastLiveHost"></div>
+  </div>
+  <!-- ============ NIGHT AUDIT 2.0 PANEL (night-audit-2/) ============ -->
+  <div class="tabpanel" id="panel-nightaudit2" role="tabpanel" aria-labelledby="tab-nightaudit2">
+    <div class="na-guide-bar no-print" id="na2GuideBar">
+      <span class="na-guide-hint">The new Night Audit app in EMMA v2 (Fiori): the 13 processes, the actions each one offers and where the rest is solved, step by step with the screens. Ticks are kept for tonight only.</span>
+      <a class="btn-ghost" id="na2GuideOpen" href="night-audit-2/index.html" target="_blank" rel="noopener">Open in new window &#8599;</a>
+    </div>
+    <div class="na-guide-host no-print" id="na2GuideHost"><iframe id="na2GuideFrame" title="Night Audit 2.0"></iframe></div>
   </div>
   <!-- ============ CHECK-IN GUIDE PANEL ============ -->
   <div class="tabpanel" id="panel-checkin" role="tabpanel" aria-labelledby="tab-checkin">
@@ -4553,7 +4564,7 @@
       if(on && focusIt) t.focus();
       if(on) moveUnderline(t);
     });
-    ["breakfast","handover","group","nightaudit","vcc","breakfastlive","events","checkin","registration"].forEach(function(p){
+    ["breakfast","handover","group","nightaudit","nightaudit2","vcc","breakfastlive","events","checkin","registration"].forEach(function(p){
       var panel = document.getElementById("panel-" + p);
       if(!panel) return;
       if(p === name){
@@ -4564,7 +4575,43 @@
     });
     try{ if(window.localStorage) localStorage.setItem(TAB_KEY, name); }catch(e){}
     if(name === "checkin") showCiGuide();
+    if(name === "nightaudit2") showNa2Guide();
   }
+
+  // ---- Night Audit 2.0 (night-audit-2/) inside its tab; loaded the first time the tab opens ----
+  // The guide gets the business date of the Night Audit tab so its ticks belong to the right night.
+  function na2GuideUrl(){
+    var d = "";
+    try { d = document.getElementById("naDate").value || ""; } catch(err){}
+    return "night-audit-2/index.html" + (/^\d{4}-\d{2}-\d{2}$/.test(d) ? "?date=" + d : "");
+  }
+  function sizeNa2Guide(){
+    var panel = document.getElementById("panel-nightaudit2");
+    if(!panel.classList.contains("active")) return;
+    var bar = document.querySelector(".brandbar");
+    var used = (bar ? Math.max(0, bar.getBoundingClientRect().bottom) : 0) + 10 + document.getElementById("na2GuideBar").offsetHeight + 14 + 12;
+    document.getElementById("na2GuideHost").style.height = Math.max(560, window.innerHeight - used) + "px";
+  }
+  var na2GuideLoaded = "";
+  function showNa2Guide(){
+    var frame = document.getElementById("na2GuideFrame");
+    var url = na2GuideUrl();
+    document.getElementById("na2GuideOpen").href = url;
+    // Reload only when the business date changed.
+    if(na2GuideLoaded !== url){ frame.setAttribute("src", url); na2GuideLoaded = url; }
+    sizeNa2Guide();
+    setTimeout(sizeNa2Guide, 350);
+  }
+  window.addEventListener("resize", sizeNa2Guide);
+  window.addEventListener("keydown", function(e){
+    if(!(e.ctrlKey || e.metaKey) || e.altKey || String(e.key).toLowerCase() !== "p") return;
+    if(!document.getElementById("panel-nightaudit2").classList.contains("active")) return;
+    var btn = null;
+    try { btn = document.getElementById("na2GuideFrame").contentDocument.getElementById("printBtn"); } catch(err){}
+    if(!btn) return;
+    e.preventDefault();
+    btn.click();
+  });
 
   // ---- Check-in Guide (checkin-guide/) inside its tab; loaded the first time the tab opens ----
   function sizeCiGuide(){
@@ -7919,15 +7966,16 @@
   topBtn.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
   /* Keyboard routing for a busy front desk: Alt+1 ... Alt+5 */
-  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin","registration"];
+  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin","registration","nightaudit2"];
   shortcutTabs.forEach(function(name, idx){
     var b = document.getElementById("tab-" + name);
-    if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + (idx+1);
+    if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + ((idx+1) % 10);
   });
   window.addEventListener("keydown", function(e){
     if(!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     var n = parseInt(e.key,10);
-    if(n < 1 || n > shortcutTabs.length) return;
+    if(n === 0) n = 10; // Alt+0 = the tenth tab (Night Audit 2.0)
+    if(!(n >= 1 && n <= shortcutTabs.length)) return;
     var target = document.getElementById("tab-" + shortcutTabs[n-1]);
     if(!target) return;
     e.preventDefault();

@@ -23,6 +23,15 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 - Ticked steps are stored per business date in this browser only. The guide makes no network calls.
 - Content lives in `night-audit-guide/data.js`; screenshots in `night-audit-guide/img/`. Screenshots must have guest names, reservation numbers, contact data and amounts removed before they are added.
 
+## Night Audit 2.0
+The **Night Audit 2.0** tab (Alt+0, right after Night Audit) shows `night-audit-2/`, a step-by-step guide to the new Night Audit app in EMMA v2 (Fiori), built from the Radisson SOP "EMMA v2 (Fiori) | New Night Audit functions". It can also be opened directly at `night-audit-2/index.html`.
+
+- **Step by step**: A. the app (business date, the Processes list with blue counters and green ticks, tick the line → Actions); B. the five processes solved in the app (Expected arrivals not Checked-In: express check-in, change arrival date, no-show; Expected departures not Checked-Out: move to virtual Z001 or express check-out; Events & Groups limit billing date; Day-Guest billing; Individual reservations not yet billed: automatic invoicing for amount due 0); C. the eight informative processes solved in TMS / Folio Management / POS (invoices not paid, payments on hold, room moves, cancel/no-show charges, locked reservations, POS outlets, events not checked in / out); D. Execute Night Audit. Each step has the screenshot of its screen and Actions menu, a check, and a "watch out" where money is involved.
+- **All 13 processes** is the one-page overview (mandatory/optional, actions in the app, where it is solved); **Questions** answers what changed and what to do when an action is refused.
+- Every step can be ticked **Done tonight**. Ticks belong to the business date (the Night Audit tab's date when opened from the workstation, otherwise the night from 12:00 to 12:00) and are stored in this browser only; **Reset night** clears them.
+- Content lives in `night-audit-2/data.js`; screenshots in `night-audit-2/img/`. They come from the SOP (Radisson Blu demo hotels; the screens are the same for DEFRAAIR) with guest and company names, reservation / invoice / event numbers, amounts and staff names blurred. New screenshots must be redacted the same way before they are added. Statements that are our own reading of the screenshots, not the SOP, are marked as notes in the steps.
+- The page makes no network calls.
+
 ## Events
 The **Events** tab (Alt+7) reads the DEFRAAIR "Event weekly planning" PDF and shows, for each day of that week, which function rooms are booked, for which group, how many people and when.
 
