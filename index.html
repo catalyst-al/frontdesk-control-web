@@ -2295,16 +2295,26 @@
   .sidenav .tab[aria-selected="true"][data-key]::after{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.35);}
   .sn-foot{padding:8px 14px 12px;font-size:10.5px;color:var(--ink-faint);border-top:1px solid var(--line-soft);line-height:1.6;}
   .sn-foot kbd{font:800 9px var(--mono);color:var(--navy);background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 4px;}
-  @media (min-width:980px){
+  /* Wide screens: the sidebar sits beside the content, folded or not as the user left it.
+     Medium screens (a half-screen window, 700-1099px): it stays beside the content folded to
+     icons; the arrow opens it over the content until a section is chosen. Narrow screens:
+     a strip at the top. */
+  @media (min-width:700px){
     body{padding-left:calc(var(--sb-w) + 30px);}
-    .sidenav{position:fixed;left:12px;top:10px;bottom:10px;width:var(--sb-w);z-index:770;}
-    body.sb-collapsed .sn-title,body.sb-collapsed .sn-group-h,body.sb-collapsed .tab-label,body.sb-collapsed .sn-foot,body.sb-collapsed .sidenav .tab[data-key]::after{display:none;}
-    body.sb-collapsed .sn-head{justify-content:center;padding:12px 8px 6px;}
-    body.sb-collapsed .sn-collapse{transform:scaleX(-1);}
-    body.sb-collapsed .sidenav .tab{justify-content:center;padding:7px 0;position:relative;}
-    body.sb-collapsed .sidenav .tab .tab-badge{position:absolute;top:3px;right:4px;font-size:8px;padding:1px 4px;min-width:14px;max-width:40px;overflow:hidden;text-overflow:ellipsis;}
+    .sidenav{position:fixed;left:12px;top:10px;bottom:10px;width:var(--sb-w);z-index:770;transition:width .2s var(--ux-ease),box-shadow .2s ease;}
+    body.sb-collapsed .sn-title,body.sb-collapsed .sn-group-h,body.sb-collapsed .tab-label,body.sb-collapsed .sn-foot,body.sb-collapsed .sidenav .tab[data-key]::after,
+    body.sb-mid:not(.sb-peek) .sn-title,body.sb-mid:not(.sb-peek) .sn-group-h,body.sb-mid:not(.sb-peek) .tab-label,body.sb-mid:not(.sb-peek) .sn-foot,body.sb-mid:not(.sb-peek) .sidenav .tab[data-key]::after{display:none;}
+    body.sb-collapsed .sn-head,body.sb-mid:not(.sb-peek) .sn-head{justify-content:center;padding:12px 8px 6px;}
+    body.sb-collapsed .sn-collapse,body.sb-mid:not(.sb-peek) .sn-collapse{transform:scaleX(-1);}
+    body.sb-collapsed .sidenav .tab,body.sb-mid:not(.sb-peek) .sidenav .tab{justify-content:center;padding:7px 0;position:relative;}
+    body.sb-collapsed .sidenav .tab .tab-badge,body.sb-mid:not(.sb-peek) .sidenav .tab .tab-badge{position:absolute;top:3px;right:4px;font-size:8px;padding:1px 4px;min-width:14px;max-width:40px;overflow:hidden;text-overflow:ellipsis;}
   }
-  @media (max-width:979px){
+  @media (min-width:700px) and (max-width:1099px){
+    body{--sb-w:74px;}
+    body.sb-peek .sidenav{width:238px;box-shadow:0 18px 50px rgba(4,35,79,.28);border-color:var(--navy-200);}
+    body.sb-peek .sn-collapse{transform:none;}
+  }
+  @media (max-width:699px){
     .sidenav{margin-bottom:12px;}
     .sn-head,.sn-group-h,.sn-foot{display:none;}
     .sn-body{display:flex;gap:4px;overflow-x:auto;padding:8px;scrollbar-width:none;overscroll-behavior-x:contain;}
@@ -2385,7 +2395,7 @@
 <body>
 
 <div class="shell">
-  <script>try{ if(localStorage.getItem("parkInnSidenav_v1") === "1") document.body.classList.add("sb-collapsed"); }catch(e){}</script>
+  <script>try{ if(localStorage.getItem("parkInnSidenav_v1") === "1") document.body.classList.add("sb-collapsed"); if(window.matchMedia && window.matchMedia("(min-width:700px) and (max-width:1099px)").matches) document.body.classList.add("sb-mid"); }catch(e){}</script>
 
   <aside class="sidenav no-print" id="sidenav" aria-label="Sections">
     <div class="brandstrip"></div>
@@ -22836,10 +22846,36 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     if(b){ b.setAttribute("aria-label", (on ? "Expand" : "Collapse") + " the menu"); b.title = (on ? "Expand" : "Collapse") + " the menu (Alt+M)"; }
   }
   setCollapsed(document.body.classList.contains("sb-collapsed"));
-  if($("snCollapse")) $("snCollapse").addEventListener("click", function(){ setCollapsed(!document.body.classList.contains("sb-collapsed")); });
+  // Medium widths (a half-screen window): the sidebar stays beside the content folded to icons;
+  // the arrow or Alt+M opens it over the content ("peek") until a section is chosen.
+  var midQuery = window.matchMedia ? window.matchMedia("(min-width:700px) and (max-width:1099px)") : null;
+  function isMid(){ return !!(midQuery && midQuery.matches); }
+  function setPeek(on){
+    document.body.classList.toggle("sb-peek", on && isMid());
+    var b = $("snCollapse");
+    if(b && isMid()){ b.setAttribute("aria-label", (on ? "Close" : "Open") + " the menu"); b.title = (on ? "Close" : "Open") + " the menu (Alt+M)"; }
+  }
+  function applyMid(){
+    document.body.classList.toggle("sb-mid", isMid());
+    if(!isMid()){ document.body.classList.remove("sb-peek"); setCollapsed(document.body.classList.contains("sb-collapsed")); }
+    else setPeek(false);
+  }
+  if(midQuery){ if(midQuery.addEventListener) midQuery.addEventListener("change", applyMid); else midQuery.addListener(applyMid); }
+  applyMid();
+  function toggleMenu(){
+    if(isMid()) setPeek(!document.body.classList.contains("sb-peek"));
+    else setCollapsed(!document.body.classList.contains("sb-collapsed"));
+  }
+  if($("snCollapse")) $("snCollapse").addEventListener("click", toggleMenu);
   window.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && document.body.classList.contains("sb-peek")){ setPeek(false); return; }
     if(!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || String(e.key).toLowerCase() !== "m") return;
-    e.preventDefault(); setCollapsed(!document.body.classList.contains("sb-collapsed"));
+    e.preventDefault(); toggleMenu();
+  });
+  document.addEventListener("click", function(e){
+    if(!document.body.classList.contains("sb-peek")) return;
+    var inNav = e.target.closest && e.target.closest("#sidenav");
+    if(!inNav || e.target.closest(".tab")) setPeek(false);
   });
 
   /* ---------- storage ---------- */
