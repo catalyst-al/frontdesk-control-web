@@ -9,7 +9,7 @@
 window.NA2 = {
 
   phases: [
-    { id: "start",   no: "A", title: "The Night Audit app",     sub: "Business date, processes list, how a process is solved" },
+    { id: "start",   no: "A", title: "Open Fiori & the Night Audit app", sub: "Desktop icon, two-window sign-in, business date, processes list" },
     { id: "actions", no: "B", title: "Processes with actions",  sub: "Solved directly in the Night Audit app (1 – 5)" },
     { id: "info",    no: "C", title: "Informative processes",   sub: "Reported here, solved in TMS / Folio Management (6 – 13)" },
     { id: "run",     no: "D", title: "Execute the Night Audit", sub: "When every mandatory process is green" }
@@ -28,11 +28,40 @@ window.NA2 = {
 
   steps: [
     /* ---------------- A. THE APP ---------------- */
+    { id: "open-fiori", phase: "start", title: "Open Fiori from the desktop",
+      lead: "EMMA v2 runs in the browser. The shortcut on the night PC is called FIORI.",
+      where: "Desktop → <b>FIORI</b> (blue monitor icon with the globe)",
+      how: [
+        "On the desktop double-click the <b>FIORI</b> icon. It opens the EMMA v2 (Fiori) sign-in page in the browser.",
+        "Keep <b>SAP Logon 64</b> (TMS) for everything the Night Audit app cannot do itself (parts C and D of this guide and the whole Night Audit guidebook): both run side by side.",
+        "<b>Hotelkit</b> stays the place for the End of Day checklist and the attached reports."
+      ],
+      check: "The browser shows the Radisson Hotel Group sign-in window with the hotel drop-down.",
+      imgs: [
+        { src: "na2-desktop-fiori.png", cap: "Night PC desktop: <b>FIORI</b> opens EMMA v2, <b>SAP Logon 64</b> is TMS, <b>Hotelkit</b> the checklist, <b>Front Desk Control</b> this workstation." }
+      ] },
+
+    { id: "sign-in", phase: "start", title: "Sign in: two windows",
+      lead: "Fiori asks twice: first the hotel's front-office login, then your own user ID with the TMS password. All user names and passwords are in the <b>Access</b> tab of Front Desk Control.",
+      where: "Fiori sign-in page → <b>first window</b> → <b>second window</b> → launchpad",
+      how: [
+        "<b>First window</b> (the Radisson Hotel Group box): choose <b>Park Inn by Radisson Frankfurt Airport</b> in the hotel drop-down, enter the front-office Fiori user and its password (Access tab → <i>FIORI · first window</i>) and press <b>Login</b>.",
+        "<b>Second window</b>: enter your <b>user ID</b> — the same number as in TMS, e.g. <code>0000029705</code>; the drop-down also accepts the short form without the leading zeros — and your <b>TMS password</b>. Press <b>Login</b>.",
+        "We have <b>two</b> TMS user IDs at the night desk (Access tab → <i>FIORI · second window</i>). Use the one you also use in TMS; either one opens the same apps.",
+        "The Fiori <b>launchpad</b> opens with the tiles (Check in, Cancel Check-In, reservations …). The <b>Night Audit</b> app is one of these tiles."
+      ],
+      check: "You are on the launchpad and can see the Night Audit tile.",
+      stop: "Passwords are never written in this guide, in the handover or on paper at the desk: they live in the Access tab (locked with its PIN) and nowhere else. If a password was changed, update the Access tab the same night.",
+      note: "From the hotel's e-mail about the Fiori login: open the Fiori sign-in page, enter the front-office access data you were given, then your own user ID (e.g. 0000029705) and your TMS password.",
+      imgs: [
+        { src: "na2-fiori-login.png", cap: "Radisson Hotel Group sign-in: hotel <b>Park Inn by Radisson Frankfurt Airport</b>, user ID (drop-down, blurred here), password, <b>Login</b>. Behind it the launchpad tiles." }
+      ] },
+
     { id: "open-app", phase: "start", title: "Open the Night Audit app and read the screen",
       lead: "The Night Audit runs in EMMA v2 (Fiori). One screen shows every process that must be clear before the audit can be executed.",
-      where: "EMMA v2 (Fiori) → <b>Night Audit</b>",
+      where: "Fiori launchpad → tile <b>Night Audit</b>",
       how: [
-        "Open the <b>Night Audit</b> app. The header shows the hotel and, below it, the <b>business date</b> you are closing <b>&raquo;</b> the <b>next business date</b> (e.g. <i>Wednesday, 22 Apr 2026 &raquo; Thursday, 23 Apr 2026</i>). Check that this is tonight's date before you touch anything.",
+        "On the launchpad open the <b>Night Audit</b> tile. The header shows the hotel and, below it, the <b>business date</b> you are closing <b>&raquo;</b> the <b>next business date</b> (e.g. <i>Wednesday, 22 Apr 2026 &raquo; Thursday, 23 Apr 2026</i>). Check that this is tonight's date before you touch anything.",
         "On the left is the <b>Processes</b> list, split into <b>Mandatory</b> and <b>Optional</b>. The heading tells you how many are still open, e.g. <b>Mandatory (5/11)</b>.",
         "Each process shows a <b>blue circle with the number of open lines</b> or a <b>green tick</b> when it is clear. The <b>Show all</b> switch also lists the processes that are already green; the <b>circular arrow</b> next to it refreshes the counts.",
         "The right side stays empty (<i>No process selected</i>) until you click a process. Then its list of reservations / events opens there.",

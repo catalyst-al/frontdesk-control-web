@@ -2,7 +2,18 @@
 
 Release: 2026-09-23-turn-support-1
 
-Breakfast Live is a native tab immediately after Night Audit (Alt+6). The original workstation modules remain in place. Changing application tabs hides panels without reloading the tablet connection.
+Breakfast Live is a native tab (Alt+6). The original workstation modules remain in place. Changing application tabs hides panels without reloading the tablet connection.
+
+## Navigation
+The sections sit in a left sidebar, grouped as **Shift** (Breakfast, Breakfast Live, Handover), **Front desk** (Check-in / out, Registration, Events), **Payments** (VCC, Group), **Night** (Night Audit, Night Audit 2.0) and **Team** (Access). Each item shows its badge and its Alt key; **Alt+M** or the arrow folds the sidebar to icons (remembered in this browser). Below 980px the sidebar becomes a scrollable strip at the top. The keyboard shortcuts are unchanged: Alt+1 … Alt+9, Alt+0 Night Audit 2.0, Alt+A Access.
+
+## Access
+The **Access** tab (Alt+A) is the editable list of the desk's logins: system, which window / where, user, password, note and the date of the last change. It replaces the printed credentials sheet.
+
+- Everything is stored in this browser only (`parkInnAccess_v1`, included in **Back up this shift**); nothing is uploaded, and the repository contains no credentials. Fill it with **+ New login** or **Import** (a JSON file `{ "entries": [ { "system", "label", "user", "password", "note" } ] }`, also what **Export** writes); the import can replace the list or add to it.
+- Passwords are masked; the eye reveals one, **Show passwords** all of them for two minutes. **Copy** puts the user or password on the clipboard.
+- An optional **PIN** (4 to 8 digits) locks the tab when another section is opened, after five minutes without use and with **Lock**. It is a screen lock for the desk, not a security boundary.
+- **Print sheet** (or Ctrl+P on this tab) prints every login on one A4 sheet marked confidential, in the layout of the old credentials PDF.
 
 - index.html: complete front-desk workstation, including Breakfast Live.
 - breakfast-tablet.html: standalone guest tablet app, with bundled QR libraries.
@@ -26,7 +37,7 @@ Breakfast Live is a native tab immediately after Night Audit (Alt+6). The origin
 ## Night Audit 2.0
 The **Night Audit 2.0** tab (Alt+0, right after Night Audit) shows `night-audit-2/`, a step-by-step guide to the new Night Audit app in EMMA v2 (Fiori), built from the Radisson SOP "EMMA v2 (Fiori) | New Night Audit functions". It can also be opened directly at `night-audit-2/index.html`.
 
-- **Step by step**: A. the app (business date, the Processes list with blue counters and green ticks, tick the line → Actions); B. the five processes solved in the app (Expected arrivals not Checked-In: express check-in, change arrival date, no-show; Expected departures not Checked-Out: move to virtual Z001 or express check-out; Events & Groups limit billing date; Day-Guest billing; Individual reservations not yet billed: automatic invoicing for amount due 0); C. the eight informative processes solved in TMS / Folio Management / POS (invoices not paid, payments on hold, room moves, cancel/no-show charges, locked reservations, POS outlets, events not checked in / out); D. Execute Night Audit. Each step has the screenshot of its screen and Actions menu, a check, and a "watch out" where money is involved.
+- **Step by step**: A. open Fiori from the desktop icon and sign in (first window: the front-office user; second window: your own TMS user ID and password, both kept in the Access tab), then the app (business date, the Processes list with blue counters and green ticks, tick the line → Actions); B. the five processes solved in the app (Expected arrivals not Checked-In: express check-in, change arrival date, no-show; Expected departures not Checked-Out: move to virtual Z001 or express check-out; Events & Groups limit billing date; Day-Guest billing; Individual reservations not yet billed: automatic invoicing for amount due 0); C. the eight informative processes solved in TMS / Folio Management / POS (invoices not paid, payments on hold, room moves, cancel/no-show charges, locked reservations, POS outlets, events not checked in / out); D. Execute Night Audit. Each step has the screenshot of its screen and Actions menu, a check, and a "watch out" where money is involved.
 - **All 13 processes** is the one-page overview (mandatory/optional, actions in the app, where it is solved); **Questions** answers what changed and what to do when an action is refused.
 - Every step can be ticked **Done tonight**. Ticks belong to the business date (the Night Audit tab's date when opened from the workstation, otherwise the night from 12:00 to 12:00) and are stored in this browser only; **Reset night** clears them.
 - Content lives in `night-audit-2/data.js`; screenshots in `night-audit-2/img/`. They come from the SOP (Radisson Blu demo hotels; the screens are the same for DEFRAAIR) with guest and company names, reservation / invoice / event numbers, amounts and staff names blurred. New screenshots must be redacted the same way before they are added. Statements that are our own reading of the screenshots, not the SOP, are marked as notes in the steps.

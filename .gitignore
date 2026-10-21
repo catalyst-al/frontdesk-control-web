@@ -24,3 +24,6 @@ backups/
 Thumbs.db
 .vscode/
 .idea/
+
+# Local, never committed: the import file with the current logins for the Access tab.
+local/

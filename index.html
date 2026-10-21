@@ -1639,7 +1639,8 @@
     body[data-print="handover"] #panel-handover{display:block !important;}
     /* These two live outside the panels, so the generic .print-only rule would
        print whichever was generated earlier. Hide them unless targeted. */
-    #bfPrintOut, #vccPrintOut, #grpPrintOut{display:none !important;}
+    #bfPrintOut, #vccPrintOut, #grpPrintOut, #acPrintOut{display:none !important;}
+    body[data-print="access"] #acPrintOut{display:block !important;}
     body[data-print="breakfast"] #bfPrintOut{display:block !important;}
     body[data-print="vcc"] #vccPrintOut{display:block !important;}
     body[data-print="group"] #grpPrintOut{display:block !important;}
@@ -2269,11 +2270,188 @@
     .rc-page{break-after:page; page-break-after:always;}
     .rc-page:last-child{break-after:auto; page-break-after:auto;}
   }
+
+  /* ================= SIDEBAR NAVIGATION ================= */
+  :root{--sb-w:238px;}
+  body.sb-collapsed{--sb-w:74px;}
+  .sidenav{background:rgba(255,255,255,.97);border:1px solid rgba(147,167,196,.46);border-radius:var(--radius-lg);box-shadow:var(--ux-shadow);overflow:hidden;display:flex;flex-direction:column;}
+  .sn-head{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 6px 16px;}
+  .sn-title{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--navy-400);}
+  .sn-collapse{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:10px;display:grid;place-items:center;transition:transform .22s var(--ux-ease),background .15s ease,border-color .15s ease;}
+  .sn-collapse:hover{border-color:var(--navy-200);background:#F7F9FC;}
+  .sn-body{flex:1;min-height:0;overflow-y:auto;padding:4px 10px 10px;scrollbar-width:thin;}
+  .sn-group{padding:6px 0 4px;}
+  .sn-group + .sn-group{border-top:1px solid var(--line-soft);}
+  .sn-group-h{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);padding:6px 8px 4px;white-space:nowrap;}
+  .sidenav .tab{width:100%;min-width:0;min-height:42px;justify-content:flex-start;text-align:left;padding:7px 9px;border-radius:10px;gap:10px;box-shadow:none;margin:1px 0;font-size:13px;letter-spacing:.01em;}
+  .sidenav .tab:hover{transform:none;background:#F3F6FB;}
+  .sidenav .tab[aria-selected="true"]{background:var(--navy);color:#fff;box-shadow:0 6px 16px rgba(4,35,79,.2);}
+  .sidenav .tab .tab-icon{flex:0 0 27px;}
+  .sidenav .tab[aria-selected="true"] .tab-icon{background:rgba(255,255,255,.16);transform:none;}
+  .sidenav .tab .tab-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sidenav .tab .tab-badge{flex:0 0 auto;}
+  .sidenav .tab[aria-selected="true"] .tab-badge{background:var(--gold);color:var(--navy);box-shadow:none;}
+  .sidenav .tab[data-key]::after{content:attr(data-key);flex:0 0 auto;font:800 9.5px/1 var(--mono);color:var(--ink-faint);border:1px solid var(--line);border-radius:4px;padding:3px 4px;}
+  .sidenav .tab[aria-selected="true"][data-key]::after{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.35);}
+  .sn-foot{padding:8px 14px 12px;font-size:10.5px;color:var(--ink-faint);border-top:1px solid var(--line-soft);line-height:1.6;}
+  .sn-foot kbd{font:800 9px var(--mono);color:var(--navy);background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 4px;}
+  @media (min-width:980px){
+    body{padding-left:calc(var(--sb-w) + 30px);}
+    .sidenav{position:fixed;left:12px;top:10px;bottom:10px;width:var(--sb-w);z-index:770;}
+    body.sb-collapsed .sn-title,body.sb-collapsed .sn-group-h,body.sb-collapsed .tab-label,body.sb-collapsed .sn-foot,body.sb-collapsed .sidenav .tab[data-key]::after{display:none;}
+    body.sb-collapsed .sn-head{justify-content:center;padding:12px 8px 6px;}
+    body.sb-collapsed .sn-collapse{transform:scaleX(-1);}
+    body.sb-collapsed .sidenav .tab{justify-content:center;padding:7px 0;position:relative;}
+    body.sb-collapsed .sidenav .tab .tab-badge{position:absolute;top:3px;right:4px;font-size:8px;padding:1px 4px;min-width:14px;max-width:40px;overflow:hidden;text-overflow:ellipsis;}
+  }
+  @media (max-width:979px){
+    .sidenav{margin-bottom:12px;}
+    .sn-head,.sn-group-h,.sn-foot{display:none;}
+    .sn-body{display:flex;gap:4px;overflow-x:auto;padding:8px;scrollbar-width:none;overscroll-behavior-x:contain;}
+    .sn-body::-webkit-scrollbar{display:none;}
+    .sn-group{display:contents;}
+    .sidenav .tab{width:auto;flex:0 0 auto;white-space:nowrap;}
+  }
+  @media print{.sidenav{display:none !important;} body{padding-left:0 !important;}}
+
+  /* ================= ACCESS (logins) ================= */
+  #panel-access .app-shell{grid-template-columns:minmax(0,1fr) minmax(270px,320px);}
+  @media (max-width:1100px){#panel-access .app-shell{grid-template-columns:1fr;}}
+  .ac-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px;}
+  .ac-sub{margin:0;font-size:12.5px;color:var(--ink-muted);line-height:1.5;max-width:560px;}
+  .ac-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .ac-tools .btn-ghost{padding:8px 11px;}
+  .ac-tools label.btn-ghost{display:inline-block;cursor:pointer;}
+  .ac-tools .btn-ghost[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .ac-lock{text-align:center;padding:34px 16px;border:1px dashed var(--line);border-radius:var(--radius-md);background:#FBFCFE;}
+  .ac-lock h3{margin:0 0 6px;font-size:17px;color:var(--navy);}
+  .ac-lock p{margin:0 0 14px;color:var(--ink-muted);font-size:13px;}
+  .ac-pin{font:700 22px var(--mono);letter-spacing:.4em;text-align:center;width:190px;padding:9px 10px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);}
+  .ac-pin:focus{outline:2px solid var(--navy-200);}
+  .ac-err{color:var(--maroon);font-size:12.5px;font-weight:700;margin-top:8px;min-height:16px;}
+  .ac-list{display:grid;gap:8px;}
+  .ac-list[hidden],.ac-import-bar[hidden],.ac-lock[hidden],#acLock[hidden]{display:none !important;}
+  .ac-row{display:grid;grid-template-columns:minmax(140px,1fr) minmax(160px,1.2fr) minmax(190px,1.5fr) minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:var(--radius-md);padding:10px 12px;background:#fff;}
+  .ac-row.editing{display:block;background:#FBFCFE;border-color:var(--navy-200);}
+  .ac-sys b{display:block;font-size:13.5px;color:var(--navy);}
+  .ac-sys span{font-size:11.5px;color:var(--ink-muted);}
+  .ac-f{min-width:0;}
+  .ac-f label{display:block;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
+  .ac-v{display:flex;align-items:center;gap:4px;min-width:0;}
+  .ac-v code{font:600 13px var(--mono);background:var(--gray-bg);border:1px solid var(--line-soft);border-radius:6px;padding:4px 7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--ink);flex:1;}
+  .ac-v code.masked{letter-spacing:.12em;color:var(--ink-faint);}
+  .ic-btn{border:1px solid var(--line);background:#fff;border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:13px;display:grid;place-items:center;color:var(--navy);flex:0 0 auto;padding:0;transition:background .15s ease,border-color .15s ease;}
+  .ic-btn:hover{border-color:var(--navy-200);background:#F7F9FC;}
+  .ic-btn:disabled{opacity:.35;cursor:default;}
+  .ic-btn.ok{background:var(--green);color:#fff;border-color:var(--green);}
+  .ac-note{font-size:12px;color:var(--ink-muted);line-height:1.4;min-width:0;}
+  .ac-note small{display:block;font-size:10.5px;color:var(--ink-faint);}
+  .ac-act{display:flex;gap:4px;}
+  .ac-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .ac-form .full{grid-column:1/-1;}
+  .ac-form label{display:block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px;}
+  .ac-form input{width:100%;font:inherit;font-size:13.5px;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);}
+  .ac-form input.mono{font-family:var(--mono);}
+  .ac-form input:focus{outline:2px solid var(--navy-200);border-color:var(--navy-200);}
+  .ac-form-act{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .ac-form-act .btn-generate{padding:10px 18px;font-size:13px;}
+  .ac-empty{padding:28px 16px;text-align:center;color:var(--ink-muted);font-size:13px;border:1px dashed var(--line);border-radius:var(--radius-md);line-height:1.6;}
+  .ac-import-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border:1px solid var(--gold);background:#FDF4E1;border-radius:var(--radius-md);margin-bottom:10px;font-size:13px;}
+  .ac-side h3{margin:14px 0 6px;font-size:13px;color:var(--navy);}
+  .ac-side p,.ac-side li{font-size:12.5px;color:var(--ink-muted);line-height:1.5;}
+  .ac-side p{margin:0 0 8px;}
+  .ac-side ul{margin:0;padding-left:18px;}
+  .ac-pinset{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .ac-pinset input{width:118px;font:700 15px var(--mono);letter-spacing:.2em;padding:7px 9px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);}
+  .ac-meta{font-size:11px;color:var(--ink-faint);margin-top:12px;}
+  @media (max-width:900px){.ac-row{grid-template-columns:1fr 1fr;} .ac-row .ac-sys,.ac-row .ac-note,.ac-row .ac-act{grid-column:1/-1;}}
+  /* the printed sheet */
+  .acp{font-family:var(--sans);color:#111;}
+  .acp-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2pt solid #04234F;padding-bottom:8pt;margin-bottom:12pt;}
+  .acp-head h1{margin:0;font-size:20pt;color:#04234F;}
+  .acp-head p{margin:2pt 0 0;font-size:9.5pt;color:#56687F;}
+  .acp-head .conf{font-size:9pt;font-weight:800;color:#B3202E;border:1pt solid #B3202E;border-radius:999pt;padding:3pt 8pt;white-space:nowrap;}
+  .acp-card{border:1pt solid #CBD5E1;border-left:5pt solid #04234F;border-radius:6pt;padding:8pt 12pt;margin-bottom:8pt;break-inside:avoid;page-break-inside:avoid;}
+  .acp-card:nth-child(4n+2){border-left-color:#B3202E;} .acp-card:nth-child(4n+3){border-left-color:#1B7A4B;} .acp-card:nth-child(4n+4){border-left-color:#F5B94A;}
+  .acp-card h2{margin:0 0 4pt;font-size:11.5pt;letter-spacing:.06em;text-transform:uppercase;color:#04234F;}
+  .acp-card h2 span{font-weight:600;letter-spacing:0;text-transform:none;color:#56687F;margin-left:6pt;}
+  .acp-kv{display:grid;grid-template-columns:70pt 1fr;gap:2pt 8pt;font-size:11pt;}
+  .acp-kv b{font-size:8.5pt;letter-spacing:.1em;text-transform:uppercase;color:#56687F;align-self:center;}
+  .acp-kv code{font:700 12pt var(--mono);}
+  .acp-note{font-size:9.5pt;color:#56687F;margin-top:3pt;}
+  .acp-foot{margin-top:14pt;border-top:1pt solid #CBD5E1;padding-top:6pt;font-size:8.5pt;color:#56687F;display:flex;justify-content:space-between;}
 </style>
 </head>
 <body>
 
 <div class="shell">
+  <script>try{ if(localStorage.getItem("parkInnSidenav_v1") === "1") document.body.classList.add("sb-collapsed"); }catch(e){}</script>
+
+  <aside class="sidenav no-print" id="sidenav" aria-label="Sections">
+    <div class="brandstrip"></div>
+    <div class="sn-head">
+      <span class="sn-title">Sections</span>
+      <button class="sn-collapse" type="button" id="snCollapse" aria-label="Collapse the menu" title="Collapse the menu (Alt+M)">&#9664;</button>
+    </div>
+    <nav class="sn-body" role="tablist" aria-label="Sections">
+      <div class="sn-group">
+        <div class="sn-group-h">Shift</div>
+        <button class="tab" id="tab-breakfast" role="tab" aria-selected="true" aria-controls="panel-breakfast" data-panel="breakfast" data-key="1" title="Breakfast">
+          <span class="tab-icon">&#127859;</span><span class="tab-label">Breakfast</span>
+        </button>
+        <button class="tab" id="tab-breakfastlive" role="tab" aria-selected="false" aria-controls="panel-breakfastlive" data-panel="breakfastlive" data-key="6" title="Breakfast Live">
+          <span class="tab-icon" aria-hidden="true">&#9673;</span><span class="tab-label">Breakfast Live</span>
+          <span class="tab-badge" id="breakfastLiveBadge">Offline</span>
+        </button>
+        <button class="tab" id="tab-handover" role="tab" aria-selected="false" aria-controls="panel-handover" data-panel="handover" data-key="2" title="Handover">
+          <span class="tab-icon">&#128220;</span><span class="tab-label">Handover</span>
+          <span class="tab-badge" id="handoverBadge">0</span>
+        </button>
+      </div>
+      <div class="sn-group">
+        <div class="sn-group-h">Front desk</div>
+        <button class="tab" id="tab-checkin" role="tab" aria-selected="false" aria-controls="panel-checkin" data-panel="checkin" data-key="8" title="Check-in / out">
+          <span class="tab-icon" aria-hidden="true">&#128718;</span><span class="tab-label">Check-in / out</span>
+        </button>
+        <button class="tab" id="tab-registration" role="tab" aria-selected="false" aria-controls="panel-registration" data-panel="registration" data-key="9" title="Registration">
+          <span class="tab-icon" aria-hidden="true">&#128221;</span><span class="tab-label">Registration</span>
+          <span class="tab-badge" id="regBadge" title="Cards not yet entered in SAP">0</span>
+        </button>
+        <button class="tab" id="tab-events" role="tab" aria-selected="false" aria-controls="panel-events" data-panel="events" data-key="7" title="Events">
+          <span class="tab-icon" aria-hidden="true">&#128197;</span><span class="tab-label">Events</span>
+          <span class="tab-badge" id="evBadge">0</span>
+        </button>
+      </div>
+      <div class="sn-group">
+        <div class="sn-group-h">Payments</div>
+        <button class="tab" id="tab-vcc" role="tab" aria-selected="false" aria-controls="panel-vcc" data-panel="vcc" data-key="4" title="VCC">
+          <span class="tab-icon">&#128179;</span><span class="tab-label">VCC</span>
+          <span class="tab-badge" id="vccBadge">0</span>
+        </button>
+        <button class="tab" id="tab-group" role="tab" aria-selected="false" aria-controls="panel-group" data-panel="group" data-key="3" title="Group">
+          <span class="tab-icon">&#128101;</span><span class="tab-label">Group</span>
+          <span class="tab-badge" id="grpBadge">0</span>
+        </button>
+      </div>
+      <div class="sn-group">
+        <div class="sn-group-h">Night</div>
+        <button class="tab" id="tab-nightaudit" role="tab" aria-selected="false" aria-controls="panel-nightaudit" data-panel="nightaudit" data-key="5" title="Night Audit">
+          <span class="tab-icon">&#127769;</span><span class="tab-label">Night Audit</span>
+          <span class="tab-badge" id="naBadge">0</span>
+        </button>
+        <button class="tab" id="tab-nightaudit2" role="tab" aria-selected="false" aria-controls="panel-nightaudit2" data-panel="nightaudit2" data-key="0" title="Night Audit 2.0">
+          <span class="tab-icon" aria-hidden="true">&#10024;</span><span class="tab-label">Night Audit 2.0</span>
+        </button>
+      </div>
+      <div class="sn-group">
+        <div class="sn-group-h">Team</div>
+        <button class="tab" id="tab-access" role="tab" aria-selected="false" aria-controls="panel-access" data-panel="access" data-key="A" title="Access">
+          <span class="tab-icon" aria-hidden="true">&#128273;</span><span class="tab-label">Access</span>
+        </button>
+      </div>
+    </nav>
+    <div class="sn-foot"><kbd>Alt</kbd> + key opens a section &middot; <kbd>Alt+M</kbd> folds this menu</div>
+  </aside>
 
   <div class="brandbar no-print">
     <div class="brandstrip"></div>
@@ -2298,50 +2476,8 @@
     <div class="ux-quickbar no-print" id="uxQuickbar" aria-label="Fast navigation help">
       <div class="ux-live"><span class="ux-live-dot" aria-hidden="true"></span><strong id="uxClock">--:--</strong><span id="uxDate">Local shift workspace</span></div>
       <div class="ux-shortcuts" aria-label="Keyboard shortcuts">
-        <span><kbd>Alt+1</kbd>Breakfast</span><span><kbd>Alt+2</kbd>Handover</span><span><kbd>Alt+3</kbd>Group</span><span><kbd>Alt+4</kbd>VCC</span><span><kbd>Alt+5</kbd>Night Audit</span>
+        <span><kbd>Alt</kbd>+ key: section</span><span><kbd>Alt+M</kbd>fold the menu</span><span><kbd>Ctrl+P</kbd>print this section</span>
       </div>
-    </div>
-    <div class="tabbar-wrap">
-      <div class="tabbar" role="tablist" aria-label="Sections">
-        <button class="tab" id="tab-breakfast" role="tab" aria-selected="true" aria-controls="panel-breakfast" data-panel="breakfast">
-          <span class="tab-icon">&#127859;</span> Breakfast
-        </button>
-        <button class="tab" id="tab-handover" role="tab" aria-selected="false" aria-controls="panel-handover" data-panel="handover">
-          <span class="tab-icon">&#128220;</span> Handover
-          <span class="tab-badge" id="handoverBadge">0</span>
-        </button>
-        <button class="tab" id="tab-group" role="tab" aria-selected="false" aria-controls="panel-group" data-panel="group">
-          <span class="tab-icon">&#128101;</span> Group
-          <span class="tab-badge" id="grpBadge">0</span>
-        </button>
-        <button class="tab" id="tab-vcc" role="tab" aria-selected="false" aria-controls="panel-vcc" data-panel="vcc">
-          <span class="tab-icon">&#128179;</span> VCC
-          <span class="tab-badge" id="vccBadge">0</span>
-        </button>
-        <button class="tab" id="tab-nightaudit" role="tab" aria-selected="false" aria-controls="panel-nightaudit" data-panel="nightaudit">
-          <span class="tab-icon">&#127769;</span> Night Audit
-          <span class="tab-badge" id="naBadge">0</span>
-        </button>
-        <button class="tab" id="tab-nightaudit2" role="tab" aria-selected="false" aria-controls="panel-nightaudit2" data-panel="nightaudit2">
-          <span class="tab-icon" aria-hidden="true">&#10024;</span> Night Audit 2.0
-        </button>
-        <button class="tab" id="tab-breakfastlive" role="tab" aria-selected="false" aria-controls="panel-breakfastlive" data-panel="breakfastlive">
-          <span class="tab-icon" aria-hidden="true">&#9673;</span> Breakfast Live
-          <span class="tab-badge" id="breakfastLiveBadge">Offline</span>
-        </button>
-        <button class="tab" id="tab-events" role="tab" aria-selected="false" aria-controls="panel-events" data-panel="events">
-          <span class="tab-icon" aria-hidden="true">&#128197;</span> Events
-          <span class="tab-badge" id="evBadge">0</span>
-        </button>
-        <button class="tab" id="tab-checkin" role="tab" aria-selected="false" aria-controls="panel-checkin" data-panel="checkin">
-          <span class="tab-icon" aria-hidden="true">&#128718;</span> Check-in / out
-        </button>
-        <button class="tab" id="tab-registration" role="tab" aria-selected="false" aria-controls="panel-registration" data-panel="registration">
-          <span class="tab-icon" aria-hidden="true">&#128221;</span> Registration
-          <span class="tab-badge" id="regBadge" title="Cards not yet entered in SAP">0</span>
-        </button>
-      </div>
-      <div class="tab-underline" id="tabUnderline"></div>
     </div>
   </div>
 
@@ -2349,6 +2485,63 @@
   <div class="tabpanel" id="panel-breakfastlive" role="tabpanel" aria-labelledby="tab-breakfastlive">
     <div id="breakfastLiveHost"></div>
   </div>
+  <!-- ============ ACCESS PANEL (users and passwords, this browser only) ============ -->
+  <div class="tabpanel" id="panel-access" role="tabpanel" aria-labelledby="tab-access">
+    <div class="app-shell">
+      <div class="card no-print">
+        <div class="brandstrip"></div>
+        <div class="card-body">
+          <div class="ac-head">
+            <div>
+              <h2 class="card-title">Access &middot; users and passwords</h2>
+              <p class="ac-sub">Every login the desk needs: Windows, hotelkit, EMMA / Fiori / TMS, e-mail, Visionline. Edit here whenever a password changes, then print the sheet for the colleagues.</p>
+            </div>
+            <div class="ac-tools" id="acTools">
+              <button class="btn-ghost" type="button" id="acAdd">+ New login</button>
+              <button class="btn-ghost" type="button" id="acReveal" aria-pressed="false">Show passwords</button>
+              <button class="btn-ghost" type="button" id="acPrint">&#128424; Print sheet</button>
+              <button class="btn-ghost" type="button" id="acExport">Export</button>
+              <label class="btn-ghost" for="acImport">Import<input type="file" id="acImport" accept=".json,application/json"></label>
+              <button class="btn-ghost" type="button" id="acLock" hidden>&#128274; Lock</button>
+            </div>
+          </div>
+          <div class="ac-import-bar" id="acImportBar" hidden></div>
+          <div class="ac-lock" id="acLockScreen" hidden>
+            <h3>&#128274; Access is locked</h3>
+            <p>Enter the PIN of this PC to show the logins.</p>
+            <input class="ac-pin" id="acPinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="PIN">
+            <div><button class="btn-fill" type="button" id="acUnlock" style="margin-top:10px">Unlock</button></div>
+            <div class="ac-err" id="acPinErr"></div>
+          </div>
+          <div class="ac-list" id="acList"></div>
+          <div class="ev-status" id="acStatus" role="status" aria-live="polite"></div>
+          <p class="ev-privacy">Saved in this browser only; nothing is uploaded. <b>Back up this shift</b> includes this list, so keep backup files where only the team can open them. The PIN locks this screen; it is not a security boundary, anyone with the PC can still read the browser storage.</p>
+        </div>
+      </div>
+      <div class="card no-print ac-side">
+        <div class="brandstrip"></div>
+        <div class="card-body">
+          <h2 class="card-title">PIN lock</h2>
+          <div id="acPinBox"></div>
+          <h3>How to use it</h3>
+          <ul>
+            <li><b>Edit</b> (&#9998;) a login when a password changes, then <b>Save</b>. The date under the note shows when it was last changed.</li>
+            <li><b>Copy</b> (&#10697;) puts the user or the password on the clipboard so you can paste it in the login window.</li>
+            <li><b>Show passwords</b> reveals every password for two minutes; the eye on a line reveals one.</li>
+            <li><b>Print sheet</b> prints all logins on one A4 page for the colleagues. Keep it in the drawer, not on the desk.</li>
+            <li><b>Export / Import</b> moves the list between PCs as a file; the PIN is not exported.</li>
+          </ul>
+          <h3>Which login where</h3>
+          <ul>
+            <li><b>Fiori</b> asks twice: the front-office user in the first window, your own TMS user ID in the second (Night Audit 2.0 &rarr; step A2).</li>
+            <li><b>EMMA / TMS</b> uses the same user ID and password as the Fiori second window.</li>
+          </ul>
+          <div class="ac-meta" id="acMeta"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="print-only" id="acPrintOut"></div>
   <!-- ============ NIGHT AUDIT 2.0 PANEL (night-audit-2/) ============ -->
   <div class="tabpanel" id="panel-nightaudit2" role="tabpanel" aria-labelledby="tab-nightaudit2">
     <div class="na-guide-bar no-print" id="na2GuideBar">
@@ -4564,7 +4757,7 @@
       if(on && focusIt) t.focus();
       if(on) moveUnderline(t);
     });
-    ["breakfast","handover","group","nightaudit","nightaudit2","vcc","breakfastlive","events","checkin","registration"].forEach(function(p){
+    ["breakfast","handover","group","nightaudit","nightaudit2","vcc","breakfastlive","events","checkin","registration","access"].forEach(function(p){
       var panel = document.getElementById("panel-" + p);
       if(!panel) return;
       if(p === name){
@@ -4576,6 +4769,7 @@
     try{ if(window.localStorage) localStorage.setItem(TAB_KEY, name); }catch(e){}
     if(name === "checkin") showCiGuide();
     if(name === "nightaudit2") showNa2Guide();
+    if(name !== "access" && window.parkInnAccessLeave) window.parkInnAccessLeave();
   }
 
   // ---- Night Audit 2.0 (night-audit-2/) inside its tab; loaded the first time the tab opens ----
@@ -7966,15 +8160,15 @@
   topBtn.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
   /* Keyboard routing for a busy front desk: Alt+1 ... Alt+5 */
-  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin","registration","nightaudit2"];
+  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin","registration","nightaudit2","access"];
+  var shortcutKeys = ["1","2","3","4","5","6","7","8","9","0","A"];
   shortcutTabs.forEach(function(name, idx){
     var b = document.getElementById("tab-" + name);
-    if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + ((idx+1) % 10);
+    if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + shortcutKeys[idx];
   });
   window.addEventListener("keydown", function(e){
     if(!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-    var n = parseInt(e.key,10);
-    if(n === 0) n = 10; // Alt+0 = the tenth tab (Night Audit 2.0)
+    var n = shortcutKeys.indexOf(String(e.key).toUpperCase()) + 1;
     if(!(n >= 1 && n <= shortcutTabs.length)) return;
     var target = document.getElementById("tab-" + shortcutTabs[n-1]);
     if(!target) return;
@@ -22612,5 +22806,320 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
   }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else setTimeout(boot, 0);
+})();
+</script>
+
+<script id="access-script">
+/* Access tab (users and passwords) + the sidebar menu.
+   Everything stays in this browser's localStorage under parkInnAccess_v1 (parkInn prefix:
+   included in Back up / Restore). No network calls. The PIN is a lock for the screen, hashed
+   with a salted FNV loop; it is not a security boundary. */
+(function(){
+  "use strict";
+  var KEY = "parkInnAccess_v1";
+  var COL_KEY = "parkInnSidenav_v1";
+  var REVEAL_MS = 120000, IDLE_MS = 300000;
+  var $ = function(id){ return document.getElementById(id); };
+  if(!$("panel-access")) return;
+
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
+  function pad(n){ return (n < 10 ? "0" : "") + n; }
+  function today(){ var d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function fmtDate(s){ if(!s) return ""; var p = String(s).split("-"); return p.length === 3 ? p[2] + "." + p[1] + "." + p[0] : s; }
+  function uid(){ return "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  /* ---------- sidebar fold ---------- */
+  function setCollapsed(on){
+    document.body.classList.toggle("sb-collapsed", on);
+    try { localStorage.setItem(COL_KEY, on ? "1" : "0"); } catch(e){}
+    var b = $("snCollapse");
+    if(b){ b.setAttribute("aria-label", (on ? "Expand" : "Collapse") + " the menu"); b.title = (on ? "Expand" : "Collapse") + " the menu (Alt+M)"; }
+  }
+  setCollapsed(document.body.classList.contains("sb-collapsed"));
+  if($("snCollapse")) $("snCollapse").addEventListener("click", function(){ setCollapsed(!document.body.classList.contains("sb-collapsed")); });
+  window.addEventListener("keydown", function(e){
+    if(!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || String(e.key).toLowerCase() !== "m") return;
+    e.preventDefault(); setCollapsed(!document.body.classList.contains("sb-collapsed"));
+  });
+
+  /* ---------- storage ---------- */
+  function normEntry(e){
+    if(!e || typeof e !== "object") return null;
+    var n = { id: typeof e.id === "string" && e.id ? e.id : uid(),
+      system: String(e.system || "").trim(), label: String(e.label || "").trim(),
+      user: String(e.user || "").trim(), password: String(e.password || ""), note: String(e.note || "").trim(),
+      updated: /^\d{4}-\d{2}-\d{2}$/.test(String(e.updated || "")) ? e.updated : "" };
+    return n.system || n.user || n.password ? n : null;
+  }
+  function load(){
+    var d = null;
+    try { var v = localStorage.getItem(KEY); d = v ? JSON.parse(v) : null; } catch(e){ d = null; }
+    if(!d || typeof d !== "object") d = {};
+    d.entries = (Array.isArray(d.entries) ? d.entries : []).map(normEntry).filter(Boolean);
+    d.pinHash = typeof d.pinHash === "string" ? d.pinHash : "";
+    d.pinSalt = typeof d.pinSalt === "string" ? d.pinSalt : "";
+    d.updated = typeof d.updated === "string" ? d.updated : "";
+    return d;
+  }
+  var data = load();
+  function save(){
+    data.updated = today();
+    try { localStorage.setItem(KEY, JSON.stringify(data)); return true; }
+    catch(e){ status("Not saved: this browser's storage is full. Back up this shift, then clear old data."); return false; }
+  }
+
+  /* ---------- PIN ---------- */
+  function fnv(str){ var h = 0x811c9dc5; for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h; }
+  function hashPin(pin, salt){
+    var x = salt + ":" + pin, out = "";
+    for(var r = 0; r < 3000; r++){ out = fnv(x + ":" + r).toString(16) + fnv(r + ":" + x).toString(16); x = out + x.slice(0, 48); }
+    return out;
+  }
+  function makeSalt(){
+    var a = new Uint32Array(2);
+    try { (window.crypto || window.msCrypto).getRandomValues(a); } catch(e){ a[0] = Date.now() >>> 0; a[1] = (Math.random() * 4294967296) >>> 0; }
+    return a[0].toString(16) + a[1].toString(16);
+  }
+  var locked = !!data.pinHash;
+  function pinOk(pin){ return !!data.pinHash && hashPin(String(pin || ""), data.pinSalt) === data.pinHash; }
+
+  /* ---------- state ---------- */
+  var revealAll = false, revealTimer = null, revealed = {}, editing = null, idleTimer = null, pendingImport = null;
+
+  function status(msg){ var el = $("acStatus"); el.textContent = msg || ""; if(msg){ clearTimeout(status.t); status.t = setTimeout(function(){ el.textContent = ""; }, 4000); } }
+
+  function lock(){
+    if(!data.pinHash) return;
+    locked = true; revealAll = false; revealed = {}; editing = null; pendingImport = null;
+    clearTimeout(revealTimer); $("acImportBar").hidden = true;
+    render();
+  }
+  function touch(){
+    clearTimeout(idleTimer);
+    if(data.pinHash && !locked) idleTimer = setTimeout(lock, IDLE_MS);
+  }
+  // Front Desk Control calls this when another tab is opened.
+  window.parkInnAccessLeave = function(){ if(data.pinHash && !locked) lock(); };
+
+  /* ---------- rendering ---------- */
+  function renderPinBox(){
+    var box = $("acPinBox");
+    if(!data.pinHash){
+      box.innerHTML = "<p>No PIN yet: the logins are shown to anyone who opens this tab. Set a 4 to 8 digit PIN; the tab then locks when you leave it, after 5 minutes without use and with <b>Lock</b>.</p>" +
+        "<div class='ac-pinset'><input id='acPinNew' type='password' inputmode='numeric' maxlength='8' placeholder='PIN' autocomplete='off' aria-label='New PIN'>" +
+        "<input id='acPinNew2' type='password' inputmode='numeric' maxlength='8' placeholder='again' autocomplete='off' aria-label='Repeat the PIN'>" +
+        "<button class='btn-ghost' type='button' id='acPinSet'>Set PIN</button></div><div class='ac-err' id='acPinSetErr'></div>";
+    } else {
+      box.innerHTML = "<p>A PIN is set. The tab locks when you leave it, after 5 minutes without use and with <b>Lock</b>. To remove the PIN, leave the new one empty.</p>" +
+        "<div class='ac-pinset'><input id='acPinCur' type='password' inputmode='numeric' maxlength='8' placeholder='current' autocomplete='off' aria-label='Current PIN'>" +
+        "<input id='acPinNew' type='password' inputmode='numeric' maxlength='8' placeholder='new' autocomplete='off' aria-label='New PIN'>" +
+        "<button class='btn-ghost' type='button' id='acPinChange'>Change PIN</button></div><div class='ac-err' id='acPinSetErr'></div>";
+    }
+  }
+  function renderForm(e){
+    return "<form class='ac-row editing' data-form='" + (e.id || "new") + "' autocomplete='off'><div class='ac-form'>" +
+      "<div><label>System</label><input name='system' required placeholder='e.g. FIORI' value='" + esc(e.system) + "'></div>" +
+      "<div><label>Which / where</label><input name='label' placeholder='e.g. first window, night PC' value='" + esc(e.label) + "'></div>" +
+      "<div><label>User</label><input name='user' class='mono' autocapitalize='off' spellcheck='false' value='" + esc(e.user) + "'></div>" +
+      "<div><label>Password</label><input name='password' class='mono' autocapitalize='off' spellcheck='false' value='" + esc(e.password) + "'></div>" +
+      "<div class='full'><label>Note</label><input name='note' placeholder='e.g. same as TMS, changed every 3 months' value='" + esc(e.note) + "'></div>" +
+      "<div class='ac-form-act'><button class='btn-generate' type='submit'>Save</button><button class='btn-ghost' type='button' data-cancel='1'>Cancel</button><span class='ac-sub'>Enter saves &middot; Esc cancels</span></div>" +
+      "</div></form>";
+  }
+  function renderRow(e, i){
+    if(editing === e.id) return renderForm(e);
+    var show = revealAll || !!revealed[e.id];
+    return "<div class='ac-row' data-id='" + e.id + "'>" +
+      "<div class='ac-sys'><b>" + esc(e.system || "—") + "</b>" + (e.label ? "<span>" + esc(e.label) + "</span>" : "") + "</div>" +
+      "<div class='ac-f'><label>User</label><div class='ac-v'><code title='" + esc(e.user) + "'>" + esc(e.user || "—") + "</code>" +
+        (e.user ? "<button class='ic-btn' type='button' data-copy='user' data-id='" + e.id + "' title='Copy the user' aria-label='Copy the user'>&#10697;</button>" : "") + "</div></div>" +
+      "<div class='ac-f'><label>Password</label><div class='ac-v'><code class='" + (show ? "" : "masked") + "'>" + (show ? esc(e.password || "—") : (e.password ? "&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" : "—")) + "</code>" +
+        (e.password ? "<button class='ic-btn' type='button' data-eye='" + e.id + "' title='" + (show ? "Hide" : "Show") + " the password' aria-pressed='" + show + "'>" + (show ? "&#128584;" : "&#128065;") + "</button>" +
+        "<button class='ic-btn' type='button' data-copy='password' data-id='" + e.id + "' title='Copy the password' aria-label='Copy the password'>&#10697;</button>" : "") + "</div></div>" +
+      "<div class='ac-note'>" + esc(e.note) + (e.updated ? "<small>changed " + fmtDate(e.updated) + "</small>" : "") + "</div>" +
+      "<div class='ac-act'>" +
+        "<button class='ic-btn' type='button' data-edit='" + e.id + "' title='Edit' aria-label='Edit'>&#9998;</button>" +
+        "<button class='ic-btn' type='button' data-move='-1' data-id='" + e.id + "' title='Move up' aria-label='Move up'" + (i === 0 ? " disabled" : "") + ">&#8593;</button>" +
+        "<button class='ic-btn' type='button' data-move='1' data-id='" + e.id + "' title='Move down' aria-label='Move down'" + (i === data.entries.length - 1 ? " disabled" : "") + ">&#8595;</button>" +
+        "<button class='ic-btn' type='button' data-del='" + e.id + "' title='Delete' aria-label='Delete'>&#128465;</button>" +
+      "</div></div>";
+  }
+  function render(){
+    $("acLock").hidden = !data.pinHash || locked;
+    $("acLockScreen").hidden = !locked;
+    $("acList").hidden = locked;
+    Array.prototype.forEach.call($("acTools").querySelectorAll("button,label"), function(b){ if(b.id !== "acLock") b.style.display = locked ? "none" : ""; });
+    renderPinBox();
+    var meta = $("acMeta");
+    if(locked){ meta.textContent = ""; $("acPinErr").textContent = ""; $("acPinIn").value = ""; return; }
+    var list = $("acList");
+    if(!data.entries.length && editing !== "new"){
+      list.innerHTML = "<div class='ac-empty'>No logins saved on this PC yet.<br>Press <b>+ New login</b>, or <b>Import</b> the file with the current credentials.</div>";
+    } else {
+      list.innerHTML = data.entries.map(renderRow).join("") + (editing === "new" ? renderForm({ system: "", label: "", user: "", password: "", note: "" }) : "");
+    }
+    meta.textContent = data.entries.length + (data.entries.length === 1 ? " login" : " logins") + (data.updated ? " · last change " + fmtDate(data.updated) : "");
+    $("acReveal").setAttribute("aria-pressed", String(revealAll));
+    $("acReveal").textContent = revealAll ? "Hide passwords" : "Show passwords";
+    var f = list.querySelector("form input[name=system]");
+    if(f && editing){ f.focus(); }
+    touch();
+  }
+
+  /* ---------- actions ---------- */
+  function byId(id){ for(var i = 0; i < data.entries.length; i++){ if(data.entries[i].id === id) return i; } return -1; }
+  function copyText(text, btn){
+    function done(){ btn.classList.add("ok"); setTimeout(function(){ btn.classList.remove("ok"); }, 900); status("Copied to the clipboard."); }
+    function fallback(){
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { if(document.execCommand("copy")) done(); else status("Could not copy. Show it and copy by hand."); } catch(e){ status("Could not copy. Show it and copy by hand."); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+  }
+  function setRevealAll(on){
+    revealAll = on; clearTimeout(revealTimer);
+    if(on) revealTimer = setTimeout(function(){ revealAll = false; revealed = {}; render(); }, REVEAL_MS);
+    render();
+  }
+
+  $("acList").addEventListener("click", function(e){
+    var t;
+    if((t = e.target.closest("[data-copy]"))){ var i = byId(t.getAttribute("data-id")); if(i > -1) copyText(data.entries[i][t.getAttribute("data-copy")] || "", t); return; }
+    if((t = e.target.closest("[data-eye]"))){ var id = t.getAttribute("data-eye"); revealed[id] = !revealed[id]; render(); return; }
+    if((t = e.target.closest("[data-edit]"))){ editing = t.getAttribute("data-edit"); render(); return; }
+    if((t = e.target.closest("[data-cancel]"))){ editing = null; render(); return; }
+    if((t = e.target.closest("[data-move]"))){
+      var k = byId(t.getAttribute("data-id")), d = +t.getAttribute("data-move"), j = k + d;
+      if(k < 0 || j < 0 || j >= data.entries.length) return;
+      var tmp = data.entries[k]; data.entries[k] = data.entries[j]; data.entries[j] = tmp;
+      save(); render(); return;
+    }
+    if((t = e.target.closest("[data-del]"))){
+      var di = byId(t.getAttribute("data-del"));
+      if(di < 0) return;
+      var en = data.entries[di];
+      if(!window.confirm("Delete the login " + (en.system || "") + (en.label ? " (" + en.label + ")" : "") + (en.user ? " – " + en.user : "") + "?")) return;
+      data.entries.splice(di, 1); save(); render(); status("Deleted."); return;
+    }
+  });
+  $("acList").addEventListener("submit", function(e){
+    var form = e.target.closest("form[data-form]");
+    if(!form) return;
+    e.preventDefault();
+    var f = form.elements, id = form.getAttribute("data-form");
+    var entry = { id: id === "new" ? uid() : id, system: f.system.value.trim(), label: f.label.value.trim(), user: f.user.value.trim(), password: f.password.value, note: f.note.value.trim(), updated: today() };
+    if(!entry.system){ f.system.focus(); status("Give the login a system name (e.g. FIORI)."); return; }
+    var i = byId(id);
+    if(i > -1){
+      var old = data.entries[i];
+      if(old.password === entry.password && old.user === entry.user) entry.updated = old.updated || entry.updated;
+      data.entries[i] = entry;
+    } else data.entries.push(entry);
+    editing = null;
+    if(save()){ render(); status("Saved."); }
+  });
+  $("acList").addEventListener("keydown", function(e){ if(e.key === "Escape" && editing){ editing = null; render(); } });
+
+  $("acAdd").addEventListener("click", function(){ editing = "new"; render(); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); });
+  $("acReveal").addEventListener("click", function(){ setRevealAll(!revealAll); });
+  $("acLock").addEventListener("click", lock);
+  $("acUnlock").addEventListener("click", tryUnlock);
+  $("acPinIn").addEventListener("keydown", function(e){ if(e.key === "Enter") tryUnlock(); });
+  function tryUnlock(){
+    if(pinOk($("acPinIn").value)){ locked = false; $("acPinIn").value = ""; render(); status("Unlocked."); }
+    else { $("acPinErr").textContent = "Wrong PIN."; $("acPinIn").value = ""; $("acPinIn").focus(); }
+  }
+  $("acPinBox").addEventListener("click", function(e){
+    var err = $("acPinSetErr");
+    if(e.target.id === "acPinSet"){
+      var a = $("acPinNew").value, b = $("acPinNew2").value;
+      if(!/^\d{4,8}$/.test(a)){ err.textContent = "The PIN must be 4 to 8 digits."; return; }
+      if(a !== b){ err.textContent = "The two PINs differ."; return; }
+      data.pinSalt = makeSalt(); data.pinHash = hashPin(a, data.pinSalt);
+      if(save()){ render(); status("PIN set. The tab locks when you leave it."); }
+    }
+    if(e.target.id === "acPinChange"){
+      var cur = $("acPinCur").value, nw = $("acPinNew").value;
+      if(!pinOk(cur)){ err.textContent = "The current PIN is wrong."; return; }
+      if(nw && !/^\d{4,8}$/.test(nw)){ err.textContent = "The new PIN must be 4 to 8 digits."; return; }
+      if(nw){ data.pinSalt = makeSalt(); data.pinHash = hashPin(nw, data.pinSalt); } else { data.pinHash = ""; data.pinSalt = ""; }
+      if(save()){ render(); status(nw ? "PIN changed." : "PIN removed."); }
+    }
+  });
+
+  /* ---------- print sheet ---------- */
+  function buildSheet(){
+    var d = new Date();
+    return "<div class='acp'><div class='acp-head'><div><h1>Current Access Credentials</h1><p>Park Inn by Radisson Frankfurt Airport · active users and current passwords only</p></div><span class='conf'>CONFIDENTIAL · INTERNAL USE</span></div>" +
+      data.entries.map(function(e){
+        return "<div class='acp-card'><h2>" + esc(e.system) + (e.label ? "<span>" + esc(e.label) + "</span>" : "") + "</h2>" +
+          "<div class='acp-kv'><b>User</b><code>" + esc(e.user || "—") + "</code><b>Password</b><code>" + esc(e.password || "—") + "</code></div>" +
+          (e.note ? "<div class='acp-note'>" + esc(e.note) + "</div>" : "") + "</div>";
+      }).join("") +
+      "<div class='acp-foot'><span>Printed " + pad(d.getDate()) + "." + pad(d.getMonth() + 1) + "." + d.getFullYear() + " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + " from Front Desk Control · Access</span><span>Keep in the drawer, shred the old sheet</span></div></div>";
+  }
+  function doPrint(){
+    if(locked){ status("Unlock first."); return; }
+    if(!data.entries.length){ status("Nothing to print yet."); return; }
+    $("acPrintOut").innerHTML = buildSheet();
+    document.body.setAttribute("data-print", "access");
+    var done = function(){ document.body.removeAttribute("data-print"); $("acPrintOut").innerHTML = ""; window.removeEventListener("afterprint", done); };
+    window.addEventListener("afterprint", done);
+    setTimeout(function(){ window.print(); setTimeout(done, 1500); }, 50);
+  }
+  $("acPrint").addEventListener("click", doPrint);
+  window.addEventListener("keydown", function(e){
+    if(!(e.ctrlKey || e.metaKey) || e.altKey || String(e.key).toLowerCase() !== "p") return;
+    if(!$("panel-access").classList.contains("active")) return;
+    e.preventDefault(); doPrint();
+  });
+
+  /* ---------- export / import ---------- */
+  $("acExport").addEventListener("click", function(){
+    if(locked) return;
+    var out = { app: "Front Desk Control", type: "access", version: 1, exported: today(), entries: data.entries.map(function(e){ return { system: e.system, label: e.label, user: e.user, password: e.password, note: e.note, updated: e.updated }; }) };
+    var blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "access-logins-" + today() + ".json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+    status("Exported. The file holds the passwords in clear text: keep it with the backups.");
+  });
+  $("acImport").addEventListener("change", function(){
+    var file = this.files && this.files[0]; this.value = "";
+    if(!file || locked) return;
+    var r = new FileReader();
+    r.onload = function(){
+      var parsed = null;
+      try { parsed = JSON.parse(String(r.result)); } catch(e){ status("That file is not a logins file (JSON)."); return; }
+      var list = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.entries) ? parsed.entries : null);
+      if(!list){ status("That file holds no logins."); return; }
+      var entries = list.map(normEntry).filter(Boolean).map(function(e){ e.id = uid(); return e; });
+      if(!entries.length){ status("That file holds no logins."); return; }
+      pendingImport = entries;
+      var bar = $("acImportBar");
+      bar.hidden = false;
+      bar.innerHTML = "<span><b>" + entries.length + "</b> logins in <b>" + esc(file.name) + "</b>.</span>" +
+        "<button class='btn-ghost' type='button' data-imp='replace'>Replace the list</button>" +
+        "<button class='btn-ghost' type='button' data-imp='add'>Add to the list</button>" +
+        "<button class='btn-ghost' type='button' data-imp='cancel'>Cancel</button>";
+    };
+    r.readAsText(file);
+  });
+  $("acImportBar").addEventListener("click", function(e){
+    var b = e.target.closest("[data-imp]");
+    if(!b) return;
+    var mode = b.getAttribute("data-imp");
+    if(mode !== "cancel" && pendingImport){
+      if(mode === "replace" && data.entries.length && !window.confirm("Replace the " + data.entries.length + " logins saved on this PC with the " + pendingImport.length + " from the file?")) return;
+      data.entries = mode === "replace" ? pendingImport : data.entries.concat(pendingImport);
+      if(save()) status(mode === "replace" ? "List replaced." : pendingImport.length + " logins added.");
+    }
+    pendingImport = null; $("acImportBar").hidden = true; $("acImportBar").innerHTML = ""; render();
+  });
+
+  ["click", "keydown", "input"].forEach(function(ev){ $("panel-access").addEventListener(ev, touch, true); });
+  render();
 })();
 </script>
