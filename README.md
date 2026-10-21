@@ -5,7 +5,7 @@ Release: 2026-09-23-turn-support-1
 Breakfast Live is a native tab (Alt+6). The original workstation modules remain in place. Changing application tabs hides panels without reloading the tablet connection.
 
 ## Navigation
-The sections sit in a left sidebar, grouped as **Shift** (Breakfast, Breakfast Live, Handover), **Front desk** (Check-in / out, Registration, Events), **Payments** (VCC, Group), **Night** (Night Audit, Night Audit 2.0) and **Team** (Access). Each item shows its badge and its Alt key; **Alt+M** or the arrow folds the sidebar to icons (remembered in this browser). Below 980px the sidebar becomes a scrollable strip at the top. The keyboard shortcuts are unchanged: Alt+1 … Alt+9, Alt+0 Night Audit 2.0, Alt+A Access.
+The sections sit in a left sidebar, grouped as **Shift** (Breakfast, Breakfast Live, Handover), **Front desk** (Check-in / out, Registration, Events), **Payments** (VCC, Group), **Night** (Night Audit, Night Audit 2.0) and **Team** (Access). Each item shows its badge and its Alt key; **Alt+M** or the arrow folds the sidebar to icons (remembered in this browser). In a half-screen window (700 to 1099px) the sidebar stays beside the content folded to icons; the arrow or Alt+M opens it over the content until a section is chosen (Escape or a click outside closes it). Below 700px the sidebar becomes a scrollable strip at the top. The keyboard shortcuts are unchanged: Alt+1 … Alt+9, Alt+0 Night Audit 2.0, Alt+A Access.
 
 ## Access
 The **Access** tab (Alt+A) is the editable list of the desk's logins: system, which window / where, user, password, note and the date of the last change. It replaces the printed credentials sheet.
