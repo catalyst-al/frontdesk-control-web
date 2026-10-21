@@ -249,6 +249,68 @@
     }).join("");
   }
 
+  /* ---------- Visual SOP ---------- */
+  function isChecked(id){ return !!(doneStore.checks && doneStore.checks[id]); }
+  function setChecked(id, on){
+    doneStore.checks = doneStore.checks || {};
+    if(on) doneStore.checks[id] = 1; else delete doneStore.checks[id];
+    save(KEY_DONE, doneStore);
+  }
+  function renderVisual(){
+    var V = D.visual, host = $("#visual");
+    if(!V || !host) return;
+    var quick = V.pages.map(function(p){
+      return "<button type='button' class='vs-q " + (p.kind === "action" ? "act" : "info") + "' data-vs='" + p.no + "'><span class='n'>" + (p.no < 10 ? "0" : "") + p.no + "</span><span><b>" + esc(p.title) + "</b><span>" + (p.kind === "action" ? "Action available" : "Information only") + "</span></span></button>";
+    }).join("");
+    var pages = V.pages.map(function(p){
+      var shot;
+      if(p.img){
+        shot = "<div class='vs-shot'><div class='lab'>Original screenshot from SOP · sample data anonymized</div><div class='vs-shot-grid" + (p.zoom ? "" : " one") + "'>" +
+          "<button type='button' data-vsimg='" + p.no + "' data-k='0' aria-label='Enlarge screenshot'><img src='" + IMG + p.img + "' alt='" + esc(p.title) + "' loading='lazy' decoding='async'></button>" +
+          (p.zoom ? "<div class='vs-zoom'><button type='button' data-vsimg='" + p.no + "' data-k='1' aria-label='Enlarge the Actions menu'><img src='" + IMG + p.zoom + "' alt='Actions menu' loading='lazy' decoding='async'></button><div class='lab'>Actions menu · enlarged</div></div>" : "") +
+          "</div></div>";
+      } else {
+        shot = "<div class='vs-shot'><div class='lab'>Illustrative workflow · no screenshot in the source SOP</div><div class='vs-flow'>" +
+          p.flow.map(function(f, k){ return (k ? "<span class='arr' aria-hidden='true'>&rsaquo;</span>" : "") + "<div class='box'><b>" + esc(f[0]) + "</b><span>" + esc(f[1]) + "</span></div>"; }).join("") +
+          "</div></div>";
+      }
+      return "<article class='vs-page' id='vs-" + p.no + "'>" +
+        "<div class='vs-page-h'><span class='no'>" + (p.no < 10 ? "0" : "") + p.no + " / 13</span><div><h3>" + esc(p.title) + "</h3><p>" + esc(p.sub) + "</p></div>" +
+        "<span class='vs-badge " + (p.kind === "action" ? "act" : "info") + "'>" + (p.kind === "action" ? "Action in NA app" : "Information only") + "</span></div>" +
+        shot +
+        "<div class='vs-page-body'><div class='vs-steps'><span class='bt'>Steps / what to do</span><ul>" + p.steps.map(function(t){ return "<li>" + t + "</li>"; }).join("") + "</ul></div>" +
+        "<div class='vs-check " + p.checkKind + "'><span class='bt'>Check / important</span>" + p.check + "</div></div>" +
+        "<div class='vs-page-f'><span>DEFRAAIR · internal operational reference · EMMA v2 visual guide</span><span>" + esc(p.src) + " · <button type='button' class='linkbtn' data-go='" + p.step + "'>Step " + labels[p.step] + " in this guide</button></span></div>" +
+        "</article>";
+    }).join("");
+    var checks = V.checklist.items.map(function(c){
+      return "<button type='button' class='vs-item" + (isChecked(c.id) ? " on" : "") + "' data-vscheck='" + c.id + "' aria-pressed='" + isChecked(c.id) + "'><span class='bx' aria-hidden='true'>✓</span><span><b>" + esc(c.title) + "</b><span>" + esc(c.text) + "</span></span></button>";
+    }).join("");
+    host.innerHTML =
+      "<div class='vs-cover'><div class='vs-cover-top'><span>" + esc(V.eyebrow) + "</span><span>EMMA v2 (Fiori) / Night Audit</span></div><div class='vs-strip'></div><div class='vs-cover-body'>" +
+        "<h2>" + esc(V.title) + "</h2><p class='sub'>" + esc(V.sub) + "</p>" +
+        "<div class='vs-count'><b>" + V.count.n + "</b><div><div class='t'>" + esc(V.count.title) + "</div><div class='l'>" + esc(V.count.line) + "</div></div></div>" +
+        "<div class='vs-note'><span class='bt'>" + esc(V.confirms.title) + "</span><p>" + esc(V.confirms.lead) + "</p><p>" + esc(V.confirms.text) + "</p></div>" +
+        "<div class='vs-foot'><span>Source: SOP New NA Functions (EMMA v2 Fiori, 5 pages) · Visual guide DEFRAAIR, 16 pages</span><span>Internal training reference · not a payment authorization</span></div>" +
+      "</div></div>" +
+      "<div class='vs-h'><h3>Quick reference / 13 processes</h3><p>Find the process in EMMA v2, identify the permitted action, then open the detailed page.</p></div>" +
+      "<div class='vs-quick'>" + quick + "</div>" +
+      "<div class='vs-safety'>" + V.safety + "</div>" +
+      pages +
+      "<div class='vs-h' style='margin-top:26px'><h3>" + esc(V.checklist.title) + "</h3><p>" + esc(V.checklist.sub) + " Ticks belong to tonight and clear with Reset night.</p></div>" +
+      "<div class='vs-list'>" + checks + "</div>" +
+      "<div class='vs-scope'>" + esc(V.checklist.scope) + "</div>" +
+      "<div class='vs-foot'><span>DEFRAAIR · internal operational reference · EMMA v2 visual guide</span><button type='button' class='ghost' id='vsPrint'>Print the Visual SOP</button></div>";
+  }
+  function vsImgs(no){
+    var p = null;
+    (D.visual ? D.visual.pages : []).forEach(function(x){ if(x.no === no) p = x; });
+    if(!p) return [];
+    var list = [{ src: p.img, cap: "<b>" + (p.no < 10 ? "0" : "") + p.no + "</b> · " + esc(p.title) + " · original screenshot from the SOP, sample data anonymized" }];
+    if(p.zoom) list.push({ src: p.zoom, cap: "<b>" + (p.no < 10 ? "0" : "") + p.no + "</b> · " + esc(p.title) + " · Actions menu, enlarged" });
+    return list;
+  }
+
   /* ---------- navigation ---------- */
   function go(id, opts){
     if(!id || stepIndex[id] == null) return;
@@ -329,6 +391,15 @@
   document.addEventListener("click", function(e){
     var t;
     if((t = e.target.closest("[data-done]"))){ toggleDone(t.getAttribute("data-done")); return; }
+    if((t = e.target.closest("[data-vs]"))){ var pg = document.getElementById("vs-" + t.getAttribute("data-vs")); if(pg) pg.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    if((t = e.target.closest("[data-vsimg]"))){ openLb(vsImgs(+t.getAttribute("data-vsimg")), +t.getAttribute("data-k")); return; }
+    if((t = e.target.closest("[data-vscheck]"))){ var cid = t.getAttribute("data-vscheck"); setChecked(cid, !isChecked(cid)); t.classList.toggle("on", isChecked(cid)); t.setAttribute("aria-pressed", String(isChecked(cid))); return; }
+    if((t = e.target.closest("#vsPrint"))){
+      document.body.classList.add("print-visual"); showView("visual", true);
+      $$("#visual img").forEach(function(im){ im.loading = "eager"; });
+      setTimeout(function(){ window.print(); document.body.classList.remove("print-visual"); }, 400);
+      return;
+    }
     if((t = e.target.closest("[data-go]"))){ if(!t.disabled) go(t.getAttribute("data-go")); return; }
     if((t = e.target.closest("[data-thumb]"))){
       galleryPos[t.getAttribute("data-thumb")] = +t.getAttribute("data-k");
@@ -344,7 +415,7 @@
   });
   document.addEventListener("keydown", function(e){
     // Ctrl+P prints every step, the same as the Print button.
-    if((e.ctrlKey || e.metaKey) && !e.altKey && String(e.key).toLowerCase() === "p"){ e.preventDefault(); $("#printBtn").click(); return; }
+    if((e.ctrlKey || e.metaKey) && !e.altKey && String(e.key).toLowerCase() === "p"){ e.preventDefault(); if(state.view === "visual" && $("#vsPrint")) $("#vsPrint").click(); else $("#printBtn").click(); return; }
     if($("#lb").classList.contains("on")){
       if(e.key === "Escape") closeLb();
       else if(e.key === "ArrowRight") stepLb(1);
@@ -373,7 +444,7 @@
   $("#resetBtn").addEventListener("click", function(){
     if(!window.confirm("Clear every tick of " + nightLabel() + "?")) return;
     resetNight();
-    renderRail(); renderStage(); paintProgress();
+    renderRail(); renderStage(); renderVisual(); paintProgress();
   });
   $("#printBtn").addEventListener("click", function(){
     var prevMode = state.mode, prevView = state.view;
@@ -409,6 +480,6 @@
   if(window.self !== window.top) document.body.classList.add("embedded");
   if(stepIndex[state.cur] == null) state.cur = D.steps[0].id;
   $$(".seg button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-mode") === state.mode)); });
-  renderRules(); renderRail(); renderStage(); renderProcesses(); renderFaq(); paintProgress();
+  renderRules(); renderRail(); renderStage(); renderProcesses(); renderFaq(); renderVisual(); paintProgress();
   readHash();
 })();

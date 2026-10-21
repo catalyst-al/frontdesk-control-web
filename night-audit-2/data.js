@@ -330,5 +330,92 @@ window.NA2 = {
       a: "Another user has the Night Audit open at the same time. Do not execute. Find out who it is (a colleague, or your own second window / session) and let them leave the app, then refresh." },
     { q: "A process has no Actions menu.",
       a: "It is an informative process (6 – 13). Solve it where the step says — Folio Management, TMS, the POS — and press the refresh arrow next to <i>Show all</i>. The count updates and the process turns green." }
-  ]
+  ],
+
+  /* Visual SOP: the DEFRAAIR "EMMA v2 (Fiori) – New Night Audit functions, step-by-step visual guide"
+     (16 pages, English, October 2026), reproduced page by page. Checked against the Radisson source
+     SOP: every process, action and default matches. Two edits: the managers named in the document are
+     written as FOM / GM here (no staff names in this repository), and Payment on Hold is marked as the
+     Optional process it is in the app. Pages 8, 10 and 11 have no screenshot in the source SOP; the
+     document shows a workflow instead, kept here. */
+  visual: {
+    eyebrow: "Park Inn / DEFRAAIR · Front Office + Night Operations",
+    title: "EMMA v2 (Fiori) · New Night Audit functions",
+    sub: "Step-by-step visual guide · English explanations with original EMMA labels",
+    count: { n: 13, title: "Processes in the source SOP", line: "5 with actions in the Night Audit app · 8 informative-only reports" },
+    confirms: {
+      title: "What the source document confirms",
+      lead: "The five-page SOP is an overview of new EMMA v2 (Fiori) Night Audit functions. It is not a complete click-by-click manual or a general payment authorization.",
+      text: "Screenshots show training examples. Their hotel, dates and reservations are not DEFRAAIR live data. For real operations, verify the hotel business date, booking terms and the most recent confirmed instructions of the FOM / GM."
+    },
+    safety: "<b>Safety check:</b> actions in the Night Audit app do not replace reviewing invoices, folios, VCCs, guarantees, City Tax and hotel date. Never change a reservation simply to clear an error without checking its operational and financial impact.",
+    pages: [
+      { no: 1, title: "Expected arrivals not Checked-In", sub: "Expected arrivals that have not been checked in", kind: "action", src: "Source SOP · page 1",
+        img: "na2-arrivals.png", zoom: "na2-zoom-arrivals.png", step: "p1-arrivals",
+        steps: ["Open <b>Expected arrivals not Checked-In</b> in the left-hand process list.", "Select the appropriate reservation using its checkbox, then open <b>Actions</b>.", "Choose the correct action: <b>Express check-in</b>, <b>Change arrival date</b> or <b>Change status to no-show</b>.", "Verify the new status and refresh the list before continuing."],
+        check: "Express check-in requires a pre-assigned room. Changing arrival date defaults to +1 day; scheduled charges / routing and other cadence items move, and Special Tax is adjusted. For day use, City Tax is removed while room price remains. Verify actual arrival and no-show fee before acting.", checkKind: "important" },
+      { no: 2, title: "Expected Departures not Checked-Out", sub: "Expected departures that are still not checked out", kind: "action", src: "Source SOP · page 2",
+        img: "na2-departures.png", zoom: "na2-zoom-departures.png", step: "p2-departures",
+        steps: ["Open <b>Expected departures not Checked-Out</b> and select the correct reservation.", "Under <b>Actions</b>, choose <b>Move to virtual and extend departure date</b> (+1 day by default, code Z001), or <b>Express Check-Out</b>.", "After the action, verify the date, reservation status and remaining list."],
+        check: "Express Check-Out is permitted only when ALL folios are correctly invoiced and paid. Do not use virtual room Z001 to conceal an outstanding balance or other unresolved payment issue.", checkKind: "important" },
+      { no: 3, title: "Event & Group reservations Limit Billing date", sub: "Billing deadline for events and group reservations", kind: "action", src: "Source SOP · page 2",
+        img: "na2-events-groups.png", zoom: "na2-zoom-events-groups.png", step: "p3-limit-billing",
+        steps: ["Open <b>Event &amp; Group reservations Limit Billing date</b>.", "Confirm that the event or group reservation has not yet been invoiced.", "Select the item and choose <b>Actions → Move limit billing date</b>.", "Verify the new deadline (+1 day by default) and refresh the result."],
+        check: "This changes the Limit Billing Date, not automatically the Event End Date or group departure. If EMMA prevents a historic check-out reversal, do not force unrelated changes; escalate the case.", checkKind: "important" },
+      { no: 4, title: "Day Guest Billing in Check-Out, not yet billed", sub: "Day-guest stays checked out but not yet invoiced", kind: "action", src: "Source SOP · page 2",
+        img: "na2-dayguest.png", zoom: "na2-zoom-dayguest.png", step: "p4-dayguest",
+        steps: ["Open <b>Day Guest Billing in Check-Out, not yet billed</b>.", "Select the relevant case and open the <b>Actions</b> menu.", "The SOP lists <b>DG Billing: Modify departure date</b> (+1 day by default) and <b>Automatic invoicing for amount due 0</b>.", "Verify the departure date and invoice state after any action."],
+        check: "Do not automatically invoice a stay with an outstanding due amount or unclear postings / folio. The source SOP does not specify a complete financial-error resolution workflow.", checkKind: "important" },
+      { no: 5, title: "Individual reservations in Check-Out, not yet billed", sub: "Individual check-outs with final invoicing pending", kind: "action", src: "Source SOP · page 3",
+        img: "na2-individual.png", zoom: "na2-zoom-individual.png", step: "p5-individual",
+        steps: ["Open <b>Individual reservations in Check-Out, not yet billed</b>.", "Check the exact reservation and Due Amount.", "Use <b>Automatic invoicing</b> ONLY if due amount = 0.", "Verify the invoice was generated correctly and the case cleared."],
+        check: "A zero Due Amount does not replace a folio accuracy check. For uncertain balances, routing or payment records, confirm the facts before creating an invoice.", checkKind: "important" },
+      { no: 6, title: "Invoices not yet paid", sub: "Invoices issued but awaiting payment", kind: "info", src: "Source SOP · page 3",
+        img: "na2-invoices.png", step: "p6-invoices",
+        steps: ["Open <b>Invoices not yet paid</b> and review the unpaid invoice list.", "The Night Audit app cannot directly process payment on this list.", "Select the <b>Reservation Number</b> to open Folio Management.", "Review the payment there and follow the applicable authorization procedure."],
+        check: "This is NOT a Pay All command. Before a charge, identify the responsible payer (guest, company, OTA or VCC), the payment method and any required authorization.", checkKind: "info" },
+      { no: 7, title: "Payment on Hold", sub: "Payments currently flagged as On Hold · listed under Optional in the app", kind: "info", src: "Source SOP · page 3",
+        img: "na2-payments-hold.png", step: "p7-hold",
+        steps: ["Open <b>Payment on Hold</b> and review the affected reservations.", "This is an information-only report: no direct NA app action is available.", "Refer each item to the appropriate payment module or responsible team.", "Record unresolved cases for the morning handover."],
+        check: "The SOP does not provide a process to release or cancel a Payment on Hold. Do not issue a capture, refund or cancellation solely because this alert appears.", checkKind: "info" },
+      { no: 8, title: "Remaining room move/change", sub: "Planned room moves or room changes still pending", kind: "info", src: "Source SOP · page 4",
+        flow: [["Report", "Remaining room move/change"], ["Verify", "Room and planned change"], ["Handover", "FO / Housekeeping follow-up"]], step: "p8-room-move",
+        steps: ["Open <b>Remaining room move/change: list of rooms</b>.", "Identify rooms with a pending move or planned change.", "This process is informative only in the Night Audit app.", "Verify the real status in the relevant system and inform FO / HSK."],
+        check: "The SOP provides no screenshot or detailed editing steps for this list. Do not assume a room is vacant or available solely because a move has been scheduled.", checkKind: "info" },
+      { no: 9, title: "Cancel/no-show reservations with pending charges", sub: "Cancelled / no-show bookings with unsettled charges", kind: "info", src: "Source SOP · page 4",
+        img: "na2-cancel-noshow.png", step: "p9-cancel-noshow",
+        steps: ["Open <b>Cancel/no-show reservations with pending charges</b>.", "Identify the reservation and the charges still pending.", "This report is informative but lets you navigate to the reservation.", "Review its payment terms and settle charges only under local procedure."],
+        check: "A cancellation is not automatically an actual no-show. Verify guarantee, prepaid / OTA / VCC terms, the booking date, applicable conditions and approval before charging.", checkKind: "info" },
+      { no: 10, title: "Locked reservations in EMMA TMS", sub: "Reservations locked in TMS and blocking Night Audit", kind: "info", src: "Source SOP · page 4",
+        flow: [["Report", "Locked reservations"], ["Open EMMA TMS", "Exit the affected reservation"], ["Refresh", "Recheck Night Audit"]], step: "p10-locked",
+        steps: ["Open <b>Locked reservations in EMMA TMS</b>.", "Read the reservation number and the transaction shown as locked.", "Open EMMA TMS and exit the affected reservation to release the lock.", "Refresh Night Audit and check if the obstruction was removed."],
+        check: "If a colleague has the reservation open, ask them to exit it properly. Do not use unauthorized methods to terminate another user session.", checkKind: "info" },
+      { no: 11, title: "POS Outlets not closed", sub: "POS outlets still open for the relevant business date", kind: "info", src: "Source SOP · page 5",
+        flow: [["Report", "POS outlets not closed"], ["Outside Night Audit", "Close the outlet in POS"], ["Refresh", "Recheck Night Audit"]], step: "p11-pos",
+        steps: ["Open <b>POS Outlets not closed</b> and identify the affected outlet.", "The NA app cannot close POS outlets directly.", "Contact the responsible outlet team for settlement and closure.", "Return to Night Audit after closure and refresh the checks."],
+        check: "Do not claim Night Audit is complete while an outlet closure remains mandatory. The source SOP does not supply POS closure buttons or key sequences.", checkKind: "info" },
+      { no: 12, title: "Events not Checked-In", sub: "Events whose check-in status has not been completed", kind: "info", src: "Source SOP · page 5",
+        img: "na2-events-not-ci.png", step: "p12-events-ci",
+        steps: ["Open <b>Events not Checked-In</b> and identify the exact Event ID.", "No direct action is available in NA: navigate to EMMA TMS.", "Open the event and verify its dates, status and whether it actually took place.", "Correct the status only when operational facts and authorization support it; refresh the report."],
+        check: "Do not check in a tentative, offer or historical event just to clear a warning. If the event status is unclear, seek confirmation from Sales / M&amp;E or FOM.", checkKind: "info" },
+      { no: 13, title: "Events not Checked-Out", sub: "Events still open or not checked out in EMMA TMS", kind: "info", src: "Source SOP · page 5",
+        img: "na2-events-not-co.png", step: "p13-events-co",
+        steps: ["Open <b>Events not Checked-Out</b> and identify the Event ID.", "The NA app does not check out the event: open the event in EMMA TMS.", "Review event date, status, billing and the current hotel date.", "Perform only changes allowed by EMMA and hotel procedure, then refresh."],
+        check: "If TMS reports “Check-out cannot be cancelled, not in hotel date”, do not force a historical reversal or storno. Document and escalate to the FOM / GM.", checkKind: "info" }
+    ],
+    checklist: {
+      title: "Before completing Night Audit",
+      sub: "Practical shift checklist; additional operational controls are separate from the source overview.",
+      items: [
+        { id: "date", title: "Business date", text: "Use the actual hotel business date, not the dates shown in source screenshots." },
+        { id: "mandatory", title: "Mandatory problems", text: "Review all flagged processes. Information-only lists must be resolved outside the NA app." },
+        { id: "payments", title: "Payments and folios", text: "No Express Check-Out unless all folios are accurately invoiced and paid." },
+        { id: "events", title: "Event billing", text: "Do not confuse Limit Billing Date with Event End Date; do not force a historical reversal." },
+        { id: "locks", title: "Locks and POS", text: "Release locked reservations through TMS and have the proper outlet close open POS sessions." },
+        { id: "proof", title: "Proof of completion", text: "Verify the real Night Audit completion message; document unresolved exceptions." },
+        { id: "hotelkit", title: "Hotel Kit handover", text: "Attach required reports; FOM sign-off only from the FOM, GM sign-off only from the GM." }
+      ],
+      scope: "Source scope: functional overview only. Local filters, permissions and workflows not shown in the SOP require live verification."
+    }
+  }
 };
