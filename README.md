@@ -5,7 +5,7 @@ Release: 2026-09-23-turn-support-1
 Breakfast Live is a native tab (Alt+6). The original workstation modules remain in place. Changing application tabs hides panels without reloading the tablet connection.
 
 ## Navigation
-The sections sit in a left sidebar, grouped as **Shift** (Breakfast, Breakfast Live, Handover), **Front desk** (Check-in / out, Registration, Events), **Payments** (VCC, Group), **Night** (Night Audit, Night Audit 2.0) and **Team** (Access). Each item shows its badge and its Alt key; **Alt+M** or the arrow folds the sidebar to icons (remembered in this browser). In a half-screen window (700 to 1099px) the sidebar stays beside the content folded to icons; the arrow or Alt+M opens it over the content until a section is chosen (Escape or a click outside closes it). Below 700px the sidebar becomes a scrollable strip at the top. The keyboard shortcuts are unchanged: Alt+1 … Alt+9, Alt+0 Night Audit 2.0, Alt+A Access.
+The sections sit in a left sidebar, grouped as **Shift** (Breakfast, Breakfast Live, Handover), **Front desk** (Check-in / out, Registration, Invoice address, Events), **Payments** (VCC, Group), **Night** (Night Audit, Night Audit 2.0) and **Team** (Access). Each item shows its badge and its Alt key; **Alt+M** or the arrow folds the sidebar to icons (remembered in this browser). In a half-screen window (700 to 1099px) the sidebar stays beside the content folded to icons; the arrow or Alt+M opens it over the content until a section is chosen (Escape or a click outside closes it). Below 700px the sidebar becomes a scrollable strip at the top. The keyboard shortcuts are unchanged: Alt+1 … Alt+9, Alt+0 Night Audit 2.0, Alt+A Access, Alt+I Invoice address.
 
 ## Access
 The **Access** tab (Alt+A) is the editable list of the desk's logins: system, which window / where, user, password, note and the date of the last change. It replaces the printed credentials sheet.
@@ -72,6 +72,15 @@ The **Registration** tab (Alt+9) is the hotel registration card (Meldeschein): r
 - Colleagues tick **In SAP** once a card is entered; the tab badge counts the cards not yet in SAP.
 - Optional: drop the registration card printed from SAP to PDF (Microsoft Print to PDF) on **SAP card (PDF)** to fill name, company, country, e-mail, room, dates, guests, reservation and payment. A PDF with several cards adds them all. The PDF is read in this browser and not stored.
 - Cards are kept in this browser only, are part of **Back up this shift**, and are deleted automatically 3 days after check-out (60 days after saving at the latest). A card that is being typed survives a reload. The card the guest signed stays the original; printouts and downloaded lists carry passport data and stay on hotel equipment.
+
+## Invoice address
+The **Invoice address** tab (Alt+I) puts a company address on an invoice printed from SAP to PDF (Microsoft Print to PDF), in place of the guest address, and prints it or saves it as a new PDF.
+
+- Type the address on the left, one line per row (or pick a **saved company**), then drop the invoice PDF on the tab. The new address replaces the lines under **Fiscal information** and **Postal address** on every page of the invoice; either block can be left as it is. Nothing else on the invoice changes.
+- The old address is removed from the PDF, not only covered, so programs that read the PDF text find only the new one. The new lines are written in Helvetica at the size of the old ones. When the new address has more lines than the old one, the lines under it (Party, Reservation / Voucher, Copy) move down as they are; if there is not enough room, the address lines are set closer and the tab says so.
+- The preview marks the changed area with a green box (not printed); **Show original** compares with the PDF as loaded. **Print** (or Ctrl+P on this tab) prints the pages full size; **Save PDF** downloads `<invoice>_<company>.pdf`.
+- The PDF is read and written in this browser and not stored. **Save this company** keeps the address in this browser (`parkInnInvoiceFirms_v1`, part of **Back up this shift**).
+- The PDF writer is pdf-lib 1.17.1 (MIT), bundled in `index.html` and started the first time the tab writes a PDF; see THIRD-PARTY-NOTICES.txt.
 
 ## LUME Night Audit
 `lume-night-audit/` is the Night Audit control center for LUME Boutique Hotel (OPERA PMS): Run Night checklist, Ask / Search, Codes, Problem / Unsure, Visual Guides and the Full SOP. Open `lume-night-audit/index.html` directly.
