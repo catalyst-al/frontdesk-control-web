@@ -2655,11 +2655,31 @@
     </div>
   </div>
   <div class="print-only" id="acPrintOut"></div>
+  <!-- ============ VIP LIST FROM SAP (opened from VIP / Premium / Club in the Breakfast tab) ============ -->
+  <dialog class="bf-guide no-print" id="vipGuide" aria-labelledby="vipGuideTitle">
+    <div class="bf-guide-head">
+      <div><h2 id="vipGuideTitle">How to get the VIP list from SAP</h2><p>About two minutes, every morning. It is yesterday&rsquo;s in-house list with the layout <b>/YANBU</b>: every guest in house with the loyalty level, also those who arrived on earlier days.</p></div>
+      <button class="btn-ghost" type="button" data-close aria-label="Close">&#10005; Close</button>
+    </div>
+    <ol class="ev-steps">
+      <li><div><p>In <b>SAP Easy Access (TMS_All)</b> open <b>Favorites &rarr; House status</b>.</p><a href="vip-guide/vip-step-1.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-1.png" alt="SAP Favorites with House status marked" loading="lazy"></a></div></li>
+      <li><div><p>Click the <b>left arrow (&#9664;)</b> next to the date once: the date becomes <b>yesterday</b>.</p><a href="vip-guide/vip-step-2.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-2.png" alt="House status with the previous-day arrow marked" loading="lazy"></a></div></li>
+      <li><div><p>With yesterday&rsquo;s date, click the number in the line <b>In-house (Check-ins)</b>.</p><a href="vip-guide/vip-step-3.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-3.png" alt="House status of yesterday with the In-house number marked" loading="lazy"></a></div></li>
+      <li><div><p>The list <b>In-house (Check-ins)</b> opens. Open the <b>layout</b> button in its toolbar and choose <b>Choose Layout&hellip;</b></p><a href="vip-guide/vip-step-4.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-4.png" alt="In-house list with the layout menu and Choose Layout marked" loading="lazy"></a></div></li>
+      <li><div><p>In <b>Choose Layout</b> click <code>/YANBU</code> and confirm with the green <b>&#10003;</b>.</p><a href="vip-guide/vip-step-5.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-5.png" alt="Choose Layout with /YANBU and the green check marked" loading="lazy"></a></div></li>
+      <li><div><p>The list now has the <b>VIP</b> column (R1 Club, R2 Premium, R3 VIP). Click <b>Print</b> in the toolbar.</p><a href="vip-guide/vip-step-6.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-6.png" alt="In-house list with layout /YANBU, the VIP column and the Print button marked" loading="lazy"></a></div></li>
+      <li><div><p>In <b>Print ALV List</b>: Output Device <code>locl</code> (Front office Left printer), 1 copy, <b>Everything</b>, <b>Immediately</b>. Confirm with the green <b>&#10003;</b>.</p><a href="vip-guide/vip-step-7.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-7.png" alt="Print ALV List with Output Device locl and the green check marked" loading="lazy"></a></div></li>
+      <li><div><p>In the Windows <b>Print</b> window choose <b>Microsoft Print to PDF</b> and click <b>OK</b>.</p><a href="breakfast-guide/breakfast-step-5.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-5.png" alt="Windows Print dialog with Microsoft Print to PDF marked" loading="lazy"></a></div></li>
+      <li><div><p>Save it in <b>Downloads</b> with the name <code>VIP</code> (it becomes <code>VIP.pdf</code>). Replace yesterday&rsquo;s file if Windows asks.</p><a href="vip-guide/vip-step-9.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-9.png" alt="Downloads folder with VIP.pdf marked" loading="lazy"></a></div></li>
+      <li><div><p>Back here, in <b>VIP / Premium / Club</b> click <b>Upload VIP / arrivals list</b> and choose <code>VIP.pdf</code>. The status line shows <b>in-house</b> and how many VIP, Premium and Club rooms are in house for breakfast.</p><a href="vip-guide/vip-step-10.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-10.png" alt="Breakfast tab with the Upload VIP list button marked" loading="lazy"></a></div></li>
+    </ol>
+    <div class="ev-guide-note"><b>Keep it on hotel equipment.</b> The list holds guest names, companies and reservation numbers. It is read only in this browser; nothing is uploaded.</div>
+  </dialog>
   <!-- ============ BREAKFAST REPORT FROM SAP (opened from the Breakfast tab) ============ -->
   <dialog class="bf-guide no-print" id="bfGuide" aria-labelledby="bfGuideTitle">
     <div class="bf-guide-head">
       <div><h2 id="bfGuideTitle">How to get the breakfast report from SAP</h2><p>About one minute, every morning. The report is the F&amp;B Services Forecast of today.</p></div>
-      <button class="btn-ghost" type="button" id="bfGuideClose" aria-label="Close">&#10005; Close</button>
+      <button class="btn-ghost" type="button" id="bfGuideClose" data-close aria-label="Close">&#10005; Close</button>
     </div>
     <ol class="ev-steps">
       <li><div><p>In <b>SAP Easy Access (TMS_All)</b> type <code>/CCSHT/RC_SI_003</code> in the command field at the top left and press <b>Enter</b>.</p><a href="breakfast-guide/breakfast-step-1.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-1.png" alt="SAP Easy Access with the transaction code in the command field" loading="lazy"></a></div></li>
@@ -2831,7 +2851,7 @@
 
           <button class="btn-upload" id="uploadBtn" type="button">Upload breakfast report</button>
           <input type="file" id="fileInput" accept="application/pdf">
-          <button class="bf-howbtn no-print" type="button" id="bfHowBtn">&#10067; How to get this report from SAP</button>
+          <button class="bf-howbtn no-print" type="button" id="bfHowBtn" data-guide="bfGuide">&#10067; How to get this report from SAP</button>
 
           <div class="banner" id="dateBanner"></div>
 
@@ -2925,13 +2945,14 @@
           </div>
 
           <h2 class="card-title">VIP / Premium / Club <span class="title-count" id="vipCount">0</span></h2>
-          <div class="vip-note-line">Optional: load yesterday's VIP / arrivals list and loyalty rooms flag at check. &#128081; VIP = breakfast automatic &middot; &#11088; Premium = room upgrade only &middot; &#127894;&#65039; Club = no breakfast benefit.</div>
+          <div class="vip-note-line">Optional: load yesterday's VIP / in-house list and loyalty rooms flag at check. &#128081; VIP = breakfast automatic &middot; &#11088; Premium = room upgrade only &middot; &#127894;&#65039; Club = no breakfast benefit.</div>
           <div class="vip-import">
             <button class="btn-ghost" id="vipUploadBtn" type="button">&#128081; Upload VIP / arrivals list (optional)</button>
             <input type="file" id="vipFileInput" accept="application/pdf">
             <button class="btn-ghost" id="vipClearImportBtn" type="button" hidden>Remove imported</button>
           </div>
           <div class="vip-import-status" id="vipImportStatus"></div>
+          <button class="bf-howbtn no-print" type="button" id="vipHowBtn" data-guide="vipGuide">&#10067; How to get the VIP list from SAP</button>
           <div class="vip-add">
             <input type="text" id="vipRoom" inputmode="numeric" pattern="[0-9]*" placeholder="Room" maxlength="4" aria-label="Room number">
             <select id="vipTier" aria-label="Loyalty tier">
@@ -4779,7 +4800,11 @@
     });
     var arrival = null, best = 0;
     Object.keys(arrivals).forEach(function(d){ if(arrivals[d] > best){ best = arrivals[d]; arrival = d; } });
-    return { rows:rows, entries:found, arrival:arrival };
+    // Several arrival dates: the House status in-house list (layout /YANBU), not one day's arrivals.
+    var iso = function(d){ var p = d.split("."); return p[2] + p[1] + p[0]; };
+    var days = Object.keys(arrivals).sort(function(a, b){ return iso(a) < iso(b) ? -1 : 1; });
+    var span = days.length > 1 ? days[0].slice(0, 5) + "–" + days[days.length - 1] : null;
+    return { rows:rows, entries:found, arrival:arrival, span:span };
   }
 
   function renderVipImportStatus(){
@@ -4795,7 +4820,7 @@
       total++;
       if(vipState(e) === "active"){ active++; c[e.tier] = (c[e.tier] || 0) + 1; }
     });
-    var txt = "List loaded" + (vipImport.arrival ? " (arrivals " + vipImport.arrival + ")" : "") + ": " +
+    var txt = "List loaded" + (vipImport.span ? " (in-house, arrivals " + vipImport.span + ")" : (vipImport.arrival ? " (arrivals " + vipImport.arrival + ")" : "")) + ": " +
       c.VIP + " VIP · " + c.PREMIUM + " Premium · " + c.CLUB + " Club in house for breakfast.";
     if(total > active) txt += " " + (total - active) + " not for this breakfast day (greyed).";
     var day = (reportData && reportData.reportDateStr) || todayDdMmYyyy();
@@ -4828,7 +4853,7 @@
       // A new list replaces the previous import; rooms marked by hand win.
       Object.keys(vipList).forEach(function(r){ if(vipList[r].src === "import") delete vipList[r]; });
       rooms.forEach(function(r){ if(!vipList[r]) vipList[r] = parsed.entries[r]; });
-      vipImport = { fileName:file.name, arrival:parsed.arrival, rows:parsed.rows, rooms:rooms.length };
+      vipImport = { fileName:file.name, arrival:parsed.arrival, span:parsed.span, rows:parsed.rows, rooms:rooms.length };
       renderVipList();
       if(!rooms.length){
         els.vipImportStatus.className = "vip-import-status warn";
@@ -23570,17 +23595,21 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
 
 <script src="access-vault.js"></script>
 <script id="breakfast-guide-script">
-/* "How to get this report from SAP" in the Breakfast tab: a dialog with the steps
-   and the screenshots in breakfast-guide/ (guest names and printer names covered). */
+/* "How to get … from SAP" buttons in the Breakfast tab (breakfast report, VIP list): each
+   opens its dialog with the steps and the screenshots in breakfast-guide/ and vip-guide/
+   (guest names, reservation numbers and printer names covered). */
 (function(){
-  var dlg = document.getElementById("bfGuide"), btn = document.getElementById("bfHowBtn");
-  if(!dlg || !btn) return;
-  btn.addEventListener("click", function(){
-    if(typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
-    dlg.scrollTop = 0;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-guide]"), function(btn){
+    var dlg = document.getElementById(btn.getAttribute("data-guide"));
+    if(!dlg) return;
+    function close(){ if(dlg.close) dlg.close(); else dlg.removeAttribute("open"); btn.focus(); }
+    btn.addEventListener("click", function(){
+      if(typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+      dlg.scrollTop = 0;
+    });
+    Array.prototype.forEach.call(dlg.querySelectorAll("[data-close]"), function(c){ c.addEventListener("click", close); });
+    dlg.addEventListener("click", function(e){ if(e.target === dlg) close(); });   // click on the backdrop
   });
-  document.getElementById("bfGuideClose").addEventListener("click", function(){ if(dlg.close) dlg.close(); else dlg.removeAttribute("open"); btn.focus(); });
-  dlg.addEventListener("click", function(e){ if(e.target === dlg && dlg.close) dlg.close(); });   // click on the backdrop
 })();
 </script>
 <script id="access-script">
