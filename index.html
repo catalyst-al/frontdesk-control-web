@@ -2282,6 +2282,7 @@
   .sn-body{flex:1;min-height:0;overflow-y:auto;padding:4px 10px 10px;scrollbar-width:thin;}
   .sn-group{padding:6px 0 4px;}
   .sn-group + .sn-group{border-top:1px solid var(--line-soft);}
+  .sn-retired{display:none !important;}
   .sn-group-h{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);padding:6px 8px 4px;white-space:nowrap;}
   .sidenav .tab{width:100%;min-width:0;min-height:42px;justify-content:flex-start;text-align:left;padding:7px 9px;border-radius:10px;gap:10px;box-shadow:none;margin:1px 0;font-size:13px;letter-spacing:.01em;}
   .sidenav .tab:hover{transform:none;background:#F3F6FB;}
@@ -2491,10 +2492,6 @@
         <button class="tab" id="tab-breakfast" role="tab" aria-selected="true" aria-controls="panel-breakfast" data-panel="breakfast" data-key="1" title="Breakfast">
           <span class="tab-icon">&#127859;</span><span class="tab-label">Breakfast</span>
         </button>
-        <button class="tab" id="tab-breakfastlive" role="tab" aria-selected="false" aria-controls="panel-breakfastlive" data-panel="breakfastlive" data-key="6" title="Breakfast Live">
-          <span class="tab-icon" aria-hidden="true">&#9673;</span><span class="tab-label">Breakfast Live</span>
-          <span class="tab-badge" id="breakfastLiveBadge">Offline</span>
-        </button>
         <button class="tab" id="tab-handover" role="tab" aria-selected="false" aria-controls="panel-handover" data-panel="handover" data-key="2" title="Handover">
           <span class="tab-icon">&#128220;</span><span class="tab-label">Handover</span>
           <span class="tab-badge" id="handoverBadge">0</span>
@@ -2502,13 +2499,6 @@
       </div>
       <div class="sn-group">
         <div class="sn-group-h">Front desk</div>
-        <button class="tab" id="tab-checkin" role="tab" aria-selected="false" aria-controls="panel-checkin" data-panel="checkin" data-key="8" title="Check-in / out">
-          <span class="tab-icon" aria-hidden="true">&#128718;</span><span class="tab-label">Check-in / out</span>
-        </button>
-        <button class="tab" id="tab-registration" role="tab" aria-selected="false" aria-controls="panel-registration" data-panel="registration" data-key="9" title="Registration">
-          <span class="tab-icon" aria-hidden="true">&#128221;</span><span class="tab-label">Registration</span>
-          <span class="tab-badge" id="regBadge" title="Cards not yet entered in SAP">0</span>
-        </button>
         <button class="tab" id="tab-invoice" role="tab" aria-selected="false" aria-controls="panel-invoice" data-panel="invoice" data-key="I" title="Invoice address">
           <span class="tab-icon" aria-hidden="true">&#129534;</span><span class="tab-label">Invoice address</span>
         </button>
@@ -2518,18 +2508,10 @@
         </button>
       </div>
       <div class="sn-group">
-        <div class="sn-group-h">Payments</div>
-        <button class="tab" id="tab-vcc" role="tab" aria-selected="false" aria-controls="panel-vcc" data-panel="vcc" data-key="4" title="VCC">
-          <span class="tab-icon">&#128179;</span><span class="tab-label">VCC</span>
-          <span class="tab-badge" id="vccBadge">0</span>
+        <div class="sn-group-h">SOP</div>
+        <button class="tab" id="tab-checkin" role="tab" aria-selected="false" aria-controls="panel-checkin" data-panel="checkin" data-key="8" title="Check-in / out">
+          <span class="tab-icon" aria-hidden="true">&#128718;</span><span class="tab-label">Check-in / out</span>
         </button>
-        <button class="tab" id="tab-group" role="tab" aria-selected="false" aria-controls="panel-group" data-panel="group" data-key="3" title="Group">
-          <span class="tab-icon">&#128101;</span><span class="tab-label">Group</span>
-          <span class="tab-badge" id="grpBadge">0</span>
-        </button>
-      </div>
-      <div class="sn-group">
-        <div class="sn-group-h">Night</div>
         <button class="tab" id="tab-nightaudit" role="tab" aria-selected="false" aria-controls="panel-nightaudit" data-panel="nightaudit" data-key="5" title="Night Audit">
           <span class="tab-icon">&#127769;</span><span class="tab-label">Night Audit</span>
           <span class="tab-badge" id="naBadge">0</span>
@@ -2539,9 +2521,32 @@
         </button>
       </div>
       <div class="sn-group">
+        <div class="sn-group-h">Project</div>
+        <button class="tab" id="tab-breakfastlive" role="tab" aria-selected="false" aria-controls="panel-breakfastlive" data-panel="breakfastlive" data-key="6" title="Breakfast Live">
+          <span class="tab-icon" aria-hidden="true">&#9673;</span><span class="tab-label">Breakfast Live</span>
+          <span class="tab-badge" id="breakfastLiveBadge">Offline</span>
+        </button>
+      </div>
+      <div class="sn-group">
         <div class="sn-group-h">Team</div>
         <button class="tab" id="tab-access" role="tab" aria-selected="false" aria-controls="panel-access" data-panel="access" data-key="A" title="Access">
           <span class="tab-icon" aria-hidden="true">&#128273;</span><span class="tab-label">Access</span>
+        </button>
+      </div>
+      <!-- Retired sections (Registration, VCC, Group): kept out of the menu and out of reach; their code
+           stays dormant so nothing else breaks, and data saved in this browser is left untouched. -->
+      <div class="sn-retired" hidden aria-hidden="true">
+        <button class="tab" id="tab-registration" role="tab" aria-selected="false" aria-controls="panel-registration" data-panel="registration" data-key="9" title="Registration">
+          <span class="tab-icon" aria-hidden="true">&#128221;</span><span class="tab-label">Registration</span>
+          <span class="tab-badge" id="regBadge" title="Cards not yet entered in SAP">0</span>
+        </button>
+        <button class="tab" id="tab-vcc" role="tab" aria-selected="false" aria-controls="panel-vcc" data-panel="vcc" data-key="4" title="VCC">
+          <span class="tab-icon">&#128179;</span><span class="tab-label">VCC</span>
+          <span class="tab-badge" id="vccBadge">0</span>
+        </button>
+        <button class="tab" id="tab-group" role="tab" aria-selected="false" aria-controls="panel-group" data-panel="group" data-key="3" title="Group">
+          <span class="tab-icon">&#128101;</span><span class="tab-label">Group</span>
+          <span class="tab-badge" id="grpBadge">0</span>
         </button>
       </div>
     </nav>
@@ -4885,7 +4890,8 @@
 
   // ================= TABS =================
 
-  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var RETIRED_TABS = ["registration","vcc","group"];   // out of the menu; see .sn-retired
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab")).filter(function(t){ return !t.closest(".sn-retired"); });
   var underline = document.getElementById("tabUnderline");
 
   function moveUnderline(btn){
@@ -8237,6 +8243,7 @@
 
   var savedTab = "breakfast";
   try{ savedTab = (window.localStorage && localStorage.getItem(TAB_KEY)) || "breakfast"; }catch(e){}
+  if(RETIRED_TABS.indexOf(savedTab) >= 0 || !document.getElementById("tab-" + savedTab)) savedTab = "breakfast";
   activateTab(savedTab, false);
   requestAnimationFrame(function(){
     moveUnderline(document.querySelector('.tab[aria-selected="true"]'));
@@ -8315,8 +8322,8 @@
   topBtn.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
   /* Keyboard routing for a busy front desk: Alt+1 ... Alt+5 */
-  var shortcutTabs = ["breakfast","handover","group","vcc","nightaudit","breakfastlive","events","checkin","registration","nightaudit2","access","invoice"];
-  var shortcutKeys = ["1","2","3","4","5","6","7","8","9","0","A","I"];
+  var shortcutTabs = ["breakfast","handover","nightaudit","breakfastlive","events","checkin","nightaudit2","access","invoice"];
+  var shortcutKeys = ["1","2","5","6","7","8","0","A","I"];
   shortcutTabs.forEach(function(name, idx){
     var b = document.getElementById("tab-" + name);
     if(b) b.title = (b.title ? b.title + " · " : "") + "Alt+" + shortcutKeys[idx];
