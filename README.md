@@ -10,10 +10,12 @@ The sections sit in a left sidebar, grouped as **Shift** (Breakfast, Breakfast L
 ## Access
 The **Access** tab (Alt+A) is the editable list of the desk's logins: system, which window / where, user, password, note and the date of the last change. It replaces the printed credentials sheet.
 
-- Everything is stored in this browser only (`parkInnAccess_v1`, included in **Back up this shift**); nothing is uploaded, and the repository contains no credentials. Fill it with **+ New login** or **Import** (a JSON file `{ "entries": [ { "system", "label", "user", "password", "note" } ] }`, also what **Export** writes); the import can replace the list or add to it.
+- The site carries the list **only encrypted**, in `access-vault.js` (AES-256-GCM, key derived from the **site key** with PBKDF2-SHA256, 600 000 rounds). The site key is never in this repository; the desk keeps it. On a PC that does not have the list yet, the tab asks for the site key once and loads the list into this browser (`parkInnAccess_v1`, included in **Back up this shift**).
+- After that the tab opens with the fixed desk PIN. It locks when another section is opened, after five minutes without use and with **Lock**. The PIN is a screen lock for the desk, not a security boundary.
+- Edit a login (&#9998;) whenever a password or e-mail changes; the change is saved on this PC at once. **Save for all PCs** encrypts the list again with the site key and downloads a new `access-vault.js`: replace the file in this repository with it, and every PC is offered the new list (a PC with its own unsaved changes is warned before they are replaced).
 - Passwords are masked; the eye reveals one, **Show passwords** all of them for two minutes. **Copy** puts the user or password on the clipboard.
-- An optional **PIN** (4 to 8 digits) locks the tab when another section is opened, after five minutes without use and with **Lock**. It is a screen lock for the desk, not a security boundary.
-- **Print sheet** (or Ctrl+P on this tab) prints every login on one A4 sheet marked confidential, in the layout of the old credentials PDF.
+- **Print sheet** (or Ctrl+P on this tab) prints every login on one A4 sheet in the layout of the "Current Access Credentials" PDF: one card per system, logins of the same system (FIORI first / second window) side by side, alternatives separated by OR.
+- **Export / Import** still move the list as a plain JSON file (`{ "entries": [ { "system", "label", "user", "password", "note" } ] }`); such files hold the passwords in clear text and are never committed.
 
 - index.html: complete front-desk workstation, including Breakfast Live.
 - breakfast-tablet.html: standalone guest tablet app, with bundled QR libraries.

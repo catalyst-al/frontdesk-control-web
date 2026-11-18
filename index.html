@@ -2376,20 +2376,36 @@
   .ac-meta{font-size:11px;color:var(--ink-faint);margin-top:12px;}
   @media (max-width:900px){.ac-row{grid-template-columns:1fr 1fr;} .ac-row .ac-sys,.ac-row .ac-note,.ac-row .ac-act{grid-column:1/-1;}}
   /* the printed sheet */
-  .acp{font-family:var(--sans);color:#111;}
-  .acp-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2pt solid #04234F;padding-bottom:8pt;margin-bottom:12pt;}
-  .acp-head h1{margin:0;font-size:20pt;color:#04234F;}
-  .acp-head p{margin:2pt 0 0;font-size:9.5pt;color:#56687F;}
-  .acp-head .conf{font-size:9pt;font-weight:800;color:#B3202E;border:1pt solid #B3202E;border-radius:999pt;padding:3pt 8pt;white-space:nowrap;}
-  .acp-card{border:1pt solid #CBD5E1;border-left:5pt solid #04234F;border-radius:6pt;padding:8pt 12pt;margin-bottom:8pt;break-inside:avoid;page-break-inside:avoid;}
-  .acp-card:nth-child(4n+2){border-left-color:#B3202E;} .acp-card:nth-child(4n+3){border-left-color:#1B7A4B;} .acp-card:nth-child(4n+4){border-left-color:#F5B94A;}
-  .acp-card h2{margin:0 0 4pt;font-size:11.5pt;letter-spacing:.06em;text-transform:uppercase;color:#04234F;}
-  .acp-card h2 span{font-weight:600;letter-spacing:0;text-transform:none;color:#56687F;margin-left:6pt;}
-  .acp-kv{display:grid;grid-template-columns:70pt 1fr;gap:2pt 8pt;font-size:11pt;}
-  .acp-kv b{font-size:8.5pt;letter-spacing:.1em;text-transform:uppercase;color:#56687F;align-self:center;}
-  .acp-kv code{font:700 12pt var(--mono);}
-  .acp-note{font-size:9.5pt;color:#56687F;margin-top:3pt;}
-  .acp-foot{margin-top:14pt;border-top:1pt solid #CBD5E1;padding-top:6pt;font-size:8.5pt;color:#56687F;display:flex;justify-content:space-between;}
+  .ac-first{border:1.5px dashed var(--navy-200);background:#F7F9FC;border-radius:var(--radius-md);padding:16px 18px;}
+  .ac-first h3{margin:0 0 6px;font-size:16px;color:var(--navy);}
+  .ac-first p{margin:0 0 10px;font-size:13px;color:var(--ink-muted);line-height:1.5;}
+  .ac-pinset input.ac-key,.ac-import-bar input.ac-key{width:270px;max-width:100%;font:700 14px var(--mono);letter-spacing:.06em;padding:7px 9px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);}
+  .ac-site{font-size:12px;color:var(--ink-muted);}
+  /* the printed sheet: the layout of "Current Access Credentials" */
+  .acp{font-family:"DejaVu Sans",Verdana,Arial,sans-serif;color:#1E2A3A;}
+  .acp-brand{display:flex;justify-content:space-between;align-items:center;border-bottom:.8pt solid #D5DCE6;padding-bottom:8pt;margin-bottom:16pt;}
+  .acp-brand .sq{display:inline-flex;gap:3pt;vertical-align:middle;margin-right:7pt;}
+  .acp-brand .sq i{display:inline-block;width:11pt;height:11pt;border-radius:2pt;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .acp-brand b{font-size:13pt;vertical-align:middle;color:#1E2A3A;}
+  .acp-brand span{font-size:8pt;color:#6A7A90;}
+  .acp-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14pt;}
+  .acp-head h1{margin:0;font-size:19pt;color:#1E2A3A;}
+  .acp-head p{margin:3pt 0 0;font-size:8.5pt;color:#6A7A90;}
+  .acp-head .conf{font-size:7.5pt;font-weight:800;color:#D6342C;background:#FDECEC;border-radius:999pt;padding:4pt 9pt;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .acp-card{position:relative;border:.8pt solid #D5DCE6;border-radius:6pt;padding:9pt 14pt 9pt 20pt;margin-bottom:8pt;break-inside:avoid;page-break-inside:avoid;}
+  .acp-card::before{content:"";position:absolute;left:-1pt;top:-1pt;bottom:-1pt;width:5pt;border-radius:3pt;background:var(--bar);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .acp-card h2{margin:0 0 6pt;font-size:9pt;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#1E2A3A;}
+  .acp-kv{display:grid;grid-template-columns:62pt 1fr;gap:3pt 8pt;align-items:baseline;}
+  .acp-kv b{font-size:6.5pt;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#6A7A90;}
+  .acp-kv .u{font-size:10pt;font-weight:700;}
+  .acp-kv code{font:700 9.5pt "DejaVu Sans Mono",Consolas,monospace;}
+  .acp-note{font-size:7.5pt;color:#6A7A90;margin-top:4pt;}
+  .acp-cols{display:grid;grid-template-columns:1fr 1fr;border-top:.8pt solid #D5DCE6;padding-top:6pt;}
+  .acp-col{padding-right:12pt;} .acp-col + .acp-col{border-left:.8pt solid #D5DCE6;padding:0 0 0 14pt;}
+  .acp-col h3{margin:0 0 6pt;font-size:7.5pt;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#3D7BD9;}
+  .acp-or{display:flex;align-items:center;gap:6pt;margin:3pt 0;font-size:6.5pt;font-weight:800;color:#D6342C;}
+  .acp-or::before,.acp-or::after{content:"";flex:1;border-top:.8pt solid #D5DCE6;}
+  .acp-foot{margin-top:16pt;border-top:.8pt solid #D5DCE6;padding-top:6pt;font-size:7pt;color:#6A7A90;display:flex;justify-content:space-between;gap:12pt;}
 </style>
 <style id="invoice-address-style">
   /* ============ INVOICE ADDRESS (company address on an SAP invoice PDF) ============ */
@@ -2579,28 +2595,30 @@
               <button class="btn-ghost" type="button" id="acAdd">+ New login</button>
               <button class="btn-ghost" type="button" id="acReveal" aria-pressed="false">Show passwords</button>
               <button class="btn-ghost" type="button" id="acPrint">&#128424; Print sheet</button>
+              <button class="btn-ghost" type="button" id="acPublish" title="Encrypt this list with the site key for publishing">&#8682; Save for all PCs</button>
               <button class="btn-ghost" type="button" id="acExport">Export</button>
               <label class="btn-ghost" for="acImport">Import<input type="file" id="acImport" accept=".json,application/json"></label>
               <button class="btn-ghost" type="button" id="acLock" hidden>&#128274; Lock</button>
             </div>
           </div>
+          <div class="ac-import-bar" id="acSiteBar" hidden></div>
           <div class="ac-import-bar" id="acImportBar" hidden></div>
           <div class="ac-lock" id="acLockScreen" hidden>
             <h3>&#128274; Access is locked</h3>
-            <p>Enter the PIN of this PC to show the logins.</p>
+            <p>Enter the desk PIN to show the logins.</p>
             <input class="ac-pin" id="acPinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="PIN">
             <div><button class="btn-fill" type="button" id="acUnlock" style="margin-top:10px">Unlock</button></div>
             <div class="ac-err" id="acPinErr"></div>
           </div>
           <div class="ac-list" id="acList"></div>
           <div class="ev-status" id="acStatus" role="status" aria-live="polite"></div>
-          <p class="ev-privacy">Saved in this browser only; nothing is uploaded. <b>Back up this shift</b> includes this list, so keep backup files where only the team can open them. The PIN locks this screen; it is not a security boundary, anyone with the PC can still read the browser storage.</p>
+          <p class="ev-privacy">The site holds this list only encrypted; the site key that opens it is never on the site. On this PC the list is kept in the browser and is part of <b>Back up this shift</b>, so keep backup files where only the team can open them. The desk PIN locks this screen; it is not a security boundary, anyone with the PC can still read the browser storage.</p>
         </div>
       </div>
       <div class="card no-print ac-side">
         <div class="brandstrip"></div>
         <div class="card-body">
-          <h2 class="card-title">PIN lock</h2>
+          <h2 class="card-title">Lock and site list</h2>
           <div id="acPinBox"></div>
           <h3>How to use it</h3>
           <ul>
@@ -2608,7 +2626,8 @@
             <li><b>Copy</b> (&#10697;) puts the user or the password on the clipboard so you can paste it in the login window.</li>
             <li><b>Show passwords</b> reveals every password for two minutes; the eye on a line reveals one.</li>
             <li><b>Print sheet</b> prints all logins on one A4 page for the colleagues. Keep it in the drawer, not on the desk.</li>
-            <li><b>Export / Import</b> moves the list between PCs as a file; the PIN is not exported.</li>
+            <li><b>Save for all PCs</b> encrypts the list with the site key and downloads <b>access-vault.js</b>. Once that file replaces the one on the site, every PC is offered the new list (the site key once, then the PIN).</li>
+            <li><b>Export / Import</b> moves the list as a plain file; keep such files where only the team can open them.</li>
           </ul>
           <h3>Which login where</h3>
           <ul>
@@ -23514,16 +23533,22 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
 })();
 </script>
 
+<script src="access-vault.js"></script>
 <script id="access-script">
 /* Access tab (users and passwords) + the sidebar menu.
-   Everything stays in this browser's localStorage under parkInnAccess_v1 (parkInn prefix:
-   included in Back up / Restore). No network calls. The PIN is a lock for the screen, hashed
-   with a salted FNV loop; it is not a security boundary. */
+   The list lives in this browser's localStorage under parkInnAccess_v1 (parkInn prefix:
+   included in Back up / Restore). The site carries the same list only encrypted
+   (access-vault.js, AES-256-GCM, key from the site key with PBKDF2-SHA256): a PC opens it
+   once with the site key, after that the desk PIN opens the tab. "Save for all PCs"
+   encrypts the list again for publishing. No network calls. The desk PIN is a lock for the
+   screen, not a security boundary. */
 (function(){
   "use strict";
   var KEY = "parkInnAccess_v1";
   var COL_KEY = "parkInnSidenav_v1";
   var REVEAL_MS = 120000, IDLE_MS = 300000;
+  var DESK_PIN = "3010";   // fixed desk PIN: a screen lock only; the passwords are protected by the site key
+  var VAULT = window.PARKINN_ACCESS_VAULT && window.PARKINN_ACCESS_VAULT.data ? window.PARKINN_ACCESS_VAULT : null;
   var $ = function(id){ return document.getElementById(id); };
   if(!$("panel-access")) return;
 
@@ -23590,9 +23615,13 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     d.pinHash = typeof d.pinHash === "string" ? d.pinHash : "";
     d.pinSalt = typeof d.pinSalt === "string" ? d.pinSalt : "";
     d.updated = typeof d.updated === "string" ? d.updated : "";
+    d.vaultId = typeof d.vaultId === "string" ? d.vaultId : "";      // site list this PC holds
+    d.vaultSkip = typeof d.vaultSkip === "string" ? d.vaultSkip : "";  // newer site list the user chose not to load
+    d.dirty = !!d.dirty;                                               // changed here, not yet saved for all PCs
     return d;
   }
   var data = load();
+  function changedSave(){ data.dirty = true; return save(); }
   function save(){
     data.updated = today();
     try { localStorage.setItem(KEY, JSON.stringify(data)); return true; }
@@ -23611,8 +23640,43 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     try { (window.crypto || window.msCrypto).getRandomValues(a); } catch(e){ a[0] = Date.now() >>> 0; a[1] = (Math.random() * 4294967296) >>> 0; }
     return a[0].toString(16) + a[1].toString(16);
   }
-  var locked = !!data.pinHash;
-  function pinOk(pin){ return !!data.pinHash && hashPin(String(pin || ""), data.pinSalt) === data.pinHash; }
+  function hasLock(){ return data.entries.length > 0; }
+  var locked = hasLock();
+  function pinOk(pin){ return String(pin || "").trim() === DESK_PIN; }
+
+  /* ---------- site list (encrypted) ---------- */
+  function b64d(s){ var b = atob(s), u = new Uint8Array(b.length); for(var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function b64e(u){ var s = ""; for(var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
+  function normKey(k){ return String(k || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
+  function subtle(){ var c = window.crypto; if(!c || !c.subtle) throw new Error("This browser cannot decrypt here (open the page over https)."); return c.subtle; }
+  function deriveKey(siteKey, salt, iter, use){
+    var S = subtle();
+    return S.importKey("raw", new TextEncoder().encode(normKey(siteKey)), "PBKDF2", false, ["deriveKey"]).then(function(base){
+      return S.deriveKey({ name: "PBKDF2", salt: salt, iterations: iter, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, [use]);
+    });
+  }
+  function openVault(siteKey){
+    return Promise.resolve().then(function(){ return deriveKey(siteKey, b64d(VAULT.salt), VAULT.iter || 600000, "decrypt"); }).then(function(k){
+      return subtle().decrypt({ name: "AES-GCM", iv: b64d(VAULT.iv) }, k, b64d(VAULT.data));
+    }).then(function(buf){
+      var d = JSON.parse(new TextDecoder().decode(buf));
+      return (Array.isArray(d.entries) ? d.entries : []).map(normEntry).filter(Boolean).map(function(e){ e.id = uid(); return e; });
+    }, function(err){ if(err && /cannot decrypt/.test(err.message)) throw err; throw new Error("Wrong site key."); });
+  }
+  function sealVault(siteKey){
+    var c = window.crypto, salt = c.getRandomValues(new Uint8Array(16)), iv = c.getRandomValues(new Uint8Array(12)), iter = 600000;
+    var plain = JSON.stringify({ entries: data.entries.map(function(e){ return { system: e.system, label: e.label, user: e.user, password: e.password, note: e.note, updated: e.updated }; }) });
+    return deriveKey(siteKey, salt, iter, "encrypt").then(function(k){
+      return subtle().encrypt({ name: "AES-GCM", iv: iv }, k, new TextEncoder().encode(plain));
+    }).then(function(ct){
+      var id = b64e(c.getRandomValues(new Uint8Array(9))).replace(/[^A-Za-z0-9]/g, "x");
+      return { v: 1, id: id, updated: today(), iter: iter, salt: b64e(salt), iv: b64e(iv), data: b64e(new Uint8Array(ct)) };
+    });
+  }
+  // A site key typed once is kept only for this visit, so updating or saving for all PCs does not ask again.
+  var sessionKey = "";
+  function needsFirstOpen(){ return !!VAULT && !data.entries.length; }
+  function newerOnSite(){ return !!VAULT && !!data.entries.length && data.vaultId !== VAULT.id && data.vaultSkip !== VAULT.id; }
 
   /* ---------- state ---------- */
   var revealAll = false, revealTimer = null, revealed = {}, editing = null, idleTimer = null, pendingImport = null;
@@ -23620,32 +23684,24 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
   function status(msg){ var el = $("acStatus"); el.textContent = msg || ""; if(msg){ clearTimeout(status.t); status.t = setTimeout(function(){ el.textContent = ""; }, 4000); } }
 
   function lock(){
-    if(!data.pinHash) return;
+    if(!hasLock()) return;
     locked = true; revealAll = false; revealed = {}; editing = null; pendingImport = null;
     clearTimeout(revealTimer); $("acImportBar").hidden = true;
     render();
   }
   function touch(){
     clearTimeout(idleTimer);
-    if(data.pinHash && !locked) idleTimer = setTimeout(lock, IDLE_MS);
+    if(hasLock() && !locked) idleTimer = setTimeout(lock, IDLE_MS);
   }
   // Front Desk Control calls this when another tab is opened.
-  window.parkInnAccessLeave = function(){ if(data.pinHash && !locked) lock(); };
+  window.parkInnAccessLeave = function(){ if(hasLock() && !locked) lock(); };
 
   /* ---------- rendering ---------- */
   function renderPinBox(){
     var box = $("acPinBox");
-    if(!data.pinHash){
-      box.innerHTML = "<p>No PIN yet: the logins are shown to anyone who opens this tab. Set a 4 to 8 digit PIN; the tab then locks when you leave it, after 5 minutes without use and with <b>Lock</b>.</p>" +
-        "<div class='ac-pinset'><input id='acPinNew' type='password' inputmode='numeric' maxlength='8' placeholder='PIN' autocomplete='off' aria-label='New PIN'>" +
-        "<input id='acPinNew2' type='password' inputmode='numeric' maxlength='8' placeholder='again' autocomplete='off' aria-label='Repeat the PIN'>" +
-        "<button class='btn-ghost' type='button' id='acPinSet'>Set PIN</button></div><div class='ac-err' id='acPinSetErr'></div>";
-    } else {
-      box.innerHTML = "<p>A PIN is set. The tab locks when you leave it, after 5 minutes without use and with <b>Lock</b>. To remove the PIN, leave the new one empty.</p>" +
-        "<div class='ac-pinset'><input id='acPinCur' type='password' inputmode='numeric' maxlength='8' placeholder='current' autocomplete='off' aria-label='Current PIN'>" +
-        "<input id='acPinNew' type='password' inputmode='numeric' maxlength='8' placeholder='new' autocomplete='off' aria-label='New PIN'>" +
-        "<button class='btn-ghost' type='button' id='acPinChange'>Change PIN</button></div><div class='ac-err' id='acPinSetErr'></div>";
-    }
+    var site = !VAULT ? "<p class='ac-site'>No site list is published: the logins live on this PC only.</p>" :
+      "<p class='ac-site'>Site list of " + fmtDate(VAULT.updated) + (data.vaultId === VAULT.id ? (data.dirty ? ": <b>this PC has changes not yet saved for all PCs.</b>" : ": this PC has it.") : ": <b>not loaded on this PC.</b>") + "</p>";
+    box.innerHTML = "<p>The tab opens with the desk PIN. It locks when you leave it, after 5 minutes without use and with <b>Lock</b>.</p>" + site;
   }
   function renderForm(e){
     return "<form class='ac-row editing' data-form='" + (e.id || "new") + "' autocomplete='off'><div class='ac-form'>" +
@@ -23676,15 +23732,21 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
       "</div></div>";
   }
   function render(){
-    $("acLock").hidden = !data.pinHash || locked;
+    if(needsFirstOpen()) locked = false;
+    $("acLock").hidden = !hasLock() || locked;
     $("acLockScreen").hidden = !locked;
     $("acList").hidden = locked;
+    renderSiteBar();
     Array.prototype.forEach.call($("acTools").querySelectorAll("button,label"), function(b){ if(b.id !== "acLock") b.style.display = locked ? "none" : ""; });
     renderPinBox();
     var meta = $("acMeta");
     if(locked){ meta.textContent = ""; $("acPinErr").textContent = ""; $("acPinIn").value = ""; return; }
     var list = $("acList");
-    if(!data.entries.length && editing !== "new"){
+    if(needsFirstOpen() && editing !== "new"){
+      list.innerHTML = "<div class='ac-first'><h3>&#128273; First time on this PC</h3><p>The desk's logins are on the site, encrypted. Enter the <b>site key</b> once on this PC; after that the desk PIN opens this tab.</p>" +
+        "<div class='ac-pinset'><input id='acSiteKey' class='ac-key' type='password' autocomplete='off' spellcheck='false' placeholder='XXXX-XXXX-XXXX-XXXX-XXXX' aria-label='Site key'>" +
+        "<button class='btn-fill' type='button' id='acSiteOpen'>Open</button></div><div class='ac-err' id='acSiteErr'></div></div>";
+    } else if(!data.entries.length && editing !== "new"){
       list.innerHTML = "<div class='ac-empty'>No logins saved on this PC yet.<br>Press <b>+ New login</b>, or <b>Import</b> the file with the current credentials.</div>";
     } else {
       list.innerHTML = data.entries.map(renderRow).join("") + (editing === "new" ? renderForm({ system: "", label: "", user: "", password: "", note: "" }) : "");
@@ -23694,8 +23756,71 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     $("acReveal").textContent = revealAll ? "Hide passwords" : "Show passwords";
     var f = list.querySelector("form input[name=system]");
     if(f && editing){ f.focus(); }
+    if($("acSiteKey") && $("panel-access").classList.contains("active")) $("acSiteKey").focus();
     touch();
   }
+  // Bar above the list: a newer site list, or saving this PC's list for all PCs.
+  var siteBar = "";   // "", "newer", "publish"
+  function renderSiteBar(){
+    var bar = $("acSiteBar");
+    if(locked || needsFirstOpen()){ bar.hidden = true; return; }
+    var mode = siteBar || (newerOnSite() ? "newer" : "");
+    if(!mode){ bar.hidden = true; bar.innerHTML = ""; return; }
+    if(bar.getAttribute("data-mode") === mode && !bar.hidden) return;
+    var keyField = sessionKey ? "" : "<input id='acBarKey' class='ac-key' type='password' autocomplete='off' spellcheck='false' placeholder='site key' aria-label='Site key'>";
+    bar.setAttribute("data-mode", mode); bar.hidden = false;
+    if(mode === "newer"){
+      bar.innerHTML = "<span>The site has a newer list of logins (" + fmtDate(VAULT.updated) + ")" + (data.dirty ? ". <b>Loading it replaces the changes made on this PC.</b>" : ".") + "</span>" + keyField +
+        "<button class='btn-ghost' type='button' data-site='load'>Load it</button><button class='btn-ghost' type='button' data-site='skip'>Keep this PC's list</button><span class='ac-err' id='acBarErr'></span>";
+    } else {
+      bar.innerHTML = "<span>Save this list for all PCs: it is encrypted with the site key and downloaded as <b>access-vault.js</b>, the file to publish on the site.</span>" + keyField +
+        "<button class='btn-ghost' type='button' data-site='seal'>Download</button><button class='btn-ghost' type='button' data-site='cancel'>Cancel</button><span class='ac-err' id='acBarErr'></span>";
+    }
+  }
+  function barKey(){ return sessionKey || ($("acBarKey") ? $("acBarKey").value : ""); }
+  function siteErr(id, msg){ var el = $(id); if(el) el.textContent = msg; }
+  function busyBtn(btn, on){ if(btn){ btn.disabled = on; if(on) btn.setAttribute("data-label", btn.textContent), btn.textContent = "…"; else if(btn.getAttribute("data-label")) btn.textContent = btn.getAttribute("data-label"); } }
+  function firstOpen(){
+    var key = $("acSiteKey").value, btn = $("acSiteOpen");
+    if(!normKey(key)){ siteErr("acSiteErr", "Enter the site key."); return; }
+    busyBtn(btn, true);
+    openVault(key).then(function(entries){
+      sessionKey = key; data.entries = entries; data.vaultId = VAULT.id; data.vaultSkip = ""; data.dirty = false;
+      if(save()){ locked = false; render(); status("Logins loaded on this PC. From now on the desk PIN opens this tab."); }
+    }, function(err){ busyBtn(btn, false); siteErr("acSiteErr", err.message); $("acSiteKey").select(); });
+  }
+  $("acList").addEventListener("click", function(e){ if(e.target.id === "acSiteOpen") firstOpen(); });
+  $("acList").addEventListener("keydown", function(e){ if(e.target.id === "acSiteKey" && e.key === "Enter") firstOpen(); });
+  $("acSiteBar").addEventListener("keydown", function(e){ if(e.target.id === "acBarKey" && e.key === "Enter"){ var b = $("acSiteBar").querySelector("[data-site=load],[data-site=seal]"); if(b) b.click(); } });
+  $("acSiteBar").addEventListener("click", function(e){
+    var b = e.target.closest("[data-site]"); if(!b) return;
+    var act = b.getAttribute("data-site"), key = barKey();
+    if(act === "skip"){ data.vaultSkip = VAULT.id; save(); siteBar = ""; $("acSiteBar").removeAttribute("data-mode"); render(); status("Kept this PC's list."); return; }
+    if(act === "cancel"){ siteBar = ""; $("acSiteBar").removeAttribute("data-mode"); render(); return; }
+    if(!normKey(key)){ siteErr("acBarErr", "Enter the site key."); return; }
+    busyBtn(b, true);
+    if(act === "load"){
+      openVault(key).then(function(entries){
+        sessionKey = key; data.entries = entries; data.vaultId = VAULT.id; data.vaultSkip = ""; data.dirty = false;
+        siteBar = ""; $("acSiteBar").removeAttribute("data-mode");
+        if(save()){ render(); status("The site's list is loaded."); }
+      }, function(err){ busyBtn(b, false); siteErr("acBarErr", err.message); });
+      return;
+    }
+    if(act === "seal"){
+      // The key must be the site's own key, so other PCs can open the file: check it on the current site list first.
+      (VAULT ? openVault(key) : Promise.resolve()).then(function(){ return sealVault(key); }).then(function(v){
+        sessionKey = key;
+        var text = "/* Encrypted logins for the Access tab: AES-256-GCM, key derived from the site key with\n   PBKDF2-SHA256. Only ciphertext is here; the site key is never in this repository.\n   To publish changed logins, replace this file with the one \"Save for all PCs\" downloads. */\nwindow.PARKINN_ACCESS_VAULT = " + JSON.stringify(v) + ";\n";
+        var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "application/javascript" })); a.download = "access-vault.js";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+        data.vaultId = v.id; data.vaultSkip = ""; data.dirty = false; save();
+        siteBar = ""; $("acSiteBar").removeAttribute("data-mode"); render();
+        status("access-vault.js downloaded. Once it replaces the file on the site, every PC is offered this list.");
+      }, function(err){ busyBtn(b, false); siteErr("acBarErr", err.message); });
+    }
+  });
 
   /* ---------- actions ---------- */
   function byId(id){ for(var i = 0; i < data.entries.length; i++){ if(data.entries[i].id === id) return i; } return -1; }
@@ -23725,14 +23850,14 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
       var k = byId(t.getAttribute("data-id")), d = +t.getAttribute("data-move"), j = k + d;
       if(k < 0 || j < 0 || j >= data.entries.length) return;
       var tmp = data.entries[k]; data.entries[k] = data.entries[j]; data.entries[j] = tmp;
-      save(); render(); return;
+      changedSave(); render(); return;
     }
     if((t = e.target.closest("[data-del]"))){
       var di = byId(t.getAttribute("data-del"));
       if(di < 0) return;
       var en = data.entries[di];
       if(!window.confirm("Delete the login " + (en.system || "") + (en.label ? " (" + en.label + ")" : "") + (en.user ? " – " + en.user : "") + "?")) return;
-      data.entries.splice(di, 1); save(); render(); status("Deleted."); return;
+      data.entries.splice(di, 1); changedSave(); render(); status("Deleted."); return;
     }
   });
   $("acList").addEventListener("submit", function(e){
@@ -23749,10 +23874,15 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
       data.entries[i] = entry;
     } else data.entries.push(entry);
     editing = null;
-    if(save()){ render(); status("Saved."); }
+    if(changedSave()){ render(); status(VAULT ? "Saved on this PC. Use Save for all PCs to give the other PCs this change." : "Saved."); }
   });
   $("acList").addEventListener("keydown", function(e){ if(e.key === "Escape" && editing){ editing = null; render(); } });
 
+  $("acPublish").addEventListener("click", function(){
+    if(locked || !data.entries.length){ status("Nothing to save yet."); return; }
+    siteBar = "publish"; $("acSiteBar").removeAttribute("data-mode"); render();
+    if($("acBarKey")) $("acBarKey").focus();
+  });
   $("acAdd").addEventListener("click", function(){ editing = "new"; render(); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); });
   $("acReveal").addEventListener("click", function(){ setRevealAll(!revealAll); });
   $("acLock").addEventListener("click", lock);
@@ -23762,34 +23892,44 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     if(pinOk($("acPinIn").value)){ locked = false; $("acPinIn").value = ""; render(); status("Unlocked."); }
     else { $("acPinErr").textContent = "Wrong PIN."; $("acPinIn").value = ""; $("acPinIn").focus(); }
   }
-  $("acPinBox").addEventListener("click", function(e){
-    var err = $("acPinSetErr");
-    if(e.target.id === "acPinSet"){
-      var a = $("acPinNew").value, b = $("acPinNew2").value;
-      if(!/^\d{4,8}$/.test(a)){ err.textContent = "The PIN must be 4 to 8 digits."; return; }
-      if(a !== b){ err.textContent = "The two PINs differ."; return; }
-      data.pinSalt = makeSalt(); data.pinHash = hashPin(a, data.pinSalt);
-      if(save()){ render(); status("PIN set. The tab locks when you leave it."); }
-    }
-    if(e.target.id === "acPinChange"){
-      var cur = $("acPinCur").value, nw = $("acPinNew").value;
-      if(!pinOk(cur)){ err.textContent = "The current PIN is wrong."; return; }
-      if(nw && !/^\d{4,8}$/.test(nw)){ err.textContent = "The new PIN must be 4 to 8 digits."; return; }
-      if(nw){ data.pinSalt = makeSalt(); data.pinHash = hashPin(nw, data.pinSalt); } else { data.pinHash = ""; data.pinSalt = ""; }
-      if(save()){ render(); status(nw ? "PIN changed." : "PIN removed."); }
-    }
-  });
-
   /* ---------- print sheet ---------- */
+  // One card per system, in list order. Several logins of one system (FIORI) share the card:
+  // the part of the label before " · " makes the columns ("first window", "second window"),
+  // logins in the same column are separated by OR.
+  var BARS = ["#D6342C", "#3D7BD9", "#6DB33F", "#F2BE2B"];
   function buildSheet(){
-    var d = new Date();
-    return "<div class='acp'><div class='acp-head'><div><h1>Current Access Credentials</h1><p>Park Inn by Radisson Frankfurt Airport · active users and current passwords only</p></div><span class='conf'>CONFIDENTIAL · INTERNAL USE</span></div>" +
-      data.entries.map(function(e){
-        return "<div class='acp-card'><h2>" + esc(e.system) + (e.label ? "<span>" + esc(e.label) + "</span>" : "") + "</h2>" +
-          "<div class='acp-kv'><b>User</b><code>" + esc(e.user || "—") + "</code><b>Password</b><code>" + esc(e.password || "—") + "</code></div>" +
+    var d = new Date(), groups = [], bySys = {};
+    data.entries.forEach(function(e){
+      var k = (e.system || "—").toLowerCase();
+      if(!bySys[k]){ bySys[k] = { system: e.system || "—", items: [] }; groups.push(bySys[k]); }
+      bySys[k].items.push(e);
+    });
+    function kv(e){
+      return "<div class='acp-kv'><b>User</b><span class='u'>" + esc(e.user || "—") + "</span><b>Password</b><code>" + esc(e.password || "—") + "</code></div>";
+    }
+    var newest = data.entries.reduce(function(m, e){ return e.updated > m ? e.updated : m; }, "");
+    var cards = groups.map(function(g, gi){
+      var bar = " style='--bar:" + BARS[gi % BARS.length] + "'", notes = g.items.map(function(e){ return e.note; }).filter(function(n, i, a){ return n && a.indexOf(n) === i; });
+      if(g.items.length === 1){
+        var e = g.items[0];
+        return "<div class='acp-card'" + bar + "><h2>" + esc(g.system) + (e.label ? " - " + esc(e.label) : "") + "</h2>" + kv(e) +
           (e.note ? "<div class='acp-note'>" + esc(e.note) + "</div>" : "") + "</div>";
-      }).join("") +
-      "<div class='acp-foot'><span>Printed " + pad(d.getDate()) + "." + pad(d.getMonth() + 1) + "." + d.getFullYear() + " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + " from Front Desk Control · Access</span><span>Keep in the drawer, shred the old sheet</span></div></div>";
+      }
+      var cols = [], byCol = {};
+      g.items.forEach(function(e){
+        var name = (e.label || "").split(" · ")[0].trim() || "—", k = name.toLowerCase();
+        if(!byCol[k]){ byCol[k] = { name: name, items: [] }; cols.push(byCol[k]); }
+        byCol[k].items.push(e);
+      });
+      return "<div class='acp-card'" + bar + "><h2>" + esc(g.system) + "</h2><div class='acp-cols'>" +
+        cols.map(function(c, ci){
+          return "<div class='acp-col'><h3>" + pad(ci + 1) + "&nbsp; " + esc(c.name) + "</h3>" + c.items.map(kv).join("<div class='acp-or'>OR</div>") + "</div>";
+        }).join("") + "</div>" + (notes.length ? "<div class='acp-note'>" + notes.map(esc).join(" · ") + "</div>" : "") + "</div>";
+    }).join("");
+    return "<div class='acp'><div class='acp-brand'><div><span class='sq'><i style='background:#D6342C'></i><i style='background:#F2BE2B'></i><i style='background:#6DB33F'></i><i style='background:#3D7BD9'></i></span><b>Park Inn by Radisson</b></div><span>Frankfurt Airport</span></div>" +
+      "<div class='acp-head'><div><h1>Current Access Credentials</h1><p>Active users and current passwords only</p></div><span class='conf'>CONFIDENTIAL - INTERNAL USE</span></div>" +
+      cards +
+      "<div class='acp-foot'><span>Updated " + fmtDate(newest || data.updated) + " | printed " + pad(d.getDate()) + "." + pad(d.getMonth() + 1) + "." + d.getFullYear() + " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + " · keep in the drawer, shred the old sheet</span><span>Park Inn by Radisson Frankfurt Airport</span></div></div>";
   }
   function doPrint(){
     if(locked){ status("Unlock first."); return; }
@@ -23845,7 +23985,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     if(mode !== "cancel" && pendingImport){
       if(mode === "replace" && data.entries.length && !window.confirm("Replace the " + data.entries.length + " logins saved on this PC with the " + pendingImport.length + " from the file?")) return;
       data.entries = mode === "replace" ? pendingImport : data.entries.concat(pendingImport);
-      if(save()) status(mode === "replace" ? "List replaced." : pendingImport.length + " logins added.");
+      if(changedSave()) status(mode === "replace" ? "List replaced." : pendingImport.length + " logins added.");
     }
     pendingImport = null; $("acImportBar").hidden = true; $("acImportBar").innerHTML = ""; render();
   });
