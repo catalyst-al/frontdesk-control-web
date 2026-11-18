@@ -33,6 +33,8 @@ The **Access** tab (Alt+A) is the editable list of the desk's logins: system, wh
 ## Print and Save PDF on the SOPs
 Every SOP has **Print** and **Save PDF**: the Check-in / out guide, the Night Audit Guidebook, Night Audit 2.0 (the step guide, or the Visual SOP when that view is open) and the two SAP guides in the Breakfast tab (breakfast report, VIP list). **Save PDF** opens the same print window with the file name already set (for example `SOP Check-in Check-out 18.11.2026`, taken from the page title by Chrome and Edge) and a hint to choose **Save as PDF** or **Microsoft Print to PDF** as the printer; the browser writes the file. The shared helper is `sop-pdf.js`; it makes no network calls.
 
+The workstation's own printouts have **Save PDF** next to their print button as well: Handover, Night Audit report (both report buttons), Breakfast service report, Access sheet, Events (Print day, and the "How to get this PDF from SAP" guide, which can now be printed too) and Invoice address. Each Save PDF names the file (e.g. `Handover 18.11.2026`) and then runs that print button.
+
 ## Night Audit Guidebook
 `night-audit-guide/` is a step-by-step Night Audit guide for DEFRAAIR (hotelkit End of Day checklist, SAP reports, the Night Audit run, no-shows, departures not billed) with redacted screenshots.
 

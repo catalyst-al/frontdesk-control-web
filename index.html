@@ -2153,6 +2153,8 @@
   .ev-empty b{display:block; color:var(--navy); font-size:15px; margin-bottom:4px;}
   #evFile{display:none;}
   .ev-howbtn{width:100%; margin:10px 0 0;}
+  .ev-acts{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; align-items:center;}
+  .ev-acts .btn-fill, .ev-acts .btn-ghost{margin:0; padding:9px 12px;}
   .bf-howbtn{display:block; width:100%; margin:8px 0 4px; font:inherit; font-size:12.5px; font-weight:700; color:var(--navy); background:#F7F9FC; border:1.5px dashed var(--navy-200); border-radius:var(--radius-sm); padding:9px 12px; cursor:pointer;}
   .bf-howbtn:hover{border-color:var(--navy); background:#EEF3FA;}
   .bf-howbtn:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
@@ -2620,6 +2622,7 @@
               <button class="btn-ghost" type="button" id="acAdd">+ New login</button>
               <button class="btn-ghost" type="button" id="acReveal" aria-pressed="false">Show passwords</button>
               <button class="btn-ghost" type="button" id="acPrint">&#128424; Print sheet</button>
+              <button class="btn-ghost no-print" type="button" data-pdf-for="acPrint" data-pdf-name="Access credentials">&#8681; Save PDF</button>
               <button class="btn-ghost" type="button" id="acPublish" title="Encrypt this list with the site key for publishing">&#8682; Save for all PCs</button>
               <button class="btn-ghost" type="button" id="acExport">Export</button>
               <label class="btn-ghost" for="acImport">Import<input type="file" id="acImport" accept=".json,application/json"></label>
@@ -2994,6 +2997,7 @@
 
           <div class="tower-actions">
             <button class="btn-report" id="bfReportBtn">&#128424; Breakfast service report</button>
+            <button class="btn-ghost no-print" type="button" data-pdf-for="bfReportBtn" data-pdf-name="Breakfast service report">&#8681; Save PDF</button>
             <button class="btn-ghost" id="newReportBtn">Upload new report</button>
             <button class="btn-ghost" id="exportLogBtn">Export audit log (CSV)</button>
             <button class="btn-ghost" id="exportRoomsBtn">Export room list (CSV)</button>
@@ -3134,6 +3138,7 @@
 
           <div class="tower-actions no-print">
             <button class="btn-ghost" id="printBtn">&#128424; Print handover</button>
+            <button class="btn-ghost no-print" type="button" data-pdf-for="printBtn" data-pdf-name="Handover">&#8681; Save PDF</button>
             <button class="btn-ghost" id="clearNotesBtn">Clear notes</button>
           </div>
 
@@ -3421,6 +3426,7 @@
 
           <div class="na-command-actions no-print">
             <button class="btn-generate" id="naQuickPrintBtn" type="button">&#128424; Generate &amp; print report</button>
+            <button class="btn-ghost no-print" type="button" data-pdf-for="naPrintBtn" data-pdf-name="Night Audit report">&#8681; Save PDF</button>
             <button class="btn-ghost" id="naCopyHandoverBtn" type="button">Copy morning handover</button>
             <button class="btn-ghost" id="naAdvancedBtn" type="button">Show detailed data (optional)</button>
             <span class="na-advanced-state" id="naAdvancedState">Daily statistics, forecast and breakfast figures are optional.</span>
@@ -3690,6 +3696,7 @@
 
           <div class="na-actions no-print">
             <button class="btn-generate" id="naPrintBtn" type="button">&#128424; Generate &amp; print report</button>
+            <button class="btn-ghost no-print" type="button" data-pdf-for="naPrintBtn" data-pdf-name="Night Audit report">&#8681; Save PDF</button>
             <button class="btn-ghost" id="naClearBtn" type="button">Clear night audit</button>
           </div>
           <div class="fill-hint no-print" style="margin-top:8px">Everything here saves automatically on this device.</div>
@@ -21516,7 +21523,9 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   function guideHtml(){
     var shot = function(n, alt){ return '<a href="events-guide/events-step-' + n + '.png" target="_blank" rel="noopener" title="Open full size"><img src="events-guide/events-step-' + n + '.png" alt="' + alt + '" loading="lazy"></a>'; };
     return '<div class="ev-guide"><div class="ev-head"><div><h2>How to get the Event weekly planning PDF</h2></div>' +
-      (week ? '<button class="btn-fill no-print" type="button" id="evGuideBack">Back to the day</button>' : "") + '</div>' +
+      '<span class="ev-acts no-print"><button class="btn-ghost no-print" type="button" id="evGuidePrint">&#128424; Print</button>' +
+      '<button class="btn-ghost no-print" type="button" data-pdf-for="evGuidePrint" data-pdf-name="SOP Events planning">&#8681; Save PDF</button>' +
+      (week ? '<button class="btn-fill no-print" type="button" id="evGuideBack">Back to the day</button>' : "") + '</span></div>' +
       '<p>About one minute in SAP, once a week or whenever the planning changes. The week starts on the date set in House status.</p><ol class="ev-steps">' +
       '<li><div><p>In <b>SAP Easy Access (TMS_All)</b>, open <b>Favorites &rarr; House status</b>.</p>' + shot(1, "SAP Favorites with House status marked") + '</div></li>' +
       '<li><div><p>Check the <b>Date</b> (the first day of the week you need), then click <b>Event weekly planning</b> in the top bar.</p>' + shot(2, "House status with the Event weekly planning button marked") + '</div></li>' +
@@ -21535,7 +21544,8 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     }
     var di = dayInfo(selected), isToday = selected === todayIso();
     var h = '<div class="ev-head"><div><h2>' + esc(dayName(selected, true)) + (isToday ? '<span class="ev-today">Today</span>' : "") + '</h2><p>Event weekly planning · printed ' + esc(isoDots(week.printed)) + '</p></div>' +
-      (di.groups.length ? '<button class="btn-fill no-print" type="button" id="evPrint">Print day</button>' : "") + '</div>';
+      (di.groups.length ? '<span class="ev-acts no-print"><button class="btn-fill no-print" type="button" id="evPrint">&#128424; Print day</button>' +
+        '<button class="btn-ghost no-print" type="button" data-pdf-for="evPrint" data-pdf-name="Events ' + esc(dayName(selected, true)).replace(/"/g, "") + '">&#8681; Save PDF</button></span>' : "") + '</div>';
     if(!di.groups.length){ host.innerHTML = h + '<div class="ev-empty"><b>No events</b>No function room is booked on this day.</div>'; return; }
     h += '<div class="ev-kpis">' +
       '<div class="ev-kpi"><b>' + di.groups.length + '</b><span>' + (di.groups.length === 1 ? "Group" : "Groups") + '</span></div>' +
@@ -21613,7 +21623,12 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       if(!confirm("Remove the loaded event plan from this PC?")) return;
       week = null; selected = null; save(); setStatus("", "Event plan cleared."); render(); return;
     }
-    if(e.target.closest("#evPrint")){ document.body.setAttribute("data-print", "events"); window.print(); return; }
+    if(e.target.closest("#evPrint") || e.target.closest("#evGuidePrint")){
+      document.body.setAttribute("data-print", "events");
+      Array.prototype.forEach.call($("evDay").querySelectorAll("img"), function(im){ im.loading = "eager"; });
+      setTimeout(function(){ window.print(); }, e.target.closest("#evGuidePrint") ? 400 : 0);
+      return;
+    }
     if(e.target.closest("#evHowBtn")){ showGuide = true; renderDay(); $("evDay").scrollIntoView({ behavior:"smooth", block:"start" }); return; }
     if(e.target.closest("#evGuideBack")){ showGuide = false; renderDay(); }
   });
@@ -23607,6 +23622,18 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
 
 <script src="access-vault.js"></script>
 <script src="sop-pdf.js?v=20261118-1"></script>
+<script id="save-pdf-buttons">
+/* Every "Save PDF" button next to a print button (data-pdf-for = the id of that print
+   button): the file name is set, then the print button does its usual work. */
+document.addEventListener("click", function(e){
+  var b = e.target.closest && e.target.closest("[data-pdf-for]");
+  if(!b) return;
+  var target = document.getElementById(b.getAttribute("data-pdf-for"));
+  if(!target) return;
+  var run = function(){ target.click(); };
+  if(window.sopSavePdf) window.sopSavePdf(b.getAttribute("data-pdf-name") || "Front Desk Control", run); else run();
+});
+</script>
 <script id="breakfast-guide-script">
 /* "How to get … from SAP" buttons in the Breakfast tab (breakfast report, VIP list): each
    opens its dialog with the steps and the screenshots in breakfast-guide/ and vip-guide/
