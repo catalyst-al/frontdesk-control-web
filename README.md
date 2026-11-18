@@ -99,6 +99,7 @@ The **Invoice address** tab (Alt+I) corrects, completes or replaces the address 
 
 ## Daily use
 1. Load the breakfast report in the normal Breakfast tab.
+   - Getting the report from SAP: **How to get this report from SAP** under the upload button shows the steps with screenshots from `breakfast-guide/`: `/CCSHT/RC_SI_003` + Enter → F&B Services Forecast with today's date (not changed) → Execute → Print → Output Device `locl` → Microsoft Print to PDF → save as `Breakfast` in Downloads → Upload breakfast report. Guest names and the hotel's printer names are covered in the screenshots; new screenshots must be redacted the same way before they are added.
    - Optional, any time: under VIP / Premium / Club, upload yesterday's VIP / arrivals list (PDF). Rooms with a loyalty level are marked automatically. VIP guests get breakfast even when they are not in the F&B report (green "VIP — breakfast included"); Premium (room upgrade only) and Club are shown with their level but get no breakfast. Rooms marked by hand take priority, and a new list replaces the previous one. Rows whose stay does not cover the breakfast day are greyed out and ignored.
 2. Open Breakfast Live and check the room count/report date.
 3. Press Pair tablet. On the tablet, open Staff > Live connection > Scan & connect and photograph the PC QR once.

@@ -2153,6 +2153,16 @@
   .ev-empty b{display:block; color:var(--navy); font-size:15px; margin-bottom:4px;}
   #evFile{display:none;}
   .ev-howbtn{width:100%; margin:10px 0 0;}
+  .bf-howbtn{display:block; width:100%; margin:8px 0 4px; font:inherit; font-size:12.5px; font-weight:700; color:var(--navy); background:#F7F9FC; border:1.5px dashed var(--navy-200); border-radius:var(--radius-sm); padding:9px 12px; cursor:pointer;}
+  .bf-howbtn:hover{border-color:var(--navy); background:#EEF3FA;}
+  .bf-howbtn:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+  .bf-guide{width:min(880px, calc(100vw - 32px)); max-height:calc(100vh - 32px); border:0; border-radius:var(--radius-lg); padding:20px 22px; box-shadow:0 24px 60px rgba(4,35,79,.35); color:var(--ink); background:#fff;}
+  .bf-guide::backdrop{background:rgba(4,35,79,.45);}
+  .bf-guide-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:14px;}
+  .bf-guide-head h2{margin:0; font-size:20px; color:var(--navy);}
+  .bf-guide-head p{margin:4px 0 0; font-size:12.5px; color:var(--ink-muted);}
+  .bf-guide-head .btn-ghost{padding:8px 12px; flex:0 0 auto;}
+  @media (max-width:640px){ .bf-guide{padding:14px;} .bf-guide-head{flex-direction:column;} }
   .ev-guide h2{margin:0; font-size:20px; color:var(--navy);}
   .ev-guide > p{margin:4px 0 14px; font-size:12px; color:var(--ink-muted); line-height:1.5;}
   .ev-steps{list-style:none; margin:0; padding:0; display:grid; gap:14px; counter-reset:evstep;}
@@ -2645,6 +2655,23 @@
     </div>
   </div>
   <div class="print-only" id="acPrintOut"></div>
+  <!-- ============ BREAKFAST REPORT FROM SAP (opened from the Breakfast tab) ============ -->
+  <dialog class="bf-guide no-print" id="bfGuide" aria-labelledby="bfGuideTitle">
+    <div class="bf-guide-head">
+      <div><h2 id="bfGuideTitle">How to get the breakfast report from SAP</h2><p>About one minute, every morning. The report is the F&amp;B Services Forecast of today.</p></div>
+      <button class="btn-ghost" type="button" id="bfGuideClose" aria-label="Close">&#10005; Close</button>
+    </div>
+    <ol class="ev-steps">
+      <li><div><p>In <b>SAP Easy Access (TMS_All)</b> type <code>/CCSHT/RC_SI_003</code> in the command field at the top left and press <b>Enter</b>.</p><a href="breakfast-guide/breakfast-step-1.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-1.png" alt="SAP Easy Access with the transaction code in the command field" loading="lazy"></a></div></li>
+      <li><div><p><b>F&amp;B Services Forecast</b> opens with today&rsquo;s date. <b>Do not change the date</b> and leave the reservation status as it is (Check-in, Confirmed, Check-out ticked). Click <b>Execute</b> (the clock icon, or <b>F8</b>).</p><a href="breakfast-guide/breakfast-step-2.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-2.png" alt="F&amp;B Services Forecast selection with the date and Execute marked" loading="lazy"></a></div></li>
+      <li><div><p>The list <b>From: today &middot; Selecting &ndash; Check-in &ndash; Check-out &ndash; confirmed</b> opens. Click <b>Print</b> in the toolbar.</p><a href="breakfast-guide/breakfast-step-3.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-3.png" alt="F&amp;B Services Forecast list with the Print button marked" loading="lazy"></a></div></li>
+      <li><div><p>In <b>Print Screen List</b>: Output Device <code>locl</code> (Front office Left printer), 1 copy, <b>Everything</b>, <b>Immediately</b>. Confirm with the green <b>&#10003;</b>.</p><a href="breakfast-guide/breakfast-step-4.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-4.png" alt="Print Screen List with Output Device locl and the green check marked" loading="lazy"></a></div></li>
+      <li><div><p>In the Windows <b>Print</b> window open the printer list, choose <b>Microsoft Print to PDF</b> and click <b>OK</b>.</p><a href="breakfast-guide/breakfast-step-5.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-5.png" alt="Windows Print dialog with Microsoft Print to PDF marked" loading="lazy"></a></div></li>
+      <li><div><p>Save it in <b>Downloads</b> with the name <code>Breakfast</code> (it becomes <code>Breakfast.pdf</code>). Replace yesterday&rsquo;s file if Windows asks.</p><a href="breakfast-guide/breakfast-step-6.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-6.png" alt="Downloads folder with Breakfast.pdf marked" loading="lazy"></a></div></li>
+      <li><div><p>Back here, click <b>Upload breakfast report</b> and choose <code>Breakfast.pdf</code>. Today&rsquo;s breakfast list (BB) is loaded: the header shows the rooms loaded and the report date.</p><a href="breakfast-guide/breakfast-step-7.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-7.png" alt="Front Desk Control with the Upload breakfast report button marked" loading="lazy"></a></div></li>
+    </ol>
+    <div class="ev-guide-note"><b>Keep it on hotel equipment.</b> The report lists guest names and rooms. It is read only in this browser; nothing is uploaded.</div>
+  </dialog>
   <!-- ============ NIGHT AUDIT 2.0 PANEL (night-audit-2/) ============ -->
   <div class="tabpanel" id="panel-nightaudit2" role="tabpanel" aria-labelledby="tab-nightaudit2">
     <div class="na-guide-bar no-print" id="na2GuideBar">
@@ -2804,6 +2831,7 @@
 
           <button class="btn-upload" id="uploadBtn" type="button">Upload breakfast report</button>
           <input type="file" id="fileInput" accept="application/pdf">
+          <button class="bf-howbtn no-print" type="button" id="bfHowBtn">&#10067; How to get this report from SAP</button>
 
           <div class="banner" id="dateBanner"></div>
 
@@ -23541,6 +23569,20 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
 </script>
 
 <script src="access-vault.js"></script>
+<script id="breakfast-guide-script">
+/* "How to get this report from SAP" in the Breakfast tab: a dialog with the steps
+   and the screenshots in breakfast-guide/ (guest names and printer names covered). */
+(function(){
+  var dlg = document.getElementById("bfGuide"), btn = document.getElementById("bfHowBtn");
+  if(!dlg || !btn) return;
+  btn.addEventListener("click", function(){
+    if(typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+    dlg.scrollTop = 0;
+  });
+  document.getElementById("bfGuideClose").addEventListener("click", function(){ if(dlg.close) dlg.close(); else dlg.removeAttribute("open"); btn.focus(); });
+  dlg.addEventListener("click", function(e){ if(e.target === dlg && dlg.close) dlg.close(); });   // click on the backdrop
+})();
+</script>
 <script id="access-script">
 /* Access tab (users and passwords) + the sidebar menu.
    The list lives in this browser's localStorage under parkInnAccess_v1 (parkInn prefix:
