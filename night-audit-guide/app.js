@@ -470,6 +470,7 @@
       state.mode = prevMode; renderStage(); showView(prevView, true);
     }, 400);
   });
+  $("#pdfBtn").addEventListener("click", function(){ window.sopSavePdf("SOP Night Audit", function(){ $("#printBtn").click(); }); });
   window.addEventListener("hashchange", readHash);
 
   function readHash(){
