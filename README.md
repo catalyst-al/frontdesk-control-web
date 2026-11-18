@@ -30,6 +30,9 @@ The **Access** tab (Alt+A) is the editable list of the desk's logins: system, wh
 - Keep the PC browser and tablet page open, prevent the PC from sleeping, and test the hotel network before operational use. A refresh/restart requires pairing again.
 - Staff settings and local data are per browser/origin. Updating the tablet file preserves its storage keys but changing browser/origin may start a separate workspace. Export existing logs before moving to a different origin. The staff PIN is a local UI lock, not a server authentication boundary.
 
+## Print and Save PDF on the SOPs
+Every SOP has **Print** and **Save PDF**: the Check-in / out guide, the Night Audit Guidebook, Night Audit 2.0 (the step guide, or the Visual SOP when that view is open) and the two SAP guides in the Breakfast tab (breakfast report, VIP list). **Save PDF** opens the same print window with the file name already set (for example `SOP Check-in Check-out 18.11.2026`, taken from the page title by Chrome and Edge) and a hint to choose **Save as PDF** or **Microsoft Print to PDF** as the printer; the browser writes the file. The shared helper is `sop-pdf.js`; it makes no network calls.
+
 ## Night Audit Guidebook
 `night-audit-guide/` is a step-by-step Night Audit guide for DEFRAAIR (hotelkit End of Day checklist, SAP reports, the Night Audit run, no-shows, departures not billed) with redacted screenshots.
 

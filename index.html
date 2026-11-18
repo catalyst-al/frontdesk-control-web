@@ -2162,6 +2162,16 @@
   .bf-guide-head h2{margin:0; font-size:20px; color:var(--navy);}
   .bf-guide-head p{margin:4px 0 0; font-size:12.5px; color:var(--ink-muted);}
   .bf-guide-head .btn-ghost{padding:8px 12px; flex:0 0 auto;}
+  .bf-guide-acts{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; flex:0 0 auto;}
+  #guidePrintOut{display:none !important;}
+  @media print{
+    body[data-print="guide"] #guidePrintOut{display:block !important;}
+    #guidePrintOut h2{margin:0 0 4pt; font-size:16pt; color:#04234F;}
+    #guidePrintOut > p{margin:0 0 10pt; font-size:9.5pt; color:#444;}
+    #guidePrintOut .ev-steps li{break-inside:avoid; page-break-inside:avoid;}
+    #guidePrintOut .ev-steps li::before{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    #guidePrintOut .ev-steps img{max-height:120mm; width:auto;}
+  }
   @media (max-width:640px){ .bf-guide{padding:14px;} .bf-guide-head{flex-direction:column;} }
   .ev-guide h2{margin:0; font-size:20px; color:var(--navy);}
   .ev-guide > p{margin:4px 0 14px; font-size:12px; color:var(--ink-muted); line-height:1.5;}
@@ -2655,11 +2665,12 @@
     </div>
   </div>
   <div class="print-only" id="acPrintOut"></div>
+  <div id="guidePrintOut"></div>
   <!-- ============ VIP LIST FROM SAP (opened from VIP / Premium / Club in the Breakfast tab) ============ -->
-  <dialog class="bf-guide no-print" id="vipGuide" aria-labelledby="vipGuideTitle">
+  <dialog class="bf-guide no-print" id="vipGuide" data-pdf-name="SOP VIP list" aria-labelledby="vipGuideTitle">
     <div class="bf-guide-head">
       <div><h2 id="vipGuideTitle">How to get the VIP list from SAP</h2><p>About two minutes, every morning. It is yesterday&rsquo;s in-house list with the layout <b>/YANBU</b>: every guest in house with the loyalty level, also those who arrived on earlier days.</p></div>
-      <button class="btn-ghost" type="button" data-close aria-label="Close">&#10005; Close</button>
+      <span class="bf-guide-acts"><button class="btn-ghost" type="button" data-gprint>&#128424; Print</button><button class="btn-ghost" type="button" data-gpdf>&#8681; Save PDF</button><button class="btn-ghost" type="button" data-close aria-label="Close">&#10005; Close</button></span>
     </div>
     <ol class="ev-steps">
       <li><div><p>In <b>SAP Easy Access (TMS_All)</b> open <b>Favorites &rarr; House status</b>.</p><a href="vip-guide/vip-step-1.png" target="_blank" rel="noopener" title="Open full size"><img src="vip-guide/vip-step-1.png" alt="SAP Favorites with House status marked" loading="lazy"></a></div></li>
@@ -2676,10 +2687,10 @@
     <div class="ev-guide-note"><b>Keep it on hotel equipment.</b> The list holds guest names, companies and reservation numbers. It is read only in this browser; nothing is uploaded.</div>
   </dialog>
   <!-- ============ BREAKFAST REPORT FROM SAP (opened from the Breakfast tab) ============ -->
-  <dialog class="bf-guide no-print" id="bfGuide" aria-labelledby="bfGuideTitle">
+  <dialog class="bf-guide no-print" id="bfGuide" data-pdf-name="SOP Breakfast report" aria-labelledby="bfGuideTitle">
     <div class="bf-guide-head">
       <div><h2 id="bfGuideTitle">How to get the breakfast report from SAP</h2><p>About one minute, every morning. The report is the F&amp;B Services Forecast of today.</p></div>
-      <button class="btn-ghost" type="button" id="bfGuideClose" data-close aria-label="Close">&#10005; Close</button>
+      <span class="bf-guide-acts"><button class="btn-ghost" type="button" data-gprint>&#128424; Print</button><button class="btn-ghost" type="button" data-gpdf>&#8681; Save PDF</button><button class="btn-ghost" type="button" id="bfGuideClose" data-close aria-label="Close">&#10005; Close</button></span>
     </div>
     <ol class="ev-steps">
       <li><div><p>In <b>SAP Easy Access (TMS_All)</b> type <code>/CCSHT/RC_SI_003</code> in the command field at the top left and press <b>Enter</b>.</p><a href="breakfast-guide/breakfast-step-1.png" target="_blank" rel="noopener" title="Open full size"><img src="breakfast-guide/breakfast-step-1.png" alt="SAP Easy Access with the transaction code in the command field" loading="lazy"></a></div></li>
@@ -5310,6 +5321,7 @@
     if(target === "events"){ /* the Events panel prints as shown */ }
     else if(target === "registration"){ /* the Registration tab fills #regPrintOut itself */ }
     else if(target === "invoice"){ /* the Invoice address tab fills #invPrintOut itself */ }
+    else if(target === "guide"){ /* the SAP guides (Breakfast, VIP) fill #guidePrintOut themselves */ }
     else if(target === "nightaudit"){ prepareNaPrint(); }
     else if(target === "vcc"){ prepareVccPrint(); }
     else if(target === "group"){ prepareGroupPrint(); }
@@ -23594,6 +23606,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
 </script>
 
 <script src="access-vault.js"></script>
+<script src="sop-pdf.js?v=20261118-1"></script>
 <script id="breakfast-guide-script">
 /* "How to get … from SAP" buttons in the Breakfast tab (breakfast report, VIP list): each
    opens its dialog with the steps and the screenshots in breakfast-guide/ and vip-guide/
@@ -23608,6 +23621,28 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
       dlg.scrollTop = 0;
     });
     Array.prototype.forEach.call(dlg.querySelectorAll("[data-close]"), function(c){ c.addEventListener("click", close); });
+    // Print / Save PDF: the steps go into #guidePrintOut (the dialog itself never prints),
+    // every screenshot is loaded first, then the print window opens.
+    function printGuide(){
+      var out = document.getElementById("guidePrintOut");
+      var head = dlg.querySelector(".bf-guide-head > div").cloneNode(true);
+      out.innerHTML = "";
+      out.appendChild(head.querySelector("h2")); if(head.querySelector("p")) out.appendChild(head.querySelector("p"));
+      out.appendChild(dlg.querySelector(".ev-steps").cloneNode(true));
+      if(dlg.querySelector(".ev-guide-note")) out.appendChild(dlg.querySelector(".ev-guide-note").cloneNode(true));
+      var imgs = Array.prototype.slice.call(out.querySelectorAll("img"));
+      imgs.forEach(function(im){ im.loading = "eager"; });
+      Promise.all(imgs.map(function(im){ return im.complete ? null : new Promise(function(r){ im.onload = im.onerror = r; }); })).then(function(){
+        document.body.setAttribute("data-print", "guide");
+        var done = function(){ document.body.removeAttribute("data-print"); out.innerHTML = ""; window.removeEventListener("afterprint", done); };
+        window.addEventListener("afterprint", done);
+        setTimeout(function(){ window.print(); }, 50);
+      });
+    }
+    dlg.querySelector("[data-gprint]").addEventListener("click", printGuide);
+    dlg.querySelector("[data-gpdf]").addEventListener("click", function(){
+      if(window.sopSavePdf) window.sopSavePdf(dlg.getAttribute("data-pdf-name") || "SOP", printGuide); else printGuide();
+    });
     dlg.addEventListener("click", function(e){ if(e.target === dlg) close(); });   // click on the backdrop
   });
 })();

@@ -446,6 +446,11 @@
     resetNight();
     renderRail(); renderStage(); renderVisual(); paintProgress();
   });
+  // Save PDF follows the open view: the Visual SOP prints as such, otherwise every step.
+  $("#pdfBtn").addEventListener("click", function(){
+    var visual = state.view === "visual" && $("#vsPrint");
+    window.sopSavePdf(visual ? "SOP Night Audit 2.0 Visual" : "SOP Night Audit 2.0", function(){ (visual ? $("#vsPrint") : $("#printBtn")).click(); });
+  });
   $("#printBtn").addEventListener("click", function(){
     var prevMode = state.mode, prevView = state.view;
     document.body.classList.add("print-all");
