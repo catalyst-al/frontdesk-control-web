@@ -2400,6 +2400,20 @@
   .inv-label{display:block; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-muted); margin:0 0 5px;}
   #invAddr{width:100%; min-height:118px; resize:vertical; font:inherit; font-size:13.5px; line-height:1.45; padding:9px 11px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:#fff; color:var(--ink);}
   #invAddr:focus{outline:2px solid var(--navy); outline-offset:1px; border-color:var(--navy);}
+  .inv-hint{font-size:12.5px; line-height:1.5; color:var(--ink-muted); margin:-4px 0 10px;}
+  .inv-same{display:flex; align-items:center; gap:8px; font-size:13px; margin:0 0 10px; cursor:pointer;}
+  .inv-same input{width:16px; height:16px; accent-color:var(--navy);}
+  .inv-field{margin-bottom:10px;}
+  .inv-field-h{display:flex; align-items:center; gap:6px; margin-bottom:5px; min-height:22px;}
+  .inv-field-h .inv-label{margin:0; flex:1; min-width:0;}
+  .inv-chg{font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:#fff; background:var(--green); border-radius:999px; padding:2px 7px;}
+  .inv-reset{font:inherit; font-size:11px; font-weight:700; color:var(--navy); background:#fff; border:1.5px solid var(--line); border-radius:999px; padding:2px 9px; cursor:pointer;}
+  .inv-reset:hover{border-color:var(--navy);}
+  .inv-reset:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+  #invAddr2{width:100%; min-height:118px; resize:vertical; font:inherit; font-size:13.5px; line-height:1.45; padding:9px 11px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:#fff; color:var(--ink);}
+  #invAddr2:focus{outline:2px solid var(--navy); outline-offset:1px; border-color:var(--navy);}
+  #invAddr.changed, #invAddr2.changed{border-color:var(--green); background:#F4FBF7;}
+  .inv-tip{font-size:11.5px; line-height:1.45; color:var(--ink-faint); margin:0 0 6px;}
   .inv-opts{display:grid; gap:6px; margin:10px 0 4px; font-size:13px;}
   .inv-opts label{display:flex; align-items:center; gap:8px; cursor:pointer;}
   .inv-opts input{width:16px; height:16px; accent-color:var(--navy);}
@@ -2708,14 +2722,19 @@
       <div class="card no-print">
         <div class="brandstrip"></div>
         <div class="card-body">
-          <h2 class="card-title">Company address</h2>
-          <label class="inv-label" for="invAddr">New address &middot; one line per row</label>
-          <textarea id="invAddr" rows="5" spellcheck="false" placeholder="Company GmbH&#10;Street 12&#10;60311 Frankfurt am Main&#10;Germany"></textarea>
+          <h2 class="card-title">Address on the invoice</h2>
+          <p class="inv-hint" id="invHint">Load an invoice: its address appears here, ready to correct or complete (a missing VAT / NIPT number, a wrong street, a line too many). Or type or pick a new company address.</p>
+          <label class="inv-same"><input type="checkbox" id="invSame" checked> Same address in both blocks</label>
+          <div class="inv-field">
+            <div class="inv-field-h"><label class="inv-label" for="invAddr" id="invAddrLabel">Address (both blocks)</label><span class="inv-chg" id="invChgF" hidden>changed</span><button type="button" class="inv-reset" id="invResetF" hidden title="Put back the address as it is on the invoice">&#8634; as on invoice</button></div>
+            <textarea id="invAddr" rows="5" spellcheck="false" placeholder="Company GmbH&#10;Street 12&#10;60311 Frankfurt am Main&#10;Germany&#10;VAT: DE123456789"></textarea>
+          </div>
+          <div class="inv-field" id="invPostalWrap" hidden>
+            <div class="inv-field-h"><label class="inv-label" for="invAddr2">Postal address</label><span class="inv-chg" id="invChgP" hidden>changed</span><button type="button" class="inv-reset" id="invResetP" hidden title="Put back the address as it is on the invoice">&#8634; as on invoice</button></div>
+            <textarea id="invAddr2" rows="5" spellcheck="false" placeholder="Company GmbH&#10;Street 12&#10;60311 Frankfurt am Main&#10;Germany"></textarea>
+          </div>
+          <p class="inv-tip">One line per row. Add, change or delete any line; the invoice changes only where the text differs from what it shows now.</p>
           <div class="inv-opts">
-            <span class="inv-opt-h">Replace in</span>
-            <label><input type="checkbox" id="invFiscal" checked> Fiscal information</label>
-            <label><input type="checkbox" id="invPostal" checked> Postal address</label>
-            <span class="inv-opt-h">Style</span>
             <label><input type="checkbox" id="invBold"> First line (company name) in bold</label>
           </div>
           <div class="inv-firm-actions">
@@ -2731,7 +2750,7 @@
         <div class="brandstrip"></div>
         <div class="card-body">
           <div class="inv-head">
-            <div><h2>Invoice address</h2><p>Load the invoice PDF from SAP. Only the guest address is replaced, on every page; everything else stays as printed.</p></div>
+            <div><h2>Invoice address</h2><p>Load the invoice PDF from SAP, then correct, complete or replace its address on the left. Only the address changes, on every page; everything else stays as printed.</p></div>
             <label class="reg-drop" id="invDrop" tabindex="0" title="The invoice printed from SAP to PDF">
               <input type="file" id="invFile" accept=".pdf,application/pdf" hidden>
               &#8681; Invoice (PDF)<small>drop here or choose</small>
@@ -2745,7 +2764,7 @@
           </div>
           <div class="ev-status" id="invStatus" role="status" aria-live="polite"></div>
           <div class="inv-preview" id="invPreview">
-            <div class="inv-empty"><b>No invoice loaded</b>Type or pick the company address on the left, then drop the invoice PDF here.<br>The new address is written under <i>Fiscal information</i> and <i>Postal address</i> on every page. Ctrl+P prints it.</div>
+            <div class="inv-empty"><b>No invoice loaded</b>Drop the invoice PDF here. Its address appears on the left: correct it, add the VAT / NIPT number, or replace it with a company address.<br>The change is made under <i>Fiscal information</i> and <i>Postal address</i> (Steuerinformation / Adresse) on every page. Ctrl+P prints it.</div>
           </div>
         </div>
       </div>
@@ -22956,7 +22975,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
 (function(){
   "use strict";
   var KEY = "parkInnInvoiceFirms_v1";
-  var HEADER_RE = /^(fiscal information|postal address|billing address|invoice address|steuerliche (informationen|angaben)|rechnungsanschrift|rechnungsadresse|postanschrift|postadresse)\s*:?$/i;
+  var HEADER_RE = /^(fiscal information|postal address|billing address|invoice address|address|steuerinformation(en)?|steuerliche (informationen|angaben)|rechnungsanschrift|rechnungsadresse|postanschrift|postadresse|adresse)\s*:?$/i;
   var KEEP_RE = /^(party|partei|reservation|reservierung|voucher|gutschein|copy|kopie|original|duplicate|duplikat)\b/i;
   var PRINT_SCALE = 2.6;   // ~190 dpi: sharp on paper, still light enough for many pages
 
@@ -22968,9 +22987,31 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
   var store = { firms: [], last: null };
   try{ var raw = JSON.parse(localStorage.getItem(KEY) || "null"); if(raw && Array.isArray(raw.firms)) store = { firms: raw.firms, last: raw.last || null }; }catch(e){}
   function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){ setStatus("bad", "Not saved: this browser's storage is full."); } }
-  function addrLines(){ return $("invAddr").value.split(/\r?\n/).map(function(l){ return l.replace(/\s+/g, " ").trim(); }).filter(Boolean); }
-  function opts(){ return { lines: addrLines(), fiscal: $("invFiscal").checked, postal: $("invPostal").checked, bold: $("invBold").checked }; }
-  function rememberLast(){ var o = opts(); store.last = { text: $("invAddr").value, fiscal: o.fiscal, postal: o.postal, bold: o.bold }; persist(); }
+  function linesOf(id){ return $(id).value.split(/\r?\n/).map(function(l){ return l.replace(/\s+/g, " ").trim(); }).filter(Boolean); }
+  function addrLines(){ return linesOf("invAddr"); }
+  function opts(){ var f = linesOf("invAddr"); return { fiscal: f, postal: $("invSame").checked ? f : linesOf("invAddr2"), bold: $("invBold").checked }; }
+  function sameLines(a, b){ return a.length === b.length && a.every(function(l, i){ return l === b[i]; }); }
+  // The address as the loaded invoice shows it (first page with an address block).
+  var orig = { fiscal: null, postal: null }, dirty = false;
+  function rememberLast(){ store.last = { text: $("invAddr").value, text2: $("invAddr2").value, same: $("invSame").checked, bold: $("invBold").checked }; persist(); }
+  function fieldState(){
+    var same = $("invSame").checked, o = opts();
+    $("invPostalWrap").hidden = same;
+    $("invAddrLabel").textContent = same ? "Address (both blocks)" : "Fiscal information";
+    var chF = !!(orig.fiscal || orig.postal) && o.fiscal.length > 0 && (!orig.fiscal || !sameLines(o.fiscal, orig.fiscal) || (same && orig.postal && !sameLines(o.fiscal, orig.postal)));
+    var chP = !same && !!orig.postal && o.postal.length > 0 && !sameLines(o.postal, orig.postal);
+    $("invAddr").classList.toggle("changed", chF); $("invChgF").hidden = !chF;
+    $("invAddr2").classList.toggle("changed", chP); $("invChgP").hidden = !chP;
+    $("invResetF").hidden = !(orig.fiscal || orig.postal) || !chF;
+    $("invResetP").hidden = !orig.postal || !chP;
+  }
+  function fillFromInvoice(){
+    var f = orig.fiscal || orig.postal, p = orig.postal || orig.fiscal;
+    if(!f) return;
+    $("invSame").checked = sameLines(f, p);
+    $("invAddr").value = f.join("\n"); $("invAddr2").value = p.join("\n");
+    dirty = false;
+  }
   function renderFirms(){
     var q = $("invSearch").value.trim().toLowerCase(), cur = addrLines().join("\n").toLowerCase();
     var list = store.firms.filter(function(f){ return !q || f.text.toLowerCase().indexOf(q) >= 0; });
@@ -23000,7 +23041,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
       if(!confirm("Remove " + f.text.split("\n")[0] + " from the saved companies?")) return;
       store.firms = store.firms.filter(function(x){ return x !== f; }); persist(); renderFirms(); return;
     }
-    if(e.target.closest(".use")){ $("invAddr").value = f.text; $("invBold").checked = !!f.bold; changed(true); }
+    if(e.target.closest(".use")){ $("invAddr").value = f.text; $("invAddr2").value = f.text; $("invBold").checked = !!f.bold; dirty = true; changed(true); }
   });
   $("invSearch").addEventListener("input", renderFirms);
 
@@ -23075,7 +23116,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
       }
       var addr = [], kept = [];
       rows.forEach(function(r){ (kept.length || KEEP_RE.test(r.text) ? kept : addr).push(r); });
-      var kind = /postal|post|anschrift/i.test(h.text) && !/rechnungs/i.test(h.text) ? "postal" : "fiscal";
+      var kind = /postal|post|anschrift|^addres|^adress/i.test(h.text) && !/rechnungs|billing|invoice/i.test(h.text) ? "postal" : "fiscal";
       var below = rows.length ? rows[rows.length - 1] : h;
       var left = Math.min.apply(null, [h.x].concat(rows.map(function(r){ return r.x; }))) - 1.5;
       var next = segs.filter(function(s){ return s.y < below.y - 0.5 && s.right > left && s.x < colEnd; })
@@ -23197,16 +23238,17 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
         return Promise.all([doc.embedFont(L.StandardFonts.Helvetica), doc.embedFont(L.StandardFonts.HelveticaBold)]).then(function(fonts){
           var regular = fonts[0], bold = fonts[1];
           pages.forEach(function(pg, pi){
-            var blocks = pg.blocks.filter(function(b){ return b.kind === "postal" ? o.postal : o.fiscal; });
-            var info = { page: pi + 1, marks: [], squeezed: false, hidden: false };
+            // only the blocks whose text differs from what the invoice shows
+            var blocks = pg.blocks.filter(function(b){ var ls = o[b.kind]; return ls && ls.length && !sameLines(ls, b.addr.map(function(r){ return r.text; })); });
+            var info = { page: pi + 1, marks: [], kinds: blocks.map(function(b){ return b.kind; }), squeezed: false, hidden: false };
             report.push(info);
-            if(!blocks.length || !o.lines.length) return;
-            var page = doc.getPage(pi), n = o.lines.length;
+            if(!blocks.length) return;
+            var page = doc.getPage(pi);
             var content = null, objs = [];
             try{ content = pageContent(L, doc, page); objs = textObjects(content); }catch(e){ content = null; objs = []; }
             // The text objects of one row of a block (same baseline, inside the column).
             function objsOf(b, row){ return objs.filter(function(t){ return Math.abs(t.y - row.y) < 1.2 && t.x >= b.left - 2 && t.x < b.colEnd; }); }
-            var plans = blocks.map(function(b){ return plan(b, n); });
+            var plans = blocks.map(function(b){ return plan(b, o[b.kind].length); });
             var movable = blocks.every(function(b){ return b.kept.every(function(r){ return objsOf(b, r).length; }); });
             // one shift for the page, so the Reservation lines of both blocks stay level
             var delta = movable ? Math.max.apply(null, plans.map(function(p){ return p.need; })) : 0;
@@ -23214,7 +23256,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
             if(delta > limit) delta = limit;
             var edits = [], covers = [];
             blocks.forEach(function(b, bi){
-              var p = plans[bi], k = b.kept, a = b.addr, lineH = p.lineH, size = p.size;
+              var p = plans[bi], k = b.kept, a = b.addr, lineH = p.lineH, size = p.size, lines = o[b.kind], n = lines.length;
               if(k.length && p.need > delta + 0.01){
                 lineH = (p.firstY - (k[0].y - delta)) / n;
                 size = Math.min(size, lineH / 1.12); info.squeezed = true;
@@ -23237,7 +23279,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
               });
               var right = Math.min(b.colEnd - 1, [b.left].concat(a, k).reduce(function(m, r){ return Math.max(m, r.right || m); }) + 2);
               var maxW = b.colEnd - p.x - 6, widest = 0;
-              b.draw = o.lines.map(function(line, li){
+              b.draw = lines.map(function(line, li){
                 var font = o.bold && li === 0 ? bold : regular, text = encodable(font, line), s = size;
                 var w = font.widthOfTextAtSize(text, s);
                 if(w > maxW){ s = Math.max(4.5, s * maxW / w); w = font.widthOfTextAtSize(text, s); }
@@ -23331,11 +23373,11 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     var r = cur.report, total = r.length;
     var done = r.filter(function(x){ return x.marks.length; });
     var missing = r.filter(function(x){ return !x.marks.length; }).map(function(x){ return x.page; });
-    var o = opts();
-    if(!o.fiscal && !o.postal) return setStatus("warn", "Tick Fiscal information and/or Postal address to replace the address.");
-    if(!o.lines.length) return setStatus("warn", "Type the company address on the left (or pick a saved company). The preview shows the invoice as loaded.");
-    if(!done.length) return setStatus("bad", "No “Fiscal information” / “Postal address” block was found in " + cur.name + ". Is this an invoice printed from SAP? Nothing was changed.");
-    var msg = "Address replaced on " + done.length + " of " + total + " page" + (total === 1 ? "" : "s") + " (" + ["fiscal", "postal"].filter(function(k){ return o[k]; }).map(function(k){ return k === "fiscal" ? "Fiscal information" : "Postal address"; }).join(" + ") + ").";
+    var found = cur.pages.some(function(p){ return p.blocks.length; });
+    if(!found) return setStatus("bad", "No “Fiscal information” / “Postal address” block was found in " + cur.name + ". Is this an invoice printed from SAP? Nothing was changed.");
+    if(!done.length) return setStatus("", "The address is as on the invoice. Correct or complete it on the left (for example add the VAT / NIPT number): the preview follows as you type.");
+    var kinds = {}; done.forEach(function(x){ x.kinds.forEach(function(k){ kinds[k] = 1; }); });
+    var msg = "Address changed on " + done.length + " of " + total + " page" + (total === 1 ? "" : "s") + " (" + ["fiscal", "postal"].filter(function(k){ return kinds[k]; }).map(function(k){ return k === "fiscal" ? "Fiscal information" : "Postal address"; }).join(" + ") + ").";
     if(missing.length) msg += " No address block on page " + missing.join(", ") + ": left as it is.";
     if(r.some(function(x){ return x.squeezed; })) msg += " The address is long, so its lines were set a little closer: check the preview.";
     if(r.some(function(x){ return x.hidden; })) msg += " On page " + r.filter(function(x){ return x.hidden; }).map(function(x){ return x.page; }).join(", ") + " the old address could only be covered, not removed: it is not visible, but a program that reads the PDF text may still find it.";
@@ -23346,8 +23388,9 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     if(busy){ again = true; return Promise.resolve(); }
     busy = true;
     var o = opts();
-    var work = (o.lines.length && (o.fiscal || o.postal)) ? buildPdf(cur.bytes, cur.pages, o) : Promise.resolve({ bytes: null, report: cur.pages.map(function(p, i){ return { page: i + 1, marks: [] }; }) });
+    var work = (o.fiscal.length || o.postal.length) ? buildPdf(cur.bytes, cur.pages, o) : Promise.resolve({ bytes: null, report: [] });
     return work.then(function(res){
+      if(!res.report.some(function(x){ return x.marks.length; })) res = { bytes: null, report: cur.pages.map(function(p, i){ return { page: i + 1, marks: [], kinds: [] }; }) };
       cur.out = res.bytes; cur.report = res.report;
       showOrig = false;
       return renderPages(cur.out || cur.bytes, cur.out ? res.report.map(function(x){ return x.marks; }) : null, "").then(function(imgs){
@@ -23363,13 +23406,24 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     });
   }
   function changed(now){
-    rememberLast(); renderFirms();
+    rememberLast(); renderFirms(); fieldState();
     clearTimeout(timer);
     if(!cur) return;
     timer = setTimeout(build, now ? 0 : 450);
   }
-  ["invAddr"].forEach(function(id){ $(id).addEventListener("input", function(){ changed(false); }); });
-  ["invFiscal", "invPostal", "invBold"].forEach(function(id){ $(id).addEventListener("change", function(){ changed(true); }); });
+  ["invAddr", "invAddr2"].forEach(function(id){ $(id).addEventListener("input", function(){ dirty = true; changed(false); }); });
+  $("invBold").addEventListener("change", function(){ changed(true); });
+  $("invSame").addEventListener("change", function(){
+    // Two fields: the postal one starts from what the single field holds.
+    if(!this.checked) $("invAddr2").value = $("invAddr").value;
+    changed(true);
+  });
+  $("invResetF").addEventListener("click", function(){
+    if($("invSame").checked) fillFromInvoice();
+    else $("invAddr").value = (orig.fiscal || orig.postal || []).join("\n");
+    changed(true); $("invAddr").focus();
+  });
+  $("invResetP").addEventListener("click", function(){ $("invAddr2").value = (orig.postal || []).join("\n"); changed(true); $("invAddr2").focus(); });
 
   function load(file){
     if(!file) return;
@@ -23378,8 +23432,18 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
     file.arrayBuffer().then(function(buf){
       var bytes = new Uint8Array(buf);
       return analyse(bytes).then(function(pages){
+        var hadInvoice = !!cur;
         cur = { name: file.name, bytes: bytes, pages: pages, out: null, report: [] };
         $("invPrintOut").innerHTML = "";
+        var first = pages.filter(function(p){ return p.blocks.length; })[0];
+        orig = { fiscal: null, postal: null };
+        if(first) first.blocks.forEach(function(b){ if(!orig[b.kind] && b.addr.length) orig[b.kind] = b.addr.map(function(r){ return r.text; }); });
+        // The invoice's own address goes into the fields, unless a new address was
+        // typed or picked before the invoice was loaded (corrections made to a
+        // previous invoice never carry over to the next one).
+        var typed = !hadInvoice && dirty && (linesOf("invAddr").length || (!$("invSame").checked && linesOf("invAddr2").length));
+        if(!typed) fillFromInvoice();
+        fieldState(); rememberLast(); renderFirms();
         return build();
       });
     }).catch(function(err){
@@ -23402,6 +23466,7 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
   });
   $("invClear").addEventListener("click", function(){
     cur = null; showOrig = false; renderToken++;
+    orig = { fiscal: null, postal: null }; dirty = false; fieldState();
     $("invPrintOut").innerHTML = ""; $("invPageStyle").textContent = "";
     $("invPreview").innerHTML = '<div class="inv-empty"><b>No invoice loaded</b>Drop the next invoice PDF here.</div>';
     setStatus("", ""); buttons();
@@ -23443,8 +23508,8 @@ body.vcc-workspace #panel-vcc .tower-actions{border-top:1px solid var(--line-sof
   window.addEventListener("afterprint", function(){ pageStyle.disabled = true; });
   pageStyle.disabled = true;
 
-  if(store.last){ $("invAddr").value = store.last.text || ""; $("invFiscal").checked = store.last.fiscal !== false; $("invPostal").checked = store.last.postal !== false; $("invBold").checked = !!store.last.bold; }
-  renderFirms(); buttons();
+  if(store.last){ $("invAddr").value = store.last.text || ""; $("invAddr2").value = store.last.text2 || store.last.text || ""; $("invSame").checked = store.last.same !== false; $("invBold").checked = !!store.last.bold; }
+  renderFirms(); buttons(); fieldState();
   window.parkInnInvoiceAddress = { analyse: analyse, buildPdf: buildPdf, load: load };
 })();
 </script>
